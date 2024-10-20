@@ -15,7 +15,9 @@
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@pinia/nuxt": "^0.5.5",
     "nuxt": "^3.13.2",
+    "nuxt-auth-utils": "^0.4.4",
     "nuxt-translation-manager": "^1.1.1",
+    "pinia": "^2.2.4",
     "sweetalert2": "^11.14.3",
     "vue": "latest",
     "vue-router": "latest"
@@ -24,8 +26,5 @@
     "nuxt-auth-sanctum": "^0.5.0",
     "typescript": "^5.6.3",
     "vue-tsc": "^2.1.6"
-  },
-  "overrides": {
-    "vue": "latest"
   }
 }

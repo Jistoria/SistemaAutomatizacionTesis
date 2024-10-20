@@ -9,8 +9,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/i18n',
     'nuxt-translation-manager',
-    'nuxt-auth-sanctum',
     '@nuxtjs/color-mode',
+    'nuxt-auth-utils'
   ],
 
 })
