@@ -208,3 +208,6 @@ CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_students_user_id ON students(user_id);
 CREATE INDEX idx_teachers_user_id ON teachers(user_id);
 CREATE INDEX idx_students_dni ON students(dni);
+CREATE INDEX idx_period_academic_name ON period_academic(period_academic_id);
+CREATE INDEX namex_period_academic_name ON period_academic(name);
+CREATE INDEX idx_thesis_titles_name ON thesis_titles(name);
