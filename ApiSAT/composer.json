@@ -15,7 +15,6 @@
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
         "modules/auth": "*",
-        "modules/import-data-student": "*",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {

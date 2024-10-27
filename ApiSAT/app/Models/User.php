@@ -18,8 +18,6 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasRoles, HasApiTokens, HasUuids;
 
 
-    protected $keyType = 'string';  // Para UUID
-
     public $incrementing = false;  // Para deshabilitar auto-increment
     /**
      * The attributes that are mass assignable.
