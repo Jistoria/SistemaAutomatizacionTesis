@@ -1,0 +1,29 @@
+{
+    "cacheId": "cacheAll",
+    "cleanupOutdatedCaches": true,
+    "runtimeCaching": [
+      {
+        "urlPattern": "/.*",
+        "handler": "NetworkFirst",
+        "options": {
+          "cacheName": "dynamic-content",
+          "expiration": {
+            "maxEntries": 200,
+            "maxAgeSeconds": 86400
+          }
+        }
+      },
+      {
+        "urlPattern": "\\.(?:png|jpg|jpeg|svg|gif|css|js)$",
+        "handler": "CacheFirst",
+        "options": {
+          "cacheName": "static-assets",
+          "expiration": {
+            "maxEntries": 100,
+            "maxAgeSeconds": 2592000
+          }
+        }
+      }
+    ]
+}
+  
