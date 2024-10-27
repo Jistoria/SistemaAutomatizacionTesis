@@ -1,5 +1,5 @@
 {
-  "car": "coche | coches",
+  "car": "carrito | coches",
   "comment-multi": "Test comentario",
   "comment-test": "Test comentario",
   "email-address": "Tu correo electrónico es: {email}",
