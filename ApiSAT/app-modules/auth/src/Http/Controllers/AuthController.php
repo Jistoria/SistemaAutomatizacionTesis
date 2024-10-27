@@ -3,6 +3,7 @@
 namespace Modules\Auth\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Modules\Auth\Events\authEvent;
 use Modules\Auth\Services\AuthService;
 
 class AuthController
@@ -25,13 +26,12 @@ class AuthController
                 'password.required' => 'Porfavor ingrese su contraseña',
             ]);
             $credentials = $request->only('email', 'password');
-            $token = $this->authService->login($credentials);
+            $success = $this->authService->login($credentials);
 
-            if ($token === false) {
+            if ($success === false) {
                 return response()->json(['message' => 'Credenciales inválidas'], 401);
             }
-
-            return response()->json(['token' => $token]);
+            return response()->json($success, 200);
        }catch (\Exception $e){
            return response()->json(['error' => $e->getMessage()], 400);
        }
@@ -42,4 +42,6 @@ class AuthController
         $this->authService->logout($request->user());
         return response()->json(['message' => 'Sesión cerrada']);
     }
+
+
 }

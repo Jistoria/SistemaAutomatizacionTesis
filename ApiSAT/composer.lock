@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "043dfeb3a841cf2e7ab0401cbf3e3095",
+    "content-hash": "57f9c7f962c0abcf2b6d50f53861a736",
     "packages": [
         {
             "name": "brick/math",
@@ -3538,6 +3538,38 @@
                     "Modules\\Auth\\Tests\\": "tests/",
                     "Modules\\Auth\\Database\\Factories\\": "database/factories/",
                     "Modules\\Auth\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "modules/import-data-student",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/import-data-student",
+                "reference": "bec11fa3a95c8fc8beff7ffe1ac2196a0e6fddcc"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\ImportDataStudent\\Providers\\ImportDataStudentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\ImportDataStudent\\": "src/",
+                    "Modules\\ImportDataStudent\\Tests\\": "tests/",
+                    "Modules\\ImportDataStudent\\Database\\Factories\\": "database/factories/",
+                    "Modules\\ImportDataStudent\\Database\\Seeders\\": "database/seeders/"
                 }
             },
             "license": [
@@ -11155,12 +11187,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }

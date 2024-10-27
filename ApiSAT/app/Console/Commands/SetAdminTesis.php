@@ -27,6 +27,7 @@ class SetAdminTesis extends Command
     {
         $this->info('Creando usuario administrador de tesis...');
         $user = \App\Models\User::create([
+            'id' => \Ramsey\Uuid\Uuid::uuid4(),
             'name' => 'Admin Tesis',
             'email' => 'admin_tesis@uleam.edu.ec',
             'password' => 'admin_tesis',
