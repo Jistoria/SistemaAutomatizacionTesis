@@ -13,7 +13,6 @@ class ThesisTitle extends Model
 
     protected $primaryKey = 'thesis_id';
     public $incrementing = false;
-    protected $keyType = 'uuid';
 
     protected $fillable = [
         'title',

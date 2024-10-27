@@ -15,7 +15,7 @@ def extract_students_data(pdf_path):
                         # Verificar que row[0] no sea None antes de usar re.match
                         if row[0] is not None and re.match(r'^\d{10}$', row[0]):
                             student = {
-                                'dni': row[0],
+                                'student_dni': row[0],
                                 'student_name': row[1] if row[1] is not None else '',  # Manejar si el nombre es None
                                 'period': row[2] if row[2] is not None else '',
                                 'thesis_title': row[4] if row[4] is not None else '',
