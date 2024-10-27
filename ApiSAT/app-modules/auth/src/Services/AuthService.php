@@ -56,7 +56,7 @@ class AuthService
     public function logout(User $user) : void
     {
        // Elimina el token actual del usuario, invalidando el acceso.
-       $user->currentAccessToken()->delete();
+        $user->token()->revoke();
     }
 
     /**
