@@ -14,7 +14,7 @@ class AuthController
     {}
 
 
-    public function login (Request $request)
+    public function login (Request $request) : \Illuminate\Http\JsonResponse
     {
        try{
             $request->validate([
@@ -37,11 +37,16 @@ class AuthController
        }
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request) : \Illuminate\Http\JsonResponse
     {
         $this->authService->logout($request->user());
         return response()->json(['message' => 'Sesión cerrada']);
     }
 
+    public function user(Request $request) : \Illuminate\Http\JsonResponse
+    {
+        $user = $this->authService->setUser($request->user());
+        return response()->json($user, 200);
+    }
 
 }

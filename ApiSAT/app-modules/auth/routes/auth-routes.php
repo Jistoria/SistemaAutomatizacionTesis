@@ -7,6 +7,6 @@ Route::prefix('auth')->group(
     function () {
         Route::post('login', [AuthController::class, 'login'])->middleware('guest:api');
         Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
-
+        Route::get('user', [AuthController::class, 'user'])->middleware('auth:api');
     }
 );
