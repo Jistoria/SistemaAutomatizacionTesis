@@ -36,7 +36,7 @@ class SetRoles extends Command
 
         $this->info('Creando roles...');
         foreach ($roles as $role) {
-            \Spatie\Permission\Models\Role::create([
+            \App\Models\Role::create([
                 'name' => $role,
             ]);
         }
