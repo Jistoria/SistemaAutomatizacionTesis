@@ -4,7 +4,7 @@
   "comment-test": "Test comentario",
   "email-address": "Tu correo electrónico es: {email}",
   "examples": "Ejemplos",
-  "html-msg": "Este texto se representa con <strong class='text-red-500'>HTML</strong>",
+  "html-msg": "Este texto se representa con &lt;strong class='text-red-500'&gt;HTML&lt;/strong&gt;",
   "html-warning": "Localizar dinámicamente HTML arbitrario en su sitio puede ser muy peligroso porque puede generar fácilmente vulnerabilidades XSS. Utilice la interpolación HTML únicamente en contenido confiable y nunca en contenido proporcionado por el usuario.",
   "language": "Idioma",
   "pluralization": "Pluralización"
