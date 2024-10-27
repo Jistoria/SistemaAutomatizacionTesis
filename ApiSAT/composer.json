@@ -32,7 +32,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Modules\\": "app-modules/"
+            "Modules\\": "app-modules/",
+            "App\\Models\\Auth\\": "app/Models/Auth/",
+            "App\\Models\\Academic\\": "app/Models/Academic/",
+            "App\\Models\\General\\": "app/Models/General/"
         }
     },
     "autoload-dev": {
