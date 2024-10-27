@@ -1,24 +1,14 @@
 module.exports = {
-    i18n: {
-      locales: [
-        { code: 'en', name: 'English', file: 'en.json' },
-        { code: 'es', name: 'Español', file: 'es.json' }
-      ],
-      lazy: true, // Carga diferida de los archivos de idioma
-      langDir: 'locales/', // Directorio donde se almacenarán los archivos de idioma
-      defaultLocale: 'es', // Idioma por defecto
-      strategy: 'prefix', // Añade un prefijo a las rutas basado en el idioma (/es/, /en/)
-      vueI18n: {
-        fallbackLocale: 'es', // Idioma de fallback
-        messages: {
-          es: {
-            welcome: 'Bienvenido',
-          },
-          en: {
-            welcome: 'Welcome',
-          }
-        }
-      }
-    }
-  };
-  
+  i18n: {
+    locales: [
+      { code: 'en', iso: 'en-US', file: 'en-US.json', name: 'English (US)' },
+      { code: 'es', iso: 'es-ES', file: 'es-ES.json', name: 'Español (ES)' },
+      { code: 'ca', iso: 'ca-ES', file: 'ca-ES.json', name: 'Català (ES)' }
+    ],
+    lazy: true,
+    langDir: 'locales/',
+    defaultLocale: 'es',
+    strategies: 'prefix_except_default',
+    vueI18n: './config/vue-i18n.config.js',  // Apunta al archivo externo
+  }
+};
