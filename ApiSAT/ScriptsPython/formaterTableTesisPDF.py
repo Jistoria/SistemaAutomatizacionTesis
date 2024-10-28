@@ -3,6 +3,38 @@ import json
 import re
 import sys
 
+def extract_period_data(pdf_path):
+    data = {
+        'period_academic': '',
+        'start_date': '',
+        'end_date': ''
+    }
+
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text = page.extract_text()
+
+            # Buscar el Periodo Académico
+            period_match = re.search(r'Periodo académico\s*([^\n]+)', text)
+            if period_match:
+                data['period_academic'] = period_match.group(1).strip()
+
+            # Buscar la Fecha de inicio
+            start_date_match = re.search(r'Fecha de inicio\s*([^\n]+)', text)
+            if start_date_match:
+                data['start_date'] = start_date_match.group(1).strip()
+
+            # Buscar la Fecha de cierre
+            end_date_match = re.search(r'Fecha de cierre\s*([^\n]+)', text)
+            if end_date_match:
+                data['end_date'] = end_date_match.group(1).strip()
+
+            # Detenerse en la primera página porque los datos están ahí
+            break
+
+    return data
+
+
 def extract_students_data(pdf_path):
     students = []
 
@@ -27,6 +59,22 @@ def extract_students_data(pdf_path):
     return students
 
 if __name__ == '__main__':
+    # Recibir el path del archivo PDF como argumento
     pdf_path = sys.argv[1]
+
+    # Extraer datos del periodo académico
+    period_data = extract_period_data(pdf_path)
+
+    # Extraer datos de los estudiantes
     students_data = extract_students_data(pdf_path)
-    print(json.dumps(students_data))
+
+    # Combinar ambos conjuntos de datos en un solo objeto JSON
+    data = {
+        'period_academic': period_data['period_academic'],
+        'start_date': period_data['start_date'],
+        'end_date': period_data['end_date'],
+        'students': students_data
+    }
+
+    # Imprimir el objeto JSON
+    print(json.dumps(data, ensure_ascii=False))

@@ -15,7 +15,7 @@ class PeriodAcademic extends Model
     protected $primaryKey = 'period_academic_id';
     protected $table = 'period_academic';
     public $incrementing = false;
-    protected $keyType = 'uuid';
+
 
     protected $fillable = [
         'name',

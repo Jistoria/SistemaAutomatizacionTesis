@@ -2,16 +2,19 @@
 
 namespace Modules\ImportDataFile\Jobs;
 
+use App\Models\Academic\PeriodAcademic;
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
 use App\Models\Academic\Thesis\ThesisTitle;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -50,6 +53,28 @@ class ProcessPdfThesisData implements ShouldQueue
         // Obtener la salida del script de Python (datos extraídos en formato JSON)
         $output = $process->getOutput();
         $studentsData = json_decode($output, true);
+        if (is_null($studentsData)) {
+            FacadesLog::error('Error al decodificar el JSON: ', ['output' => $output]);
+        } else {
+            FacadesLog::info('Datos extraídos del archivo PDF', $studentsData);
+        }
+
+        // Extraer los datos del periodo académico
+        $periodAcademicName = $studentsData['period_academic'] ?? 'Periodo Desconocido';
+        $startDate = $studentsData['start_date'] ?? null;
+        $endDate = $studentsData['end_date'] ?? null;
+
+        // Crear o encontrar el periodo académico
+        $periodAcademic = PeriodAcademic::firstOrCreate(
+            ['name' => $periodAcademicName],
+            [
+                'name' => $periodAcademicName,
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'created_by_user' => $this->id,
+                'updated_by_user' => $this->id
+            ]
+        );
 
         // Guardar los datos en la base de datos
         foreach ($studentsData as $studentData) {
