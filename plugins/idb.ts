@@ -1,43 +1,38 @@
-// plugins/idb.js
 import { openDB } from 'idb';
-/**
- * Plugin de Nuxt que configura una base de datos indexada (IndexedDB) utilizando `openDB`.
- * 
- * @returns Un objeto que proporciona la promesa de la base de datos (`dbPromise`).
- * 
- * @example
- * ```typescript
- * export default defineNuxtPlugin(() => {
- *   const dbPromise = openDB('my-database', 1, {
- *     upgrade(db) {
- *       // Crear un almacen de objetos si no existe
- *       if (!db.objectStoreNames.contains('my-store')) {
- *         db.createObjectStore('my-store', { keyPath: 'id' });
- *       }
- *     },
- *   });
- * 
- *   return {
- *     provide: {
- *       idb: dbPromise,
- *     },
- *   };
- * });
- * ```
- */
-export default defineNuxtPlugin(() => {
-  const dbPromise = openDB('SAT', 1, {
-    upgrade(db) {
-      // Crear un almacen de objetos si no existe
-      if (!db.objectStoreNames.contains('auth')) {
-        db.createObjectStore('auth', { keyPath: 'id' });
-      }
-    },
-  });
+import type { IDBPDatabase, DBSchema } from 'idb';
 
-  return {
-    provide: {
-      idb: dbPromise,
-    },
+interface MyDB extends DBSchema {
+  auth: {
+    key: string;
+    value: {
+      session: string;
+      user: string;
+      token: string;
+    };
   };
+}
+
+let db: IDBPDatabase<MyDB> | null = null;
+
+export const getDatabase = async (): Promise<IDBPDatabase<MyDB>> => {
+  if (!db) {
+    db = await openDB<MyDB>('SAT', 1, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains('auth')) {
+          db.createObjectStore('auth', { keyPath: 'key' });
+        }
+      },
+    });
+  }
+  return db;
+};
+
+export default defineNuxtPlugin(async (nuxtApp) => {
+  if (process.server) {
+    return;
+  }
+
+  db = await getDatabase();
+  nuxtApp.provide('idb', db);
 });
+
