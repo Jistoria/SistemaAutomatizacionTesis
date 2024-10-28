@@ -6,6 +6,7 @@ export default defineI18nConfig(() => {
   return {
     legacy: false,
     fallbackLocale: 'es',
+    strategy: 'prefix_except_default',
     messages: {
       en,
       es

@@ -6,6 +6,7 @@ import i18nConfig from './config/i18n-config.js';
 
 
 export default defineNuxtConfig({
+  devtools:{ enabled: true},
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
@@ -14,7 +15,16 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
   ],
+  components:[
+    {
+      path: '~/components',
+      pathPrefix: false,
 
+    }
+  ],
+  imports:{
+    dirs:['./stores/~'],
+  },
   ...i18nConfig,
   ...colorModeConfig,
   ...pwaConfig,
