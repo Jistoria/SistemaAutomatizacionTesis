@@ -15,6 +15,7 @@
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@pinia/nuxt": "^0.5.5",
     "@vite-pwa/nuxt": "^0.10.5",
+    "idb": "^8.0.0",
     "nuxt": "^3.13.2",
     "nuxt-auth-utils": "^0.4.4",
     "pinia": "^2.2.4",
