@@ -34,7 +34,7 @@ class MakeService extends Command
     protected function createService($name, $module = null)
 {
     $className = ucwords($name);
-    $classModule = ucwords($module);
+    $classModule = str_replace(' ', '', ucwords(str_replace('-', ' ', $module)));
 
     if ($module) {
         $stub = File::get(app_path('Console/Commands/stubs/service_module.stub'));

@@ -15,6 +15,7 @@
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
         "modules/auth": "*",
+        "modules/import-data-file": "*",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {
@@ -31,7 +32,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Modules\\": "app-modules/"
+            "Modules\\": "app-modules/",
+            "App\\Models\\Auth\\": "app/Models/Auth/",
+            "App\\Models\\Academic\\": "app/Models/Academic/",
+            "App\\Models\\General\\": "app/Models/General/"
         }
     },
     "autoload-dev": {

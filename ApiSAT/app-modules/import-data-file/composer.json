@@ -1,0 +1,24 @@
+{
+	"name": "modules/import-data-file",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\ImportDataFile\\": "src/",
+			"Modules\\ImportDataFile\\Tests\\": "tests/",
+			"Modules\\ImportDataFile\\Database\\Factories\\": "database/factories/",
+			"Modules\\ImportDataFile\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\ImportDataFile\\Providers\\ImportDataFileServiceProvider"
+			]
+		}
+	}
+}
