@@ -17,6 +17,7 @@ class Teacher extends Model
     protected $keyType = 'uuid';
 
     protected $fillable = [
+        'teacher_id',
         'created_by_user',
         'updated_by_user',
         'deleted_by_user',

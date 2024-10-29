@@ -138,6 +138,7 @@ class ProcessPdfThesisData implements ShouldQueue
             Student::firstOrCreate(
                 ['student_id' => $user->id, 'dni' => $studentData['student_dni']],
                 [
+                    'student_id' => $user->id,
                     'dni' => $studentData['student_dni'],
                     'thesis_id' => $thesis->thesis_id,
                     'degree_id' => $degree->degree_id,

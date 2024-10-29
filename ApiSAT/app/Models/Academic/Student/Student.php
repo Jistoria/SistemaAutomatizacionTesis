@@ -19,6 +19,7 @@ class Student extends Model
     protected $keyType = 'uuid';
 
     protected $fillable = [
+        'student_id',
         'thesis_id',
         'degree_id',
         'dni',
