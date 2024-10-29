@@ -12,51 +12,52 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-  services:
-    postgres:
-      image: postgres:16
-      env:
-        POSTGRES_USER: root
-        POSTGRES_PASSWORD: root
-        POSTGRES_DB: test_db
-      options: > 
-        --health-cmd="pg_isready -U root" 
-        --health-interval=10s 
-        --health-timeout=5s 
-        --health-retries=3
-      ports:
-        - 5432:5432
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: test_db
+        options: > 
+          --health-cmd="pg_isready -U root" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=3
+        ports:
+          - 5432:5432
 
     steps:
-    - uses: actions/checkout@v2
+      - name: Check out the code
+        uses: actions/checkout@v2
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2' 
-        extensions: mbstring, pdo, pdo_pgsql, xml, pgsql, zip, sodium
-        coverage: none
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0' # Ajusta la versión de PHP según tu proyecto
+          extensions: mbstring, pdo, pdo_pgsql, xml
+          coverage: none
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Copy .env
-      run: cp .env.example .env
+      - name: Copy .env
+        run: cp .env.example .env
 
-    - name: Generate key
-      run: php artisan key:generate
+      - name: Generate application key
+        run: php artisan key:generate
 
-    - name: Configure Database
-      env:
-        DB_CONNECTION: pgsql
-        DB_HOST: 127.0.0.1
-        DB_PORT: 5432
-        DB_DATABASE: test_db
-        DB_USERNAME: root
-        DB_PASSWORD: root
-      run: |
-        php artisan config:cache
-        php artisan migrate --force
+      - name: Configure Database
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: test_db
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: |
+          php artisan config:cache
+          php artisan migrate --force
 
-    - name: Run Tests
-      run: php artisan test
+      - name: Run Tests
+        run: php artisan test
