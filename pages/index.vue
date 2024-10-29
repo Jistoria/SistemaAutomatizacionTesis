@@ -13,7 +13,7 @@ const password = 'admin_tesis';
 onMounted(() => {
     console.log('mounted')
 })
-const login = async () => {
+const Login = async () => {
     const response = await login(email, password);
     swal.showAlert('success','right',{title: response, text: '',confirmType: 'timer'})
     console.log(response)
@@ -30,7 +30,7 @@ const logout = async () => {
     <ChangeLenguaje></ChangeLenguaje>
     <NuxtLink :to="localePath('/login/loginScreen')">login</NuxtLink>
 
-    <button @click="login()">Login</button>
+    <button @click="Login()">Login</button>
 
 
 </template>
