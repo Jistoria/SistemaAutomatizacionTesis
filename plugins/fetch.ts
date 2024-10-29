@@ -39,22 +39,19 @@ export default defineNuxtPlugin(()=>{
             }
         }
     
-        return fetch(`${url}${endpoint}`, {
+
+        const response = await fetch(`${url}${endpoint}`, {
             ...options,
             headers: defaultHeaders,
-            credentials: 'include', // Permite enviar cookies con la solicitud
+            credentials: 'include',
         })
-        .then(async response => {
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Error en la solicitud');
-            }
-            return response.json();
-        })
-        .catch(error => {
-            console.error('Fetch Error:', error);
-            throw error;
-        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw data; 
+        }
+        return data;
+
     }
     return{
         provide:{

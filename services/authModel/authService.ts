@@ -36,16 +36,8 @@ class AuthService {
                 throw new Error('Login fallido');
             }
 
-            // if (response.ok) {
-            //     const data = await response.json();
-            //     await this.saveAuthData(true, data.user, data.token);
-            //     return data;
-            // } else {
-            //     throw new Error('Login fallido');
-            // }
         } catch (error) {
-            console.error('Error en login:', error);
-            return null;
+            return error;
         }
     }
 

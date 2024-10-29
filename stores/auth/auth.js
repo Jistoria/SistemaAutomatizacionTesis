@@ -63,9 +63,9 @@ export const auth = defineStore('auth',{
                     swal.showAlert('error','Normal',{title: 'Error', text: 'Credenciales Invalidas',confirmType: 'normal'})
                 }
             } catch (error) {
+                console.log(error)
                 swal.showAlert('error','Normal',{title: 'Error', text: 'Credenciales Invalidas',confirmType: 'normal'})
-                console.error('Error en login en el store:', error);
-                throw error;
+                
             }
         },
         async logout(){
