@@ -27,14 +27,14 @@ class AuthController
         ]);
        try{
             $credentials = $request->only('email', 'password');
-            $success = $this->authService->login($credentials);
+            $data = $this->authService->login($credentials);
 
-            if ($success === false) {
+            if ($data === false) {
                 return response()->json(['success'=>false, 'message' => 'Credenciales inválidas'], 401);
             }
-            return response()->json($success, 200);
+            return response()->json(['success'=>true, 'message' => 'Sesión Iniciada', 'data'=> $data], 200);
        }catch (\Exception $e){
-           return response()->json(['error' => $e->getMessage()], 500);
+           return response()->json(['success'=>false, 'message' => $e->getMessage()], 500);
        }
     }
 
@@ -42,9 +42,9 @@ class AuthController
     {
         try{
             $this->authService->logout($request->user());
-            return response()->json(['success'=>true, 'message' => 'Sesión cerrada']);
+            return response()->json(['success'=>true, 'message' => 'Sesión cerrada'], 200);
         }catch (\Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['success'=>false, 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -52,9 +52,9 @@ class AuthController
     {
         try{
             $user = $this->authService->setUser($request->user());
-            return response()->json($user, 200);
+            return response()->json(['success'=>true, 'message'=>'Datos Usuario', 'data'=>$user], 200);
         }catch (\Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['success'=>false,'message' => $e->getMessage()], 500);
         }
     }
 
