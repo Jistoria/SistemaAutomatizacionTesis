@@ -25,7 +25,7 @@ class ImportDataFileController
 
             return response()->json([
             'message' => 'Se está procesando el archivo, por favor espere unos minutos'
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
             'error' => 'Ocurrió un error al procesar el archivo: ' . $e->getMessage()

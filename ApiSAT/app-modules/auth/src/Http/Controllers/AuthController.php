@@ -16,37 +16,46 @@ class AuthController
 
     public function login (Request $request) : \Illuminate\Http\JsonResponse
     {
+        //se piensa usar una clase request, por el momento se deja asi
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ], [
+            'email.required' => 'Porfavor ingrese su email',
+            'email.email' => 'Porfavor ingrese un email válido',
+            'password.required' => 'Porfavor ingrese su contraseña',
+        ]);
        try{
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ], [
-                'email.required' => 'Porfavor ingrese su email',
-                'email.email' => 'Porfavor ingrese un email válido',
-                'password.required' => 'Porfavor ingrese su contraseña',
-            ]);
             $credentials = $request->only('email', 'password');
             $success = $this->authService->login($credentials);
 
             if ($success === false) {
-                return response()->json(['message' => 'Credenciales inválidas'], 401);
+                return response()->json(['success'=>false, 'message' => 'Credenciales inválidas'], 401);
             }
             return response()->json($success, 200);
        }catch (\Exception $e){
-           return response()->json(['error' => $e->getMessage()], 400);
+           return response()->json(['error' => $e->getMessage()], 500);
        }
     }
 
     public function logout(Request $request) : \Illuminate\Http\JsonResponse
     {
-        $this->authService->logout($request->user());
-        return response()->json(['message' => 'Sesión cerrada']);
+        try{
+            $this->authService->logout($request->user());
+            return response()->json(['success'=>true, 'message' => 'Sesión cerrada']);
+        }catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function user(Request $request) : \Illuminate\Http\JsonResponse
     {
-        $user = $this->authService->setUser($request->user());
-        return response()->json($user, 200);
+        try{
+            $user = $this->authService->setUser($request->user());
+            return response()->json($user, 200);
+        }catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
 }
