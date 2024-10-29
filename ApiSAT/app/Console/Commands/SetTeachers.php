@@ -31,16 +31,16 @@ class SetTeachers extends Command
     {
         // Lista de docentes con nombres y apellidos completos
         $teachers = [
-            ['first_name' => 'William', 'second_name' => 'Jesus', 'last_name' => 'Zamora', 'second_last_name' => 'Mero'],
-            ['first_name' => 'Jorge', 'second_name' => 'Ivan', 'last_name' => 'Pincay', 'second_last_name' => 'Ponce'],
-            ['first_name' => 'Edison', 'second_name' => 'Ernesto', 'last_name' => 'Almeida', 'second_last_name' => 'Zambrano'],
-            ['first_name' => 'Marco', 'second_name' => 'Wellington', 'last_name' => 'Ayovi', 'second_last_name' => 'Ramirez'],
-            ['first_name' => 'Oscar', 'second_name' => 'Armando', 'last_name' => 'Gonzalez', 'second_last_name' => 'Lopez'],
-            ['first_name' => 'Robert', 'second_name' => 'Wilfrido', 'last_name' => 'Moreira', 'second_last_name' => 'Centeno'],
-            ['first_name' => 'Jose', 'second_name' => 'Cristobal', 'last_name' => 'Arteaga', 'second_last_name' => 'Vera'],
-            ['first_name' => 'Luis', 'second_name' => 'Jacinto', 'last_name' => 'Mendoza', 'second_last_name' => 'Cuzme'],
-            ['first_name' => 'John', 'second_name' => 'Antonio', 'last_name' => 'Cevallos', 'second_last_name' => 'Macias'],
-            ['first_name' => 'Joffre', 'second_name' => 'Edgardo', 'last_name' => 'Panchana', 'second_last_name' => 'Flores'],
+            ['first_name' => 'WILLIAM', 'second_name' => 'JESUS', 'last_name' => 'ZAMORA', 'second_last_name' => 'MERO'],
+            ['first_name' => 'JORGE', 'second_name' => 'IVAN', 'last_name' => 'PINCAY', 'second_last_name' => 'PONCE'],
+            ['first_name' => 'EDISON', 'second_name' => 'ERNESTO', 'last_name' => 'ALMEIDA', 'second_last_name' => 'ZAMBRANO'],
+            ['first_name' => 'MARCO', 'second_name' => 'WELLINGTON', 'last_name' => 'AYOVI', 'second_last_name' => 'RAMIREZ'],
+            ['first_name' => 'OSCAR', 'second_name' => 'ARMANDO', 'last_name' => 'GONZALEZ', 'second_last_name' => 'LOPEZ'],
+            ['first_name' => 'ROBERT', 'second_name' => 'WILFRIDO', 'last_name' => 'MOREIRA', 'second_last_name' => 'CENTENO'],
+            ['first_name' => 'JOSE', 'second_name' => 'CRISTOBAL', 'last_name' => 'ARTEAGA', 'second_last_name' => 'VERA'],
+            ['first_name' => 'LUIS', 'second_name' => 'JACINTO', 'last_name' => 'MENDOZA', 'second_last_name' => 'CUZME'],
+            ['first_name' => 'JOHN', 'second_name' => 'ANTONIO', 'last_name' => 'CEVALLOS', 'second_last_name' => 'MACIAS'],
+            ['first_name' => 'JOFFRE', 'second_name' => 'EDGARDO', 'last_name' => 'PANCHANA', 'second_last_name' => 'FLORES'],
         ];
 
         // Buscar o crear el rol Docente-tesis

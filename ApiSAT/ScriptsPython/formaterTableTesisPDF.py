@@ -7,7 +7,8 @@ def extract_period_data(pdf_path):
     data = {
         'period_academic': '',
         'start_date': '',
-        'end_date': ''
+        'end_date': '',
+        'degree': ''
     }
 
     with pdfplumber.open(pdf_path) as pdf:
@@ -50,12 +51,17 @@ def extract_students_data(pdf_path):
                     for row in table:
                         # Verificar que row[0] no sea None antes de usar re.match
                         if row[0] is not None and re.match(r'^\d{10}$', row[0]):
+                            # Combinar el nombre completo si está dividido en múltiples líneas
+                            student_name = ' '.join(row[1].splitlines()) if row[1] is not None else ''
+                            thesis_title = ' '.join(row[4].splitlines()) if row[4] is not None else ''
+                            tutor_name = ' '.join(row[5].splitlines()) if row[5] is not None else ''
+
                             student = {
                                 'student_dni': row[0],
-                                'student_name': row[1] if row[1] is not None else '',  # Manejar si el nombre es None
+                                'student_name': student_name,
                                 'period': row[2] if row[2] is not None else '',
-                                'thesis_title': row[4] if row[4] is not None else '',
-                                'tutor_name': row[5] if row[5] is not None else '',
+                                'thesis_title': thesis_title,
+                                'tutor_name': tutor_name,
                                 'observation': row[6] if len(row) > 6 and row[6] is not None else None
                             }
                             students.append(student)
@@ -83,4 +89,3 @@ if __name__ == '__main__':
 
     # Imprimir el objeto JSON
     print(json.dumps(data, ensure_ascii=False))
-
