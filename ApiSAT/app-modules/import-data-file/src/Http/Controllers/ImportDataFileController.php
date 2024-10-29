@@ -16,14 +16,20 @@ class ImportDataFileController
 
     public function importDataFile(Request $request) : \Illuminate\Http\JsonResponse
     {
-        $request->validate([
+        try {
+            $request->validate([
             'file' => 'required|file|mimes:pdf'
-        ]);
-        $file = $request->file('file');
-        $this->importDataFileService->importDataPdfThesis($file, $request->user()->id);
+            ]);
+            $file = $request->file('file');
+            $this->importDataFileService->importDataPdfThesis($file, $request->user()->id);
 
-        return response()->json([
+            return response()->json([
             'message' => 'Se está procesando el archivo, por favor espere unos minutos'
-        ]);
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+            'error' => 'Ocurrió un error al procesar el archivo: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

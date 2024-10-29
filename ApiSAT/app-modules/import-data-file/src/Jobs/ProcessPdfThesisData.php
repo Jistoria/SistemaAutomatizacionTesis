@@ -18,6 +18,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Modules\ImportDataFile\Utils\DateUtils;
 use Symfony\Component\Process\Process;
@@ -35,7 +36,8 @@ class ProcessPdfThesisData implements ShouldQueue
     public function __construct
     (
         protected string $filePath,
-        protected string $id)
+        protected string $id
+    )
     {}
 
     /**
@@ -82,94 +84,98 @@ class ProcessPdfThesisData implements ShouldQueue
         // Convierte las fechas usando el formato "d F Y"
         $formattedStartDate = Carbon::createFromFormat('d F Y', $startDate)->toDateString();
         $formattedEndDate = Carbon::createFromFormat('d F Y', $endDate)->toDateString();
-        // Crear o encontrar el periodo académico
-        $periodAcademic = PeriodAcademic::firstOrCreate(
-            ['name' => $periodAcademicName],
-            [
-                'name' => $periodAcademicName,
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                'created_by_user' => $this->id,
-                'updated_by_user' => $this->id
-            ]
-        );
-        $degree = Degree::firstOrCreate(
-            ['name' => $studentsData['degree']],
-            ['name' => $studentsData['degree'], 'created_by_user' => $this->id, 'updated_by_user' => $this->id]
-        );
-
-        // Guardar los datos en la base de datos
-        foreach ($studentsData['students'] as $studentData) {
-            // Crear o encontrar el profesor (Teacher)
-            $roleDocente = Role::firstOrCreate(['name' => 'Docente-tesis']);
-            $teacher = User::firstOrCreate(
+        // Hasta implementar los demas modulos se manejara un transaction para guardar los datos
+        DB::transaction(function () use ($studentsData, $periodAcademicName, $startDate, $endDate, $formattedStartDate, $formattedEndDate) {
+            // Crear o encontrar el periodo académico
+            $periodAcademic = PeriodAcademic::firstOrCreate(
+                ['name' => $periodAcademicName],
                 [
-                    'name' => $studentData['tutor_name'],
-                ],
-                [
-                    'name' => $studentData['tutor_name'],
-                    'email' => strtolower(str_replace(' ', '.', $studentData['tutor_name'])) . '@uleam.edu.ec',
-                    'password' => 'process_thesis',
-                    'created_by_user' => $this->id,
-                    'updated_by_user' => $this->id
-                ]
-            );
-            $teacher->assignRole($roleDocente);
-            // Crear o encontrar la tesis (ThesisTitle)
-            $thesis = ThesisTitle::firstOrCreate(
-                ['title' => $studentData['thesis_title']],
-                ['created_by_user' => $this->id, 'updated_by_user' => $this->id]
-            );
-
-            // Crear el usuario del estudiante si no existe
-            $roleEstudiante = Role::firstOrCreate(['name' => 'Estudiante-tesis']);
-            $user = User::firstOrCreate(
-                ['name' => $studentData['student_name']],
-                [
-                    'name' => $studentData['student_name'],
-                    'email' => 'e'.strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
-                    'password' => $studentData['student_dni'],
-                    'created_by_user' => $this->id,
-                    'updated_by_user' => $this->id
-                ]
-            );
-            $user->assignRole($roleEstudiante);
-
-            // Crear o encontrar el estudiante (Student) y asociar tesis y profesor
-            Student::firstOrCreate(
-                ['student_id' => $user->id, 'dni' => $studentData['student_dni']],
-                [
-                    'student_id' => $user->id,
-                    'dni' => $studentData['student_dni'],
-                    'thesis_id' => $thesis->thesis_id,
-                    'degree_id' => $degree->degree_id,
-                    'enrollment_date' => now(),
+                    'name' => $periodAcademicName,
+                    'start_date' => $startDate,
+                    'end_date' => $endDate,
                     'created_by_user' => $this->id,
                     'updated_by_user' => $this->id
                 ]
             );
 
-            // Crear la relación tutor-estudiante-tesis-periodo académico
-            $thesisProcess = ThesisProcess::firstOrCreate(
-                [
-                    'teacher_id' => $teacher->id,
-                    'student_id' => $user->id,
-                    'thesis_id' => $thesis->thesis_id,
-                    'period_academic_id' => $periodAcademic->period_academic_id,
-                ],
-                [
-                    'teacher_id' => $teacher->id,
-                    'student_id' => $user->id,
-                    'thesis_id' => $thesis->thesis_id,
-                    'period_academic_id' => $periodAcademic->period_academic_id,
-                    'state_now' => 'En proceso',
-                    'date_start' => $formattedStartDate,
-                    'date_end' => $formattedEndDate,
-                    'created_by_user' => $this->id,
-                    'updated_by_user' => $this->id
-                ]
+            // Crear o encontrar la carrera (Degree)
+            $degree = Degree::firstOrCreate(
+                ['name' => $studentsData['degree']],
+                ['name' => $studentsData['degree'], 'created_by_user' => $this->id, 'updated_by_user' => $this->id]
             );
-        }
+
+            // Guardar los datos de estudiantes y sus relaciones
+            foreach ($studentsData['students'] as $studentData) {
+                // Crear o encontrar el profesor (Teacher)
+                $roleDocente = Role::firstOrCreate(['name' => 'Docente-tesis']);
+                $teacher = User::firstOrCreate(
+                    ['name' => $studentData['tutor_name']],
+                    [
+                        'name' => $studentData['tutor_name'],
+                        'email' => strtolower(str_replace(' ', '.', $studentData['tutor_name'])) . '@uleam.edu.ec',
+                        'password' => 'process_thesis',
+                        'created_by_user' => $this->id,
+                        'updated_by_user' => $this->id
+                    ]
+                );
+                $teacher->assignRole($roleDocente);
+
+                // Crear o encontrar la tesis (ThesisTitle)
+                $thesis = ThesisTitle::firstOrCreate(
+                    ['title' => $studentData['thesis_title']],
+                    ['created_by_user' => $this->id, 'updated_by_user' => $this->id]
+                );
+
+                // Crear el usuario del estudiante si no existe
+                $roleEstudiante = Role::firstOrCreate(['name' => 'Estudiante-tesis']);
+                $user = User::firstOrCreate(
+                    ['name' => $studentData['student_name']],
+                    [
+                        'name' => $studentData['student_name'],
+                        'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
+                        'password' => $studentData['student_dni'],
+                        'created_by_user' => $this->id,
+                        'updated_by_user' => $this->id
+                    ]
+                );
+                $user->assignRole($roleEstudiante);
+
+                // Crear o encontrar el estudiante (Student) y asociar tesis y profesor
+                Student::firstOrCreate(
+                    ['student_id' => $user->id, 'dni' => $studentData['student_dni']],
+                    [
+                        'student_id' => $user->id,
+                        'dni' => $studentData['student_dni'],
+                        'thesis_id' => $thesis->thesis_id,
+                        'degree_id' => $degree->degree_id,
+                        'enrollment_date' => now(),
+                        'created_by_user' => $this->id,
+                        'updated_by_user' => $this->id
+                    ]
+                );
+
+                // Crear la relación tutor-estudiante-tesis-periodo académico
+                ThesisProcess::firstOrCreate(
+                    [
+                        'teacher_id' => $teacher->id,
+                        'student_id' => $user->id,
+                        'thesis_id' => $thesis->thesis_id,
+                        'period_academic_id' => $periodAcademic->period_academic_id,
+                    ],
+                    [
+                        'teacher_id' => $teacher->id,
+                        'student_id' => $user->id,
+                        'thesis_id' => $thesis->thesis_id,
+                        'period_academic_id' => $periodAcademic->period_academic_id,
+                        'state_now' => 'En proceso',
+                        'date_start' => $formattedStartDate,
+                        'date_end' => $formattedEndDate,
+                        'created_by_user' => $this->id,
+                        'updated_by_user' => $this->id
+                    ]
+                );
+            }
+        });
     }
 
 

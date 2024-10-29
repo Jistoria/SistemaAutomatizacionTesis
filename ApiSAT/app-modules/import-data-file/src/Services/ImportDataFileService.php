@@ -19,6 +19,14 @@ class ImportDataFileService
     )
     {}
 
+    /**
+     * Importa un archivo PDF de tesis y despacha un trabajo para procesar los datos del PDF.
+     *
+     * @param UploadedFile $file El archivo PDF subido.
+     * @param string $id El identificador de la tesis.
+     *
+     * @return void
+     */
     public function importDataPdfThesis(UploadedFile $file, string $id) : void
     {
         // Guardar el archivo en el almacenamiento temporal
