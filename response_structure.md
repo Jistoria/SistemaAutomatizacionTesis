@@ -21,6 +21,7 @@ Todas las respuestas de la API siguen la siguiente estructura:
 {
   "success": true,
   "message": "Operación exitosa",
+  "error": "Error en la operación",
   "data": {
     // Aquí va el contenido específico de cada respuesta, por ejemplo, un objeto, lista o null
   }
