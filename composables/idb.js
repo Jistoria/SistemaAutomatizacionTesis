@@ -3,7 +3,7 @@ import { getDatabase } from '~/plugins/idb';
 
 export function useIdb() {
   // Función para acceder a la tabla (Object Store) especificada y obtener los elementos
-  const fetchItemsFromTable = async (tableName) => {
+  const consult = async (tableName) => {
     try {
       // Obtener la base de datos usando el método getDatabase
       const db = await getDatabase();
@@ -26,12 +26,11 @@ export function useIdb() {
 
       if (!items.length) {
         console.log(`No hay elementos en la tabla '${tableName}'.`);
-        return { message: `No hay elementos en la tabla '${tableName}'.`, items: {} };
+        return items;
       }
 
       // Convertir el primer elemento del array a un objeto directamente
       const item = items[0];
-      console.log(`Elemento obtenido de la tabla '${tableName}':`, item);
       return item; // Devuelve el primer elemento como objeto
     } catch (error) {
       console.error('Error al acceder a IndexedDB:', error);
@@ -40,6 +39,6 @@ export function useIdb() {
   };
 
   return {
-    fetchItemsFromTable
+    consult
   };
 }

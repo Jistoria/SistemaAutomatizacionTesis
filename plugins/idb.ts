@@ -5,8 +5,9 @@ interface MyDB extends DBSchema {
   auth: {
     key: string;
     value: {
-      session: string;
-      user: string;
+      key: string;
+      session: boolean;
+      user: Object;
       token: string;
     };
   };

@@ -15,6 +15,13 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
   ],
+  plugins: [
+    '~/plugins/axios',
+    '~/plugins/auth',
+    '~/plugins/i18n-hooks',
+    '~/plugins/idb',
+    '~/plugins/sweetAlert',
+  ],
   components:[
     {
       path: '~/components',
