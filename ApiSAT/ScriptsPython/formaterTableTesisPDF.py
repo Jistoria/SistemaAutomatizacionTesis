@@ -19,6 +19,10 @@ def extract_period_data(pdf_path):
             if period_match:
                 data['period_academic'] = period_match.group(1).strip()
 
+            degree_match = re.search(r'Carrera\s*([^\n]+)', text)
+            if degree_match:
+                data['degree'] = degree_match.group(1).strip()
+
             # Buscar la Fecha de inicio
             start_date_match = re.search(r'Fecha de inicio\s*([^\n]+)', text)
             if start_date_match:
@@ -73,8 +77,10 @@ if __name__ == '__main__':
         'period_academic': period_data['period_academic'],
         'start_date': period_data['start_date'],
         'end_date': period_data['end_date'],
+        'degree': period_data['degree'],
         'students': students_data
     }
 
     # Imprimir el objeto JSON
     print(json.dumps(data, ensure_ascii=False))
+

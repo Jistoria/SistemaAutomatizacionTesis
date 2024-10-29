@@ -9,7 +9,7 @@ return new class() extends Migration {
 	{
 		Schema::create('thesis_titles', function(Blueprint $table) {
 			$table->uuid('thesis_id')->primary();
-            $table->string('title');
+            $table->text('title');
 			$table->timestamps();
 			$table->softDeletes();
 		});
@@ -23,19 +23,19 @@ return new class() extends Migration {
 
         Schema::create('period_academic', function(Blueprint $table) {
 			$table->uuid('period_academic_id')->primary();
-            $table->uuid('name')->unique();
+            $table->string('name')->unique();
             $table->date('start_date');
             $table->date('end_date');
 			$table->timestamps();
             $table->uuid('created_by_user');
             $table->uuid('updated_by_user');
-            $table->uuid('deleted_by_user');
+            $table->uuid('deleted_by_user')->nullable();
 			$table->softDeletes();
 		});
 
 		Schema::create('students', function(Blueprint $table) {
 			$table->uuid('student_id')->references('id')->on('users');
-            $table->uuid('thesis_id')->unique();
+            $table->uuid('thesis_id');
             $table->uuid('degree_id');
             $table->string('dni');
 			$table->timestamps();
@@ -43,7 +43,7 @@ return new class() extends Migration {
             $table->date('enrollment_date');
             $table->uuid('created_by_user');
             $table->uuid('updated_by_user');
-            $table->uuid('deleted_by_user');
+            $table->uuid('deleted_by_user')->nullable();
 		});
 
         Schema::create('teachers', function(Blueprint $table) {
@@ -53,7 +53,7 @@ return new class() extends Migration {
             $table->softDeletes();
             $table->uuid('created_by_user');
             $table->uuid('updated_by_user');
-            $table->uuid('deleted_by_user');
+            $table->uuid('deleted_by_user')->nullable();
         });
 	}
 
