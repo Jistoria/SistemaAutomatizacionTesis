@@ -1,9 +1,22 @@
+/**
+ * Guarda los datos de autenticación en IndexedDB.
+ *
+ * @param {boolean} sesion - Valor booleano que indica si la sesión está activa.
+ * @param {Object} user - Objeto que representa al usuario (nombre o ID).
+ * @param {string} token - Token de autenticación.
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando los datos se han guardado correctamente.
+ *
+ * @throws {Error} - Lanza un error si no se puede acceder a la base de datos o si ocurre un problema al guardar los datos.
+ */
+
 import { useIdb } from '~/composables/idb';
 import { getDatabase } from '~/plugins/idb';
 import { auth } from '~/stores/auth/auth';
 
 const { consult } = useIdb();
 
+
+//Funcion de Logout
 export const logout = async () => {
     try {
         const authStore = auth();
@@ -12,14 +25,14 @@ export const logout = async () => {
         if (response.status == 200) {
             await deleteSession();
             authStore.logout();
-            return 'Sesión cerrada';
+            return true;
         }
     } catch (error) {
         console.error('Error durante el cierre de sesión:', error);
         return null;
     }
 };    
-
+//Funcion de Login
 export const login = async (email: string, password: string) => {
     try {
         const authStore = auth();
@@ -42,7 +55,7 @@ export const login = async (email: string, password: string) => {
         return null;
     }
 };
-
+//Funcion de que consulta los datos de la sesión
 export const sesionData = async () => {
   try {
     const authStore = auth();
@@ -65,6 +78,8 @@ export const sesionData = async () => {
     return null;
   }
 };
+
+//Funcion de que verifica la sesión
 export const checkSession = async (token: string) => {
     try {
         const { $axios } = useNuxtApp(); 
@@ -82,7 +97,7 @@ export const checkSession = async (token: string) => {
         return false;
     }
 };
-
+//Funcion de que cierra la sesión
 export const deleteSession = async () => {
   try {
     const db = await getDatabase();
@@ -95,6 +110,7 @@ export const deleteSession = async () => {
   }
 };
 
+//Funcion de que guarda los datos de la sesión en el idb
 const saveAuthData = async (sesion: boolean, user: Object, token: string) => {
     try {
       // Esperar a que la base de datos esté lista

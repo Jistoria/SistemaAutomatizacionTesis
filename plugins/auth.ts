@@ -1,8 +1,32 @@
 import { sesionData } from '~/services/authService';
 
+/**
+ * Plugin de Nuxt para manejar la autenticación.
+ * 
+ * Este plugin se ejecuta solo en el lado del cliente y verifica el estado de la sesión al cargar la aplicación.
+ * 
+ * @param {Object} nuxtApp - La instancia de la aplicación Nuxt.
+ * 
+ * @returns {void}
+ * 
+ * @example
+ * // Proveer el servicio de autenticación
+ * const authService = {
+ *   getSessionData: sesionData,
+ * };
+ * 
+ * nuxtApp.provide('authService', authService);
+ * 
+ * @remarks
+ * Este plugin no se ejecuta en el lado del servidor.
+ * 
+ * @throws {Error} Si ocurre un error al inicializar la sesión.
+ */
 export default defineNuxtPlugin(async (nuxtApp) => {
   // Solo ejecuta este código en el lado del cliente (browser)
-if (process.server) {
+  const { ssrContext } = useNuxtApp();
+  if (ssrContext) {
+    // Estamos en el lado del servidor
     return;
   }
 

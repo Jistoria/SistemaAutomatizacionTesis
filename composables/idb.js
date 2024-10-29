@@ -1,3 +1,23 @@
+
+
+/**
+ * Función para acceder a la tabla (Object Store) especificada y obtener los elementos.
+ * 
+ * @function consult
+ * @async
+ * @param {string} tableName - El nombre de la tabla (Object Store) a consultar.
+ * @returns {Promise<Object|Array|{error: string}>} - Devuelve el primer elemento de la tabla como objeto, 
+ * un array vacío si no hay elementos, o un objeto de error si ocurre algún problema.
+ * 
+ * @example
+ * const { consult } = useIdb();
+ * const result = await consult('miTabla');
+ * if (result.error) {
+ *   console.error(result.error);
+ * } else {
+ *   console.log(result);
+ * }
+ */
 // composables/useIndexedDB.js
 import { getDatabase } from '~/plugins/idb';
 
