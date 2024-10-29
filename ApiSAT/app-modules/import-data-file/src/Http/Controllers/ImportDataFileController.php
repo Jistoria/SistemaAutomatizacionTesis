@@ -14,7 +14,7 @@ class ImportDataFileController
 
 
 
-    public function importDataFile(Request $request)
+    public function importDataFile(Request $request) : \Illuminate\Http\JsonResponse
     {
         $request->validate([
             'file' => 'required|file|mimes:pdf'

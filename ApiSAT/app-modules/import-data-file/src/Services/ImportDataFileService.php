@@ -2,10 +2,11 @@
 
 namespace Modules\ImportDataFile\Services;
 
-
+use Faker\Core\Uuid;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Modules\ImportDataFile\Jobs\ProcessPdfThesisData;
+use \Illuminate\Http\UploadedFile;
 
 class ImportDataFileService
 {
@@ -18,7 +19,7 @@ class ImportDataFileService
     )
     {}
 
-    public function importDataPdfThesis($file, $id) : void
+    public function importDataPdfThesis(UploadedFile $file, Uuid $id) : void
     {
         // Guardar el archivo en el almacenamiento temporal
         $filePath = $file->storeAs('pdfs', $file->getClientOriginalName(), 'public');

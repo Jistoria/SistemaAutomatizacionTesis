@@ -11,6 +11,7 @@ use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Faker\Core\Uuid;
 use Illuminate\Bus\Queueable;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,17 +26,16 @@ class ProcessPdfThesisData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $filePath;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($filePath, protected $id)
-    {
-        $this->filePath = $filePath;
-    }
+    public function __construct
+    (
+        protected string $filePath,
+        protected Uuid $id)
+    {}
 
     /**
      * Execute the job.
