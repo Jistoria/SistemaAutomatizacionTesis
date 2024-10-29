@@ -1,13 +1,28 @@
 import { useIdb } from '~/composables/idb';
 import { getDatabase } from '~/plugins/idb';
-// import { auth } from '~/stores/auth/auth';
-
-// const authStore = auth();
+import { auth } from '~/stores/auth/auth';
 
 const { consult } = useIdb();
 
+export const logout = async () => {
+    try {
+        const authStore = auth();
+        const { $axios } = useNuxtApp();
+        const response = await $axios.post('/auth/logout');
+        if (response.status == 200) {
+            await deleteSession();
+            authStore.logout();
+            return 'Sesión cerrada';
+        }
+    } catch (error) {
+        console.error('Error durante el cierre de sesión:', error);
+        return null;
+    }
+};    
+
 export const login = async (email: string, password: string) => {
     try {
+        const authStore = auth();
         const { $axios } = useNuxtApp();
         const response = await $axios.post('/auth/login', {
         email,
@@ -16,13 +31,10 @@ export const login = async (email: string, password: string) => {
         if (response.status == 200) {
             const data = response.data;
             await saveAuthData(true, data.user, data.token);
-            // authStore.user = data.user;
-            // authStore.token = data.token;
-            // authStore.session = true;
-            // authStore.role = data.user.role;
-            return 'Sesión iniciada';
-        }else{
-            
+            authStore.login(data.user, data.token);
+            return true;
+        } else if(response.status == 400){
+            return false;
         }
         
     } catch (error) {
@@ -33,6 +45,7 @@ export const login = async (email: string, password: string) => {
 
 export const sesionData = async () => {
   try {
+    const authStore = auth();
     const data = await consult("auth");
     if(data.length == 0){
         return 'No hay una sesión activa';
@@ -43,17 +56,15 @@ export const sesionData = async () => {
             await deleteSession();
          return 'Sesión cerrada';
        }else{
+            authStore.login(data.user, data.token);
            return 'Hay una sesión activa';
        }
     }
-
-
   } catch (error) {
     console.error('Error durante la obtención de la sesión:', error);
     return null;
   }
 };
-
 export const checkSession = async (token: string) => {
     try {
         const { $axios } = useNuxtApp(); 
@@ -93,7 +104,6 @@ const saveAuthData = async (sesion: boolean, user: Object, token: string) => {
         console.error('No se pudo acceder a la base de datos.');
         return;
       }
-  
       // Iniciar una transacción de escritura en el objectStore 'auth'
       const tx = db.transaction('auth', 'readwrite');
       const store = tx.objectStore('auth');
@@ -105,7 +115,6 @@ const saveAuthData = async (sesion: boolean, user: Object, token: string) => {
         user: user,        // Nombre o ID del usuario
         token: token       // Token de autenticación
       });
-  
       await tx.done; // Esperar a que la transacción finalice
       console.log('Datos de autenticación guardados en IndexedDB');
     } catch (error) {
