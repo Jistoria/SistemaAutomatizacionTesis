@@ -19,7 +19,7 @@ class ImportDataFileService
     )
     {}
 
-    public function importDataPdfThesis(UploadedFile $file, Uuid $id) : void
+    public function importDataPdfThesis(UploadedFile $file, string $id) : void
     {
         // Guardar el archivo en el almacenamiento temporal
         $filePath = $file->storeAs('pdfs', $file->getClientOriginalName(), 'public');

@@ -55,6 +55,36 @@ return new class() extends Migration {
             $table->uuid('updated_by_user');
             $table->uuid('deleted_by_user')->nullable();
         });
+
+        Schema::create('thesis_process', function (Blueprint $table) {
+            $table->uuid('thesis_process_id')->primary();
+            $table->uuid('teacher_id')->references('teacher_id')->on('teachers');
+            $table->uuid('student_id')->references('student_id')->on('students');
+            $table->uuid('thesis_id')->references('thesis_id')->on('thesis_titles');
+            $table->uuid('period_academic_id')->references('period_academic_id')->on('period_academic');
+            $table->string('state_now')->nullable();
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+            $table->uuid('created_by_user');
+            $table->uuid('updated_by_user');
+            $table->uuid('deleted_by_user')->nullable();
+        });
+
+        Schema::create('thesis_committee', function (Blueprint $table) {
+            $table->uuid('thesis_committee_id')->primary();
+            $table->uuid('thesis_process_id')->references('thesis_process_id')->on('thesis_process');
+            $table->uuid('student_id')->references('student_id')->on('students');
+            $table->uuid('thesis_id')->references('thesis_id')->on('thesis_titles');
+            $table->uuid('period_academic_id')->references('period_academic_id')->on('period_academic')->nullable();
+            $table->uuid('teacher_id')->references('teacher_id')->on('teachers');
+            $table->timestamps();
+            $table->softDeletes();
+            $table->uuid('created_by_user');
+            $table->uuid('updated_by_user');
+            $table->uuid('deleted_by_user')->nullable();
+        });
 	}
 
 	public function down()

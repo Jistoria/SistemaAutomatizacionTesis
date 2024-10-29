@@ -6,19 +6,20 @@ use App\Models\Academic\Degree;
 use App\Models\Academic\PeriodAcademic;
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
+use App\Models\Academic\Teacher\ThesisCommittee;
+use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Academic\Thesis\ThesisTitle;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use Carbon\Carbon;
-use Carbon\CarbonImmutable;
 use Faker\Core\Uuid;
 use Illuminate\Bus\Queueable;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Modules\ImportDataFile\Utils\DateUtils;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -34,7 +35,7 @@ class ProcessPdfThesisData implements ShouldQueue
     public function __construct
     (
         protected string $filePath,
-        protected Uuid $id)
+        protected string $id)
     {}
 
     /**
@@ -62,8 +63,8 @@ class ProcessPdfThesisData implements ShouldQueue
 
         // Extraer los datos del periodo académico
         $periodAcademicName = $studentsData['period_academic'] ?? 'Periodo Desconocido';
-        $startDateString = $this->convertMonthToEnglish($studentsData['start_date']);
-        $endDateString = $this->convertMonthToEnglish($studentsData['end_date']);
+        $startDateString = DateUtils::convertMonthToEnglish($studentsData['start_date']);
+        $endDateString = DateUtils::convertMonthToEnglish($studentsData['end_date']);
 
         FacadesLog::info('Datos del periodo académico', [
             'periodAcademicName' => $periodAcademicName,
@@ -147,16 +148,29 @@ class ProcessPdfThesisData implements ShouldQueue
                     'updated_by_user' => $this->id
                 ]
             );
+
+            // Crear la relación tutor-estudiante-tesis-periodo académico
+            $thesisProcess = ThesisProcess::firstOrCreate(
+                [
+                    'teacher_id' => $teacher->id,
+                    'student_id' => $user->id,
+                    'thesis_id' => $thesis->thesis_id,
+                    'period_academic_id' => $periodAcademic->period_academic_id,
+                ],
+                [
+                    'teacher_id' => $teacher->id,
+                    'student_id' => $user->id,
+                    'thesis_id' => $thesis->thesis_id,
+                    'period_academic_id' => $periodAcademic->period_academic_id,
+                    'state_now' => 'En proceso',
+                    'date_start' => $formattedStartDate,
+                    'date_end' => $formattedEndDate,
+                    'created_by_user' => $this->id,
+                    'updated_by_user' => $this->id
+                ]
+            );
         }
     }
 
-    function convertMonthToEnglish($dateString) {
-        $months = [
-            'enero' => 'January', 'febrero' => 'February', 'marzo' => 'March', 'abril' => 'April',
-            'mayo' => 'May', 'junio' => 'June', 'julio' => 'July', 'agosto' => 'August',
-            'septiembre' => 'September', 'octubre' => 'October', 'noviembre' => 'November', 'diciembre' => 'December'
-        ];
 
-        return str_ireplace(array_keys($months), array_values($months), $dateString);
-    }
 }
