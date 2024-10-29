@@ -1,4 +1,4 @@
-import { sesionData } from '~/services/authService';
+import { sessionData } from "~/services/authModel/authService";
 
 /**
  * Plugin de Nuxt para manejar la autenticación.
@@ -32,7 +32,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   // Ejecuta el servicio de `sesionData` para verificar el estado de la sesión al cargar la aplicación
   try {
-    const session = await sesionData();
+    const session = await sessionData();
     console.log('Estado de la sesión:', session);
 
   } catch (error) {
@@ -41,7 +41,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   // Proveer el servicio de autenticación
   const authService = {
-    getSessionData: sesionData,
+    getSessionData: sessionData,
   };
 
   nuxtApp.provide('authService', authService);

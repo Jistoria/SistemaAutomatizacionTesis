@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   ],
   
   plugins: [
-    '~/plugins/axios',
+    '~/plugins/fetch',
     '~/plugins/auth',
     '~/plugins/i18n-hooks',
     '~/plugins/idb',
