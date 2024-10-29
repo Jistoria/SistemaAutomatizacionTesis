@@ -13,6 +13,7 @@ import { useIdb } from '~/composables/idb';
 import { getDatabase } from '~/plugins/idb';
 import { auth } from '~/stores/auth/auth';
 
+
 const { consult } = useIdb();
 
 
