@@ -54,12 +54,7 @@ jobs:
           cd ApiSAT
           php artisan key:generate
 
-      - name: Generate client passport keys
-        run: |
-          cd ApiSAT
-          php artisan passport:keys
-          php artisan passport:client --personal --name="Test Personal Access Client" --no-interaction
-
+     
 
       - name: Configure Database
         env:
@@ -73,6 +68,13 @@ jobs:
           cd ApiSAT
           php artisan config:cache
           php artisan migrate --force
+
+      - name: Generate client passport keys
+        run: |
+          cd ApiSAT
+          php artisan passport:keys
+          php artisan passport:client --personal --name="Test Personal Access Client" --no-interaction
+
 
       - name: Run Tests
         run: |
