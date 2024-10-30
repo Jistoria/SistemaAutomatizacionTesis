@@ -1,4 +1,4 @@
-name: Api SAT CI
+name: API SAT CI
 
 on:
   push:
@@ -26,24 +26,30 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v2
 
+      - name: Navigate to ApiSAT directory
+        run: cd ApiSAT
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: mbstring, pdo, pdo_pgsql, xml, zip, sodium
+          php-version: '8.0'
+          extensions: mbstring, pdo, pdo_pgsql, xml
           coverage: none
 
-      - name: Entry api-sat
-        run: cd ApiSAT
-
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: |
+          cd ApiSAT
+          composer install --prefer-dist --no-progress --no-suggest
 
       - name: Copy .env
-        run: cp .env.example .env
+        run: |
+          cd ApiSAT
+          cp .env.example .env
 
       - name: Generate application key
-        run: php artisan key:generate
+        run: |
+          cd ApiSAT
+          php artisan key:generate
 
       - name: Configure Database
         env:
@@ -54,8 +60,11 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
         run: |
+          cd ApiSAT
           php artisan config:cache
           php artisan migrate --force
 
       - name: Run Tests
-        run: php artisan test
+        run: |
+          cd ApiSAT
+          php artisan test
