@@ -19,11 +19,6 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: root
           POSTGRES_DB: test_db
-        options: > 
-          --health-cmd="pg_isready -U root" 
-          --health-interval=10s 
-          --health-timeout=5s 
-          --health-retries=3
         ports:
           - 5432:5432
 
@@ -34,8 +29,8 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0' # Ajusta la versión de PHP según tu proyecto
-          extensions: mbstring, pdo, pdo_pgsql, xml
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_pgsql, xml, zip, sodium
           coverage: none
 
       - name: Install dependencies
