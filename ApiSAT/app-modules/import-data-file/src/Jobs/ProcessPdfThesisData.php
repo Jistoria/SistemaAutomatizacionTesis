@@ -12,7 +12,6 @@ use App\Models\Academic\Thesis\ThesisTitle;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use Carbon\Carbon;
-use Faker\Core\Uuid;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -118,6 +117,7 @@ class ProcessPdfThesisData implements ShouldQueue
                         'updated_by_user' => $this->id
                     ]
                 );
+
                 $teacher->assignRole($roleDocente);
 
                 // Crear o encontrar la tesis (ThesisTitle)
