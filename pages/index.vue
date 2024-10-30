@@ -1,19 +1,15 @@
 <script setup>
 import { auth } from '~/stores/auth/auth';
-import { sweetAlert } from '~/composables/sweetAlert';
 
 const authStore = auth()
 const localePath = useLocalePath()
-const swal = sweetAlert()
+
 
 const email = 'admin_tesis@uleam.edu.ec';
 const password = 'admin_tesis';
 
 onMounted(() => {
-    console.log(authStore.session)
-    console.log(authStore.user)
-    console.log(authStore.token)
-    console.log(authStore.role)
+    
 })
 const Login = async () => {
     await authStore.login(email, password)
@@ -21,8 +17,6 @@ const Login = async () => {
 const Logout = async () => {
     await authStore.logout()
 }
-
-
 
 </script>
 <template>
@@ -34,7 +28,6 @@ const Logout = async () => {
     <client-only>
         <button v-if="authStore.session" @click="Logout()">Logout</button>
     </client-only>
-
 
 </template>
 

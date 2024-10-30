@@ -45,7 +45,7 @@ export function useIdb() {
       const items = await store.getAll();
 
       if (!items.length) {
-        console.log(`No hay elementos en la tabla '${tableName}'.`);
+        
         return items;
       }
 

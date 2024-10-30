@@ -33,7 +33,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   // Ejecuta el servicio de `sesionData` para verificar el estado de la sesión al cargar la aplicación
   try {
     const session = await sessionData();
-    console.log('Estado de la sesión:', session);
+    
 
   } catch (error) {
     console.error('Error al inicializar la sesión:', error);
