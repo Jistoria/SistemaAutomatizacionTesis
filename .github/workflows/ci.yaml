@@ -54,6 +54,12 @@ jobs:
           cd ApiSAT
           php artisan key:generate
 
+      - name: Generate client passport keys
+        run: |
+          cd ApiSAT
+          php artisan passport:keys
+          php artisan passport:client --personal
+
       - name: Configure Database
         env:
           DB_CONNECTION: pgsql
