@@ -58,7 +58,8 @@ jobs:
         run: |
           cd ApiSAT
           php artisan passport:keys
-          php artisan passport:client --personal
+          php artisan passport:client --personal --name="Test Personal Access Client" --no-interaction
+
 
       - name: Configure Database
         env:
