@@ -33,6 +33,9 @@ jobs:
           extensions: mbstring, pdo, pdo_pgsql, xml, zip, sodium
           coverage: none
 
+      - name: Entry api-sat
+        run: cd ApiSAT
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
