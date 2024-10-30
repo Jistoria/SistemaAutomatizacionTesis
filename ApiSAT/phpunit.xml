@@ -7,12 +7,17 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
-    <testsuite name="Modules"><directory suffix="Test.php">./app-modules/*/tests</directory></testsuite></testsuites>
+        <testsuite name="Modules">
+            <directory suffix="Test.php">./app-modules/*/tests</directory>
+        </testsuite>
+    </testsuites>
+
     <source>
         <include>
             <directory>app</directory>
         </include>
     </source>
+
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
@@ -26,4 +31,4 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
-<formatOutput>1</formatOutput></phpunit>
+</phpunit>
