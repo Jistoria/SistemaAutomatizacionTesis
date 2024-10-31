@@ -1,8 +1,10 @@
 <script setup>
- const { locale, setLocale } = useI18n()
- const localePath = useLocalePath()
+
+const { setLocale } = useI18n()
+const localePath = useLocalePath()
 
 </script>
+
 <template>
    <button @click="setLocale('es')">espanol </button>
     <button @click="setLocale('en')">ingles </button>

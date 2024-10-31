@@ -17,6 +17,8 @@ export default defineNuxtConfig({
   ],
   
   plugins: [
+    '~/plugins/echo.client.ts',
+    '~/plugins/echoChannel.client.ts',
     '~/plugins/fetch',
     '~/plugins/auth',
     '~/plugins/i18n-hooks',

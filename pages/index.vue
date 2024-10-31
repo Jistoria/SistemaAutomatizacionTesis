@@ -1,6 +1,6 @@
 <script setup>
 import { auth } from '~/stores/auth/auth';
-
+const { $echoReady } = useNuxtApp();
 const authStore = auth()
 const localePath = useLocalePath()
 
@@ -8,8 +8,8 @@ const localePath = useLocalePath()
 const email = 'admin_tesis@uleam.edu.ec';
 const password = 'admin_tesis';
 
-onMounted(() => {
-    
+onMounted(async () => {
+    await $echoReady
 })
 const Login = async () => {
     await authStore.login(email, password)

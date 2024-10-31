@@ -27,6 +27,7 @@ export const auth = defineStore('auth',{
         token: null,
         session: false,
         role: null,
+        online:false,
     }),
     actions:{
         async setLogin(user,token){
