@@ -1,15 +1,28 @@
 <!-- components/LoadingDots.vue -->
 <template>
-    <div class="flex space-x-2">
-      <div class="dot bg-blue-500 w-3 h-3 rounded-full animate-bounce" style="animation-delay: 0s"></div>
-      <div class="dot bg-blue-500 w-3 h-3 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-      <div class="dot bg-blue-500 w-3 h-3 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+    <div class="flex space-x-1.5">
+      <div class="dot w-2.5 h-2.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full shadow-md" style="animation-delay: 0s"></div>
+      <div class="dot w-2.5 h-2.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full shadow-md" style="animation-delay: 0.15s"></div>
+      <div class="dot w-2.5 h-2.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full shadow-md" style="animation-delay: 0.3s"></div>
     </div>
   </template>
   
   <style scoped>
-  .dot:nth-child(1) { animation-delay: 0s; }
-  .dot:nth-child(2) { animation-delay: 0.2s; }
-  .dot:nth-child(3) { animation-delay: 0.4s; }
+  .dot {
+    /* Tamaño más pequeño, sombra y degradado */
+    background: linear-gradient(45deg, #3b82f6, #2563eb);
+    box-shadow: 0 0 4px rgba(52, 143, 226, 0.4);
+    animation: subtleBounce 0.8s ease-in-out infinite;
+  }
+  
+  /* Rebote y escala sutil */
+  @keyframes subtleBounce {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      transform: translateY(-3px) scale(1.1); /* Rebote más suave y escala menor */
+    }
+  }
   </style>
   
