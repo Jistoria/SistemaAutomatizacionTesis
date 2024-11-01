@@ -75,6 +75,9 @@ export const auth = defineStore('auth',{
                 if(response == true){
                     this.setLogout()
                     swal.showAlert('success','right',{title: 'Sesión cerrada', text: '',confirmType: 'timer'})
+                    nextTick(() => {
+                        navigateTo('/login/loginScreen'); // Redirigir después de la actualización del DOM
+                    });
                 }
             } catch (error) {
                 console.error('Error en logout en el store:', error);

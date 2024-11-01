@@ -15,7 +15,9 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
   ],
-  
+  css: [
+    '~/assets/css/tailwind.css',
+  ],
   plugins: [
     '~/plugins/echo.client.ts',
     '~/plugins/echoChannel.client.ts',

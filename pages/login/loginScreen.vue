@@ -1,24 +1,31 @@
 <script setup>
 import { auth } from '~/stores/auth/auth';
-const { $echoReady } = useNuxtApp();
 import { useRoute, useRouter } from 'vue-router';
-const { setLocale } = useI18n()
-const localePath = useLocalePath()
+const { $echoReady } = useNuxtApp();
+
 const authStore = auth()
 const router = useRouter();
 const route = useRoute();
 
 import { ref } from 'vue';
+import { inject } from 'vue';
+
+// Obtener el composable desde el contexto
+const { openAnimation, closeAnimation } = inject('requestAnimation');
+
+const loadData = async (type) => {
+  openAnimation(type); 
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  closeAnimation(); 
+};
 const email = ref('');
 const password = ref('');
 onMounted(async () => {
     await $echoReady
 })
 const Login = async () => {
-    console.log('entre a la funcion')
     await authStore.login(email.value, password.value)
     router.push('/')
-
 }
 
 </script>
@@ -28,6 +35,9 @@ const Login = async () => {
     <button @click="setLocale('en')">ingles </button>
     <p>{{ $t('examples') }}</p>
     <NuxtLink :to="localePath('/')"> hola tuneado</NuxtLink> -->
+    <button @click="loadData('progress-bar')">Cargar con Barra de Progreso</button>
+    <button @click="loadData('spinner')">Cargar con Spinner</button>
+    <button @click="loadData('dots')">Cargar con Puntos</button>
     <div>
         <div class="container bg-white mx-auto w-96 border_z rounded-3xl shadow-2xl ">
             <div class="grid grid-rows-1 gap-0 justify-items-center">

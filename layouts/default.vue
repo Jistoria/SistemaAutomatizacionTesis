@@ -1,6 +1,14 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import LoadPage from '~/components/load/loadPage.vue';
+import { provide } from 'vue';
+import { useRequestAnimation } from '~/composables/useRequestAnimation';
+import LoadingAnimation from '~/components/load/LoadingAnimation.vue';
+
+// Inicializar y proporcionar el composable globalmente
+const requestAnimation = useRequestAnimation();
+provide('requestAnimation', requestAnimation);
 const route = useRoute();
 
 const showHeaderFooter = computed(() => {
@@ -19,6 +27,8 @@ const showHeaderFooter = computed(() => {
     <div class="content" >
         <div class="my-48">
             <slot />
+            <LoadingAnimation />
+            <LoadPage />
         </div>
     </div>
     <div v-if="showHeaderFooter" class="footer">
