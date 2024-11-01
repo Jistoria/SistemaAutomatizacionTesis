@@ -26,14 +26,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   // Solo ejecuta este código en el lado del cliente (browser)
   const { ssrContext } = useNuxtApp();
   if (ssrContext) {
-    // Estamos en el lado del servidor
+  
     return;
   }
 
   // Ejecuta el servicio de `sesionData` para verificar el estado de la sesión al cargar la aplicación
   try {
     const session = await sessionData();
-    
+
 
   } catch (error) {
     console.error('Error al inicializar la sesión:', error);

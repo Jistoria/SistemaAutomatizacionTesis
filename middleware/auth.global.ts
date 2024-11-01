@@ -2,12 +2,17 @@ import { auth } from "~/stores/auth/auth";
 
 // middleware/authMiddleware.ts
 export default defineNuxtRouteMiddleware((to) => {
-    const authStore = auth(); // Cambia el nombre del store a 'useAuth' para obtener el store 'auth'
-    const session = authStore.session; // Obtiene la sesión del usuario
+    if (import.meta.server) return;
+    const nuxtApp = useNuxtApp();
 
-    // Si el usuario no tiene sesión y no está intentando acceder a la página de login
+  
+    const authStore = auth(); 
+    const session = authStore.session; 
+    console.log('el console log sesion esta tomando un ' + session)
     if (!session && to.path !== '/login/loginScreen') {
-      return navigateTo('/login/loginScreen'); // Redirige al login si no tiene sesión
+      console.log('no deberia entrar')
+      return navigateTo('/login/loginScreen'); 
     }
+
 });
   

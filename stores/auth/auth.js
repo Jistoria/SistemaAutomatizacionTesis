@@ -80,6 +80,7 @@ export const auth = defineStore('auth',{
                 console.error('Error en logout en el store:', error);
                 throw error;
             }
-        }
-    }
+        },
+
+    },
 })

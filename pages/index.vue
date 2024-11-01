@@ -3,7 +3,9 @@ import { auth } from '~/stores/auth/auth';
 const { $echoReady } = useNuxtApp();
 const authStore = auth()
 const localePath = useLocalePath()
-
+import { useRoute, useRouter } from 'vue-router';
+const route = useRoute();
+const router = useRouter();
 
 const email = 'admin_tesis@uleam.edu.ec';
 const password = 'admin_tesis';
@@ -13,6 +15,7 @@ onMounted(async () => {
 })
 const Login = async () => {
     await authStore.login(email, password)
+    router.push('/')
 }
 const Logout = async () => {
     await authStore.logout()
