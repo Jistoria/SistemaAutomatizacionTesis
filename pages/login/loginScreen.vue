@@ -24,7 +24,9 @@ onMounted(async () => {
     await $echoReady
 })
 const Login = async () => {
+    openAnimation('spinner');
     await authStore.login(email.value, password.value)
+    closeAnimation();
     router.push('/')
 }
 
