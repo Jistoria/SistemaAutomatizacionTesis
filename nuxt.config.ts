@@ -23,6 +23,7 @@ export default defineNuxtConfig({
     '~/plugins/echoChannel.client.ts',
     '~/plugins/fetch',
     '~/plugins/auth',
+    '~/plugins/auth_routes',
     '~/plugins/i18n-hooks',
     '~/plugins/idb',
     '~/plugins/sweetAlert',

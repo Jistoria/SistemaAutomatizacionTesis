@@ -20,18 +20,20 @@ const showHeaderFooter = computed(() => {
 });
 </script>
 <template>
- <div  class="layout">
-    <div  v-if="showHeaderFooter" class="header">
+ <div class="layout">
+    <div   class="header">
       header
     </div>
     <div class="content" >
         <div class="my-48">
+          <ClientOnly>
             <slot />
-            <LoadingAnimation />
-            <LoadPage />
+          </ClientOnly>
+          <LoadingAnimation />
+          <LoadPage /> 
         </div>
     </div>
-    <div v-if="showHeaderFooter" class="footer">
+    <div  class="footer">
       footer
     </div>
   </div>
