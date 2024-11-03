@@ -163,7 +163,7 @@
   const uploadData = async () => {
     if (selectedFile.value) {
       console.log('Subiendo archivo:', selectedFile.value.name);
-      await docStore.sendPdf(authStore.token ,selectedFile.value);
+      await docStore.sendPdf(authStore.token, authStore.user.id ,selectedFile.value);
       closeModal();
     } else {
       swal.showAlert('error', 'right', {
