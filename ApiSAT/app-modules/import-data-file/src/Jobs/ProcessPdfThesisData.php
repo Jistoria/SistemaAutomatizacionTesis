@@ -187,7 +187,7 @@ class ProcessPdfThesisData implements ShouldQueue
     } catch (\Exception $e) {
         // Emitir un evento en caso de error en el proceso
         event(new NotificationDataProcess(
-            message: 'Error en el procesamiento de datos',
+            message: 'Error en el procesamiento de datos, verifique el archivo PDF',
             status: 'error',
             name_document: basename($this->filePath),
             id: $this->id
