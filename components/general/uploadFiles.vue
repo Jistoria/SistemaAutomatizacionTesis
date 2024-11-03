@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center p-6">
+    <div class="items-center justify-center ">
       <!-- Botón para abrir el modal -->
       <button
         @click="openModal"

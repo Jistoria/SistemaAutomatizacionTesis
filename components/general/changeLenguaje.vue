@@ -11,11 +11,12 @@ const changeLanguage = async (lang) => {
 };
 
 </script>
-<template>
-    
+<template>  
+
     <button @click="changeLanguage('es')">Español</button>
     <button @click="changeLanguage('en')">English</button>
-    <p>{{ $t('car') }}</p> 
+    
+    <!-- <p>{{ $t('car') }}</p>  -->
 
 </template>
 <style>

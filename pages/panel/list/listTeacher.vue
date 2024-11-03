@@ -2,7 +2,7 @@
 
 </script>
 <template>
-
+lista teacher
 </template>
 <style>
 

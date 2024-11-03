@@ -5,11 +5,12 @@ import LoadPage from '~/components/load/loadPage.vue';
 import { provide } from 'vue';
 import { useRequestAnimation } from '~/composables/useRequestAnimation';
 import LoadingAnimation from '~/components/load/LoadingAnimation.vue';
+const colorMode = useColorMode()
 
-// Inicializar y proporcionar el composable globalmente
 const requestAnimation = useRequestAnimation();
 provide('requestAnimation', requestAnimation);
 const route = useRoute();
+
 
 const showHeaderFooter = computed(() => {
     if(route.path === '/login/loginScreen' ){
@@ -20,12 +21,16 @@ const showHeaderFooter = computed(() => {
 });
 </script>
 <template>
+
  <div class="layout">
-    <div   class="header">
-      header
-    </div>
-    <div class="content" >
-        <div class="my-48">
+  
+    <ClientOnly>
+      <div v-if="showHeaderFooter"  class="header">
+        <HeaderComp></HeaderComp>
+      </div>
+    </ClientOnly>
+    <div class="content border_y" >
+        <div>
           <ClientOnly>
             <slot />
           </ClientOnly>
@@ -33,9 +38,11 @@ const showHeaderFooter = computed(() => {
           <LoadPage /> 
         </div>
     </div>
-    <div  class="footer">
-      footer
-    </div>
+    <ClientOnly>
+      <div v-if="showHeaderFooter"   class="footer">
+        <FooterComp></FooterComp>
+      </div>
+    </ClientOnly>
   </div>
 </template>
 <style>
@@ -44,11 +51,9 @@ const showHeaderFooter = computed(() => {
   flex-direction: column;
   min-height: 100vh; 
 }
-
 .header {
   flex-shrink: 0; 
 }
-
 .content {
   flex-grow: 1; 
   overflow-y: auto; 
@@ -58,11 +63,4 @@ const showHeaderFooter = computed(() => {
   flex-shrink: 0; 
 }
 
-.bg-green {
-  background-color: green;
-}
-
-.bg-default {
-  background-color: white; 
-}
 </style>

@@ -2,7 +2,7 @@
 
 </script>
 <template>
-secretaria
+lista tribunal
 </template>
 <style>
 

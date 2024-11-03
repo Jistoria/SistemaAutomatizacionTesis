@@ -40,8 +40,8 @@ const Login = async () => {
     <!-- <button @click="loadData('progress-bar')">Cargar con Barra de Progreso</button>
     <button @click="loadData('spinner')">Cargar con Spinner</button>
     <button @click="loadData('dots')">Cargar con Puntos</button> -->
-        
-        <div class="container bg-white mx-auto w-96 border_z rounded-md shadow-2xl ">
+        <div class="layoutLogin justify-center">
+            <div class="container bg-white mx-auto w-96 border_z rounded-md shadow-2xl ">
             <div class="grid grid-rows-1 gap-0 justify-items-center">
                 <div class="mt-4 mb-4">
                         <img src="/assets/Imagen1-removebg-preview.png"  width="120" >
@@ -100,10 +100,27 @@ const Login = async () => {
                 </form>
                 </div>
             </div>
+            </div>
         </div>
+
 
 </template>
 <style>
+.layoutLogin {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+.contentLogin {
+  flex-grow: 1; 
+  overflow-y: auto; 
+}
+
+
+
+
+
+
 .border_r{
     border: 5px solid red;
 }

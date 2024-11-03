@@ -2,7 +2,7 @@
 
 </script>
 <template>
-
+tribunal 
 </template>
 <style>
 

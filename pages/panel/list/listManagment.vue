@@ -2,7 +2,7 @@
 
 </script>
 <template>
-secretaria
+lista de personal
 </template>
 <style>
 
