@@ -4,8 +4,10 @@ import { useNuxtApp } from '#app';
 import { useIdb } from '~/composables/idb';
 import { getDatabase } from '~/plugins/idb';
 import { auth } from '~/stores/auth/auth';
+import { sweetAlert } from '#imports';
 
 const { consult } = useIdb();
+const swal = sweetAlert() as ReturnType<typeof sweetAlert>;
 class AuthService {
     private fetchClient: any | null = null;
 
@@ -31,12 +33,15 @@ class AuthService {
             
             if (response.success == true) {
                 await this.saveAuthData(true, response.data.user, response.data.token);
+                swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})
                 return response;
             }else {
-                throw new Error('Login fallido');
+                swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
+                return response;
             }
 
         } catch (error) {
+            swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
             return error;
         }
     }
@@ -51,13 +56,15 @@ class AuthService {
             if (response.success == true) {
                 await this.deleteSession();
                 auth().setLogout();
+                swal.showAlert('success','right',{title: 'Sesión cerrada', text: '',confirmType: 'timer'})
                 return true;
             } else if(response.status == 401) {
+                swal.showAlert('success','right',{title: 'Algo salio mal', text: '',confirmType: 'timer'})
                 return false;
             }
             
         } catch (error) {
-            console.error('Error en logout:', error);
+            swal.showAlert('success','right',{title: 'Algo salio mal', text: '',confirmType: 'timer'})
             return false;
         }
     }

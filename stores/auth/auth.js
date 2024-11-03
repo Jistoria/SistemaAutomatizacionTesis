@@ -1,6 +1,4 @@
 import { authService } from '~/services/authModel/authService';
-import {sweetAlert} from '~/composables/sweetAlert';
-const swal = sweetAlert();
 /**
  * Define una tienda de autenticación utilizando Pinia.
  * 
@@ -59,14 +57,9 @@ export const auth = defineStore('auth',{
                 const response = await authService.login(email, password)
                 if(response.success == true){
                     this.setLogin(response.data.user,response.data.token)
-                    swal.showAlert('success','right',{title: response.message, text: '',confirmType: 'timer'})
-                }else if(response.success == false){
-                    swal.showAlert('error','Normal',{title: 'Error', text: 'Credenciales Invalidas',confirmType: 'normal'})
                 }
             } catch (error) {
                 console.log(error)
-                swal.showAlert('error','Normal',{title: 'Error', text: 'Credenciales Invalidas',confirmType: 'normal'})
-                
             }
         },
         async logout(){
@@ -74,9 +67,8 @@ export const auth = defineStore('auth',{
                 const response = await authService.logout()
                 if(response == true){
                     this.setLogout()
-                    swal.showAlert('success','right',{title: 'Sesión cerrada', text: '',confirmType: 'timer'})
                     nextTick(() => {
-                        navigateTo('/login/loginScreen'); // Redirigir después de la actualización del DOM
+                        navigateTo('/login/loginScreen'); 
                     });
                 }
             } catch (error) {
