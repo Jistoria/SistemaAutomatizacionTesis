@@ -19,6 +19,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Modules\ImportDataFile\Events\NotificationDataProcess;
 use Modules\ImportDataFile\Utils\DateUtils;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -46,6 +47,7 @@ class ProcessPdfThesisData implements ShouldQueue
      */
     public function handle()
     {
+        try{
         // Ejecutar el script de Python para procesar el archivo PDF
         $process = new Process(['py', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
         $process->run();
@@ -176,6 +178,21 @@ class ProcessPdfThesisData implements ShouldQueue
                 );
             }
         });
+        event(new NotificationDataProcess(
+            message: 'Proceso completado correctamente',
+            status: 'success',
+            name_document: basename($this->filePath),
+            id: $this->id
+        ));
+    } catch (\Exception $e) {
+        // Emitir un evento en caso de error en el proceso
+        event(new NotificationDataProcess(
+            message: 'Error en el procesamiento de datos',
+            status: 'error',
+            name_document: basename($this->filePath),
+            id: $this->id
+        ));
+    }
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace Modules\ImportDataFile\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use Modules\ImportDataFile\Services\ImportDataFileService;
 
@@ -22,14 +23,9 @@ class ImportDataFileController
             ]);
             $file = $request->file('file');
             $this->importDataFileService->importDataPdfThesis($file, $request->user()->id);
-
-            return response()->json([
-            'message' => 'Se está procesando el archivo, por favor espere unos minutos'
-            ], 200);
+            return ApiResponse::success('Archivo procesado correctamente');
         } catch (\Exception $e) {
-            return response()->json([
-            'error' => 'Ocurrió un error al procesar el archivo: ' . $e->getMessage()
-            ], 500);
+            return ApiResponse::error($e->getMessage());
         }
     }
 }
