@@ -32,15 +32,39 @@ class SetMenus extends Command
         $menusAdminTesis = [
             [
             'name' => 'Dashboard',
-            'url' => '/panel/admin_tesis_panel/adminTesisPanelScreen',
-            'icon' => '<Bars3Icon class="size-7" />',
+            'url' => '/',
+            'icon' => 'bi bi-clipboard2-data-fill',
+            'orden' => 0,
+            ],
+            [
+            'name' => 'Estudiantes',
+            'url' => '/panel/list/listStudent',
+            'icon' => 'bi bi-person-vcard-fill',
             'orden' => 1,
             ],
             [
-            'name' => 'Lista de estudiante',
-            'url' => '/panel/admin_tesis_panel/list/listStudent',
-            'icon' => '<Bars3Icon class="size-7" />',
+            'name' => 'Docentes',
+            'url' => '/panel/list/listTeacher',
+            'icon' => 'bi bi-person-rolodex',
             'orden' => 2,
+            ],
+            [
+            'name' => 'Tribunales',
+            'url' => '/panel/list/listCourt',
+            'icon' => '',
+            'orden' => 3,
+            ],
+            [
+            'name' => 'Sustentaciones',
+            'url' => '/panel/list/listDefense',
+            'icon' => 'bi bi-diagram-3-fill',
+            'orden' => 4,
+            ],
+            [
+            'name' => 'Personal',
+            'url' => '/panel/list/listManagment',
+            'icon' => 'bi bi-person-workspace',
+            'orden' => 5,
             ],
         ];
 
