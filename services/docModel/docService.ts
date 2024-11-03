@@ -28,14 +28,13 @@ class DocService {
                 credentials: 'include',
                 body: formData,
             });
-            console.log('Respuesta:', response);
             if (response.success == true) {
                 swal.showAlert('warning', 'right', {
                     title: 'El pdf se esta procesando...',
                     text: '',
                     confirmType: 'timer'
                 });
-                return response;
+                return;
             }
         }catch (error) {
             swal.showAlert('error', 'right', {
@@ -48,39 +47,35 @@ class DocService {
 
     }
     async listenChannel(id: string) {
-        const {$echo} = useNuxtApp();
-        const pusher = $echo.connector.pusher;
+        const { $echo } = useNuxtApp();
 
-        // Asegúrate de estar escuchando el canal
-        const channel = $echo.channel('adminTesis.' + id);
-        console.log('Escuchando canal', 'adminTesis.' + id);
+        // Configuración del canal público
+        const channelName = `adminTesis.${id}`;
+        const channel = $echo.channel(channelName);
+        // Asegurarse de escuchar el evento específico NotificationDataProcess
         try {
-            pusher.connection.bind('connected', () => {
-                console.log('Conectado a Pusher');
-                channel.listen('.NotificationDataProcess', (data: any) => {
-                    console.log('Evento recibido:', data);
-                });
+            channel.listen('.NotificationDataProcess', (data: any) => {
+                if (data.status == 'success') {
+                    swal.showAlert('success', 'right', {
+                        title: 'El pdf se proceso correctamente',
+                        text: '',
+                        confirmType: 'timer'
+                    });
+                    
+                }else{
+                    swal.showAlert('error', 'right', {
+                        title: 'El pdf no se proceso correctamente',
+                        text: '',
+                        confirmType: 'timer'
+                    });
+                }
+                channel.stopListening('.NotificationDataProcess');
             });
-            
-            pusher.connection.bind('disconnected', () => {
-                console.log('Desconectado de Pusher');
-            });
-            
-            pusher.connection.bind('error', (error: any) => {
-                console.error('Error en la conexión:', error);
-            });
-            
-        }catch (error) {
-            console.error('Error al escuchar canal', error);
-            
+        } catch (error) {
+            console.error('Error al escuchar el evento NotificationDataProcess', error);
         }
-        
-        // Escuchar cambios en el estado de conexión
-        
-        
     }
     
-
 }
 
 export const docService = new DocService();

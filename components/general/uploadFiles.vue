@@ -111,10 +111,15 @@
   import { sweetAlert } from '#imports';
   import { auth } from '~/stores/auth/auth';
   import { documents } from '~/stores/doc/document';
+  import { inject } from 'vue';
+
+    // Obtener el composable desde el contexto
+    const { openAnimation, closeAnimation } = inject('requestAnimation');
   
   const swal = sweetAlert();
   const authStore = auth();
   const docStore = documents();
+
   
   const isModalOpen = ref(false);
   const selectedFile = ref(null);
@@ -161,9 +166,11 @@
   };
   
   const uploadData = async () => {
+    openAnimation('spinner');
     if (selectedFile.value) {
-      console.log('Subiendo archivo:', selectedFile.value.name);
+    
       await docStore.sendPdf(authStore.token, authStore.user.id ,selectedFile.value);
+
       closeModal();
     } else {
       swal.showAlert('error', 'right', {
@@ -171,6 +178,7 @@
         confirmType: 'timer',
       });
     }
+    closeAnimation();
   };
   </script>
   
