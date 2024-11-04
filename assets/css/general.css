@@ -1,0 +1,23 @@
+.border_y{
+    border: 5px solid yellow;
+}
+.border_blue{
+    border: 5px solid blue;
+}
+.bg_Monza{
+    background: rgb(195, 31, 42);
+}
+.bg_Android_Green{
+    background: rgb(158, 189, 50);
+}
+.bg_Storm_Dust{
+    background: rgb(97, 97, 97);
+}
+.bg_Boulder{
+    background: rgb(124, 124, 124);
+}
+/* color schema para el ColorMode */
+.dark-mode body {
+    background-color: #091a28;
+    color: #ebf4f1;
+}

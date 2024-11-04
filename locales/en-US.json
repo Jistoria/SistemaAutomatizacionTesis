@@ -1,0 +1,11 @@
+{
+  "car": "car | cars",
+  "comment-multi": "Comment test",
+  "comment-test": "Comment test",
+  "email-address": "Yout email is: {email}",
+  "examples": "Examples",
+  "html-msg": "This text is rendered with <strong class='text-red-500'>HTML</strong>",
+  "html-warning": "Dynamically localizing arbitrary HTML on your site can be very dangerous because it can easily lead to XSS vulnerabilities. Only use HTML interpolation on trusted content and never on user-provided content.",
+  "language": "Language",
+  "pluralization": "Pluralization"
+}
