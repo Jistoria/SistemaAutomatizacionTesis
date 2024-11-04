@@ -20,7 +20,7 @@ class UserMenuController
             $menus = $this->menuService->getMenusByRolesId($request->user()->roles->pluck('uuid')->toArray());
             return ApiResponse::success($menus,'Menus obtenidos correctamente', 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return ApiResponse::error($e->getMessage(), $e->getCode());
         }
     }
 }
