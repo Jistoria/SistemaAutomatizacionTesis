@@ -12,11 +12,15 @@ const changeLanguage = async (lang) => {
 
 </script>
 <template>  
-
-    <button @click="changeLanguage('es')">Español</button>
-    <button @click="changeLanguage('en')">English</button>
-    
-    <!-- <p>{{ $t('car') }}</p>  -->
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn-ghost p-3 rounded-box">
+        <i class="bi bi-translate" style="font-size: 1.5rem; color: azure;"></i>
+      </div>
+      <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-auto p-2 shadow">
+        <li><a>Español</a></li>
+        <li><a>Ingles</a></li>
+      </ul>
+    </div>
 
 </template>
 <style>

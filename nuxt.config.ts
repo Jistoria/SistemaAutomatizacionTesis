@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
   ],
+  tailwindcss: { exposeConfig: true },
   css: [
     '~/assets/css/tailwind.css',
     '~/assets/css/general.css',

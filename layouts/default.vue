@@ -29,7 +29,7 @@ const showHeaderFooter = computed(() => {
         <HeaderComp></HeaderComp>
       </div>
     </ClientOnly>
-    <div class="content border_y" >
+    <div class="content " >
         <div>
           <ClientOnly>
             <slot />

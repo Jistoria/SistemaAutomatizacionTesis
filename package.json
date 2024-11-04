@@ -30,6 +30,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "daisyui": "^4.12.14",
     "nuxt-auth-sanctum": "^0.5.0",
     "nuxt-translation-manager": "^1.1.1",
     "tailwindcss": "^3.4.14",
