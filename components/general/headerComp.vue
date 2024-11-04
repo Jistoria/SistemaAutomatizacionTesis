@@ -2,6 +2,11 @@
 import { Bars3Icon } from '@heroicons/vue/24/outline';
 import { panel } from '~/stores/panel/panel';
 import { useRoute } from 'vue-router';
+import { auth } from '~/stores/auth/auth';
+const authStore = auth()
+const Logout = async () => {
+    await authStore.logout()
+}
 const panelStore = panel();
 const profileOpen = ref(false);
 const asideOpen = ref(false);
@@ -43,7 +48,7 @@ const currentRouteName = computed(() => routeNames[route.path] || 'Dashboard');
         <div class="dropdown dropdown-bottom dropdown-end">
   
             <div tabindex="0" role="button" class=" m-1">
-              <button type="button" class=" btn-ghost rounded-box inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white ">
+              <button @click="Logout" type="button" class=" btn-ghost rounded-box inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white ">
                   <i class="bi bi-door-closed" style="font-size: 2rem;" ></i>
               </button>
             </div>
