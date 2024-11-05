@@ -2,8 +2,6 @@
 
 namespace Modules\ImportDataFile\Jobs;
 
-use App\Models\Academic\Degree;
-use App\Models\Academic\PeriodAcademic;
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
 use App\Models\Academic\Teacher\ThesisCommittee;
@@ -11,18 +9,20 @@ use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Academic\Thesis\ThesisTitle;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log as FacadesLog;
+use Modules\Degree\Contracts\DegreeServiceInterface;
 use Modules\ImportDataFile\Events\NotificationDataProcess;
-use Modules\ImportDataFile\Utils\DateUtils;
+use Modules\PeriodAcademic\Contracts\PeriodAcademicServiceInterface;
+use Modules\Thesis\Contracts\ThesisTitleServiceInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Modules\ImportDataFile\DataTransferObjects\PdfThesisData;
+use Modules\User\Contracts\UserServiceInterface;
 
 class ProcessPdfThesisData implements ShouldQueue
 {
@@ -36,7 +36,7 @@ class ProcessPdfThesisData implements ShouldQueue
     public function __construct
     (
         protected string $filePath,
-        protected string $id
+        protected string $id,
     )
     {}
 
@@ -63,70 +63,28 @@ class ProcessPdfThesisData implements ShouldQueue
         $output = iconv('ISO-8859-1', 'UTF-8//TRANSLIT', $output); // Convertir a UTF-8 si el JSON está en ISO-8859-1
         $studentsData = json_decode($output, true);
 
+        // Extraer las fechas de inicio y fin del periodo académico
+        $data = new PdfThesisData($studentsData);
 
-        // Extraer los datos del periodo académico
-        $periodAcademicName = $studentsData['period_academic'] ?? 'Periodo Desconocido';
-        $startDateString = DateUtils::convertMonthToEnglish($studentsData['start_date']);
-        $endDateString = DateUtils::convertMonthToEnglish($studentsData['end_date']);
+        DB::transaction(function () use ($studentsData, $data) {
 
-        FacadesLog::info('Datos del periodo académico', [
-            'periodAcademicName' => $periodAcademicName,
-            'startDateString' => $startDateString,
-            'endDateString' => $endDateString,
-            'degree' => $studentsData['degree'],
-        ]);
-
-        $startDate = preg_replace('/^[a-z]+, /i', '', $startDateString); // Eliminar día de la semana
-        $startDate = preg_replace('/\sde\s/i', ' ', $startDate); // Eliminar la palabra "de"
-
-        $endDate = preg_replace('/^[a-z]+, /i', '', $endDateString); // Eliminar día de la semana
-        $endDate = preg_replace('/\sde\s/i', ' ', $endDate); // Eliminar la palabra "de"
-
-        // Convierte las fechas usando el formato "d F Y"
-        $formattedStartDate = Carbon::createFromFormat('d F Y', $startDate)->toDateString();
-        $formattedEndDate = Carbon::createFromFormat('d F Y', $endDate)->toDateString();
-        // Hasta implementar los demas modulos se manejara un transaction para guardar los datos
-        DB::transaction(function () use ($studentsData, $periodAcademicName, $startDate, $endDate, $formattedStartDate, $formattedEndDate) {
             // Crear o encontrar el periodo académico
-            $periodAcademic = PeriodAcademic::firstOrCreate(
-                ['name' => $periodAcademicName],
-                [
-                    'name' => $periodAcademicName,
-                    'start_date' => $startDate,
-                    'end_date' => $endDate,
-                    'created_by_user' => $this->id,
-                    'updated_by_user' => $this->id
-                ]
-            );
-
+            $periodAcademic = app(PeriodAcademicServiceInterface::class)->createPeriodAcademic((array) $data->getPeriodAcademic());
             // Crear o encontrar la carrera (Degree)
-            $degree = Degree::firstOrCreate(
-                ['name' => $studentsData['degree']],
-                ['name' => $studentsData['degree'], 'created_by_user' => $this->id, 'updated_by_user' => $this->id]
-            );
+            $degree = app(DegreeServiceInterface::class)->createDegree(['name' => $studentsData['degree'], 'created_by' => $this->id, 'updated_by' => $this->id]);
 
             // Guardar los datos de estudiantes y sus relaciones
             foreach ($studentsData['students'] as $studentData) {
                 // Crear o encontrar el profesor (Teacher)
                 $roleDocente = Role::firstOrCreate(['name' => 'Docente-tesis']);
-                $teacher = User::firstOrCreate(
-                    ['name' => $studentData['tutor_name']],
-                    [
-                        'name' => $studentData['tutor_name'],
-                        'email' => strtolower(str_replace(' ', '.', $studentData['tutor_name'])) . '@uleam.edu.ec',
-                        'password' => 'process_thesis',
-                        'created_by_user' => $this->id,
-                        'updated_by_user' => $this->id
-                    ]
-                );
+                $teacher = app(UserServiceInterface::class)->createUserWithRole($studentData['teacher'], 'Docente-tesis');
 
                 $teacher->assignRole($roleDocente);
 
                 // Crear o encontrar la tesis (ThesisTitle)
-                $thesis = ThesisTitle::firstOrCreate(
-                    ['title' => $studentData['thesis_title']],
-                    ['created_by_user' => $this->id, 'updated_by_user' => $this->id]
-                );
+                $thesis = app(ThesisTitleServiceInterface::class)->createThesisTitle([
+                    'title' => $data->getThesisTitle()
+                ]);
 
                 // Crear el usuario del estudiante si no existe
                 $roleEstudiante = Role::firstOrCreate(['name' => 'Estudiante-tesis']);
@@ -136,8 +94,6 @@ class ProcessPdfThesisData implements ShouldQueue
                         'name' => $studentData['student_name'],
                         'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
                         'password' => $studentData['student_dni'],
-                        'created_by_user' => $this->id,
-                        'updated_by_user' => $this->id
                     ]
                 );
                 $user->assignRole($roleEstudiante);
@@ -170,8 +126,8 @@ class ProcessPdfThesisData implements ShouldQueue
                         'thesis_id' => $thesis->thesis_id,
                         'period_academic_id' => $periodAcademic->period_academic_id,
                         'state_now' => 'En proceso',
-                        'date_start' => $formattedStartDate,
-                        'date_end' => $formattedEndDate,
+                        'date_start' => $data->dataDates['start_date'],
+                        'date_end' => $data->dataDates['end_date'],
                         'created_by_user' => $this->id,
                         'updated_by_user' => $this->id
                     ]
@@ -194,6 +150,8 @@ class ProcessPdfThesisData implements ShouldQueue
         ));
     }
     }
+
+
 
 
 }
