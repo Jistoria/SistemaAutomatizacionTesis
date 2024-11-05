@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
   ],
   tailwindcss: { exposeConfig: true },
+  
   css: [
     '~/assets/css/tailwind.css',
     '~/assets/css/general.css',
@@ -42,7 +43,6 @@ export default defineNuxtConfig({
     dirs:['./stores/~'],
   },
   ...i18nConfig,
-  ...colorModeConfig,
   ...pwaConfig,
   compatibilityDate: '2024-10-27',
 });

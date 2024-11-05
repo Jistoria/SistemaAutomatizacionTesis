@@ -29,24 +29,36 @@ const currentRouteName = computed(() => routeNames[route.path] || 'Dashboard');
 
 </script>
 <template>
-<div>
-  <header  class="flex w-full bg_Monza items-center justify-between border-b-2 border-gray-200 p-4">
-    <div class="flex space-x-3">
-        <button type="button" class="text-3x1" @click="asideOpen = !asideOpen">
-            <Bars3Icon class="size-7" />
-        </button>
-        <div>
-            <p class="text-white text-2xl">
-              {{currentRouteName}}
-            </p>
-        </div>
+ <header class="flex w-full bg_Monza items-center justify-between border-b-2 border-gray-200 p-4">
+    <div class="drawer  grow-0">
+      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+      <div class="drawer-content flex ">
+        <label for="my-drawer" class="text-3x1 cursor-pointer">
+          <Bars3Icon class="size-7" />
+        </label>
+        <p class="text-white text-lg ms-4">{{currentRouteName}}</p>
+      </div>
+      <div class="drawer-side">
+        <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+        <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+          <a class="flex w-full items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-lime-800"
+          :class="{'bg-gray-200 text-lime-800': route.path === menus.url,}" 
+          v-for="menus in panelStore.menus">
+          <div >
+            <span class="text-2xl pe-3"><i :class="menus.icon"></i></span>
+            <NuxtLink :to="menus.url" >
+              {{ menus.name }}
+            </NuxtLink>
+          </div>
+          </a>
+        </ul>
+      </div>
     </div>
     <div class="flex justify-end grow">
       <ColorMode></ColorMode>
       <ChangeLenguaje></ChangeLenguaje>
       <div class="btn-primary">
         <div class="dropdown dropdown-bottom dropdown-end">
-  
             <div tabindex="0" role="button" class=" m-1">
               <button @click="Logout" type="button" class=" btn-ghost rounded-box inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white ">
                   <i class="bi bi-door-closed" style="font-size: 2rem;" ></i>
@@ -55,20 +67,9 @@ const currentRouteName = computed(() => routeNames[route.path] || 'Dashboard');
         </div>
       </div>
     </div>
-  </header>
-  <div class="flex">
-    <aside v-if="asideOpen" class="flex w-72 absolute  flex-col space-y-2 border-r-4  border-gray-200 bg-white p-2" style="height: 86vh" >
-      <a class="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-lime-800"v-for="menus in panelStore.menus">
-          <div>
-            <span class="text-2xl pe-3"><i :class="menus.icon"></i></span>
-            <NuxtLink :to="menus.url" >
-              {{ menus.name }}
-            </NuxtLink>
-          </div>
-      </a>
-    </aside>
-  </div>
-</div>
+
+ </header>
+
 </template>
 <style>
 
