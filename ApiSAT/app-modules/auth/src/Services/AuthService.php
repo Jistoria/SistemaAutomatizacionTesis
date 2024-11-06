@@ -3,7 +3,9 @@
 namespace Modules\Auth\Services;
 
 use App\Models\Auth\User;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use Modules\Auth\Events\authEvent;
 
 /**
@@ -82,5 +84,24 @@ class AuthService
     {
         // Llama a la función setSessionDetails del modelo User y retorna los datos filtrados.
         return $user->setSessionDetails();
+    }
+
+    /**
+     * Verifica si el usuario tiene un token de acceso válido.
+     *
+     * @param User $user Instancia del modelo User que contiene el token de acceso.
+     * @return bool Retorna true si el token es válido, de lo contrario retorna false.
+     */
+    public function checkToken(User $user) : bool
+    {
+        // Verifica si el token del usuario es válido.
+        return $user->token()->exists();
+    }
+
+    public function allUsers()
+    {
+        FacadesLog::info('AuthService: allUsers');
+        FacadesLog::info($this->user);
+        return $this->user->all();
     }
 }

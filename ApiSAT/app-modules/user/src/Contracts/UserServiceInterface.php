@@ -11,5 +11,5 @@ interface UserServiceInterface
      * @param array $data Los datos del usuario.
      * @return User El usuario creado/encontrado.
      */
-    public function createUserWithRole(array $data, string|array $role): User;
+    public function createUserWithRole(array $data, string|array $role, string $userId): User;
 }

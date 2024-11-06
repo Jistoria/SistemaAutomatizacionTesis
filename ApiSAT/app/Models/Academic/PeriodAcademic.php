@@ -16,20 +16,8 @@ class PeriodAcademic extends Model
     protected $table = 'period_academic';
     public $incrementing = false;
 
-    protected static function boot()
-    {
-        parent::boot();
 
-        static::creating(function ($model) {
-            $userId = Auth::id();
-            $model->created_by_user = $userId;
-            $model->updated_by_user = $userId;
-        });
 
-        static::updating(function ($model) {
-            $model->updated_by_user = Auth::id();
-        });
-    }
     protected $fillable = [
         'name',
         'start_date',

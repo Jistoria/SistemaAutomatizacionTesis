@@ -17,9 +17,14 @@ return new class extends Migration
             $table->string('description');
             $table->uuid('created_by_user');
             $table->uuid('updated_by_user');
-            $table->uuid('deleted_by_user');
+            $table->uuid('deleted_by_user')->nullable();
             $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::create('category_teacher', function (Blueprint $table) {
+            $table->uuid('category_area_id')->references('category_area_id')->on('category_area');
+            $table->uuid('teacher_id')->references('teacher_id')->on('teachers');
         });
     }
 

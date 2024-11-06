@@ -19,22 +19,6 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles, HasApiTokens, HasUuids;
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $id = Auth::id();
-            $model->created_by_user = $id;
-            $model->updated_by_user = $id;
-        });
-
-        static::updating(function ($model) {
-            $id = Auth::id();
-            $model->updated_by_user = $id;
-        });
-    }
-
 
     public $incrementing = false;  // Para deshabilitar auto-increment
     /**

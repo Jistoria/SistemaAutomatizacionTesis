@@ -17,9 +17,14 @@ class UserService
      * @param array $data Los datos del usuario.
      * @return User El usuario creado/encontrado.
      */
-    public function createUserWithRole(array $data, string|array $role): User
+    public function createUserWithRole(array $data, string|array $role, string $userId): User
     {
-        $user= $this->user->firstOrCreate(['name' => $data['name']], $data);
+        $user= $this->user->firstOrCreate(['name' => $data['name']], [
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'created_by_user' => $userId,
+            'updated_by_user' => $userId,
+        ]);
         $user->assignRole($role);
         return $user;
     }

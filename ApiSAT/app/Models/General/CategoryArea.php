@@ -16,6 +16,7 @@ class CategoryArea extends Model
     protected $primaryKey = 'category_area_id';
     public $incrementing = false;
     protected $keyType = 'uuid';
+    protected $table = 'category_area';
 
     // Especificar los campos que pueden ser asignados en masa
     protected $fillable = [

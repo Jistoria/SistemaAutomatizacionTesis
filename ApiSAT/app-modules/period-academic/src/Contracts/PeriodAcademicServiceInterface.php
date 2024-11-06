@@ -11,5 +11,5 @@ interface PeriodAcademicServiceInterface
      * @param array $data Los datos del periodo académico.
      * @return PeriodAcademic El periodo académico creado.
      */
-    public function createPeriodAcademic(array $data): PeriodAcademic;
+    public function createPeriodAcademic(array $data, string $userId): PeriodAcademic;
 }

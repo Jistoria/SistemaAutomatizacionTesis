@@ -2,6 +2,9 @@
 
 namespace Modules\PeriodAcademic\Providers;
 
+use App\Models\Academic\PeriodAcademic;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Modules\ImportDataFile\Events\ProcessThesisDataGenerated;
 use Modules\PeriodAcademic\Contracts\PeriodAcademicServiceInterface;
@@ -16,9 +19,9 @@ class PeriodAcademicServiceProvider extends ServiceProvider
         ],
     ];
 	public function register(): void
-	{
-        $this->app->singleton(PeriodAcademicServiceInterface::class, PeriodAcademicService::class);
-	}
+{
+
+}
 
 	public function boot(): void
 	{

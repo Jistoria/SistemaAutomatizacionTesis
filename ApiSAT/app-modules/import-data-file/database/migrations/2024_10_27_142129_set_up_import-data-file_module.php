@@ -41,19 +41,11 @@ return new class() extends Migration {
 			$table->timestamps();
 			$table->softDeletes();
             $table->date('enrollment_date');
-            $table->uuid('created_by_user');
-            $table->uuid('updated_by_user');
-            $table->uuid('deleted_by_user')->nullable();
 		});
 
         Schema::create('teachers', function(Blueprint $table) {
             $table->uuid('teacher_id')->references('id')->on('users');
-
             $table->timestamps();
-            $table->softDeletes();
-            $table->uuid('created_by_user');
-            $table->uuid('updated_by_user');
-            $table->uuid('deleted_by_user')->nullable();
         });
 
         Schema::create('thesis_process', function (Blueprint $table) {

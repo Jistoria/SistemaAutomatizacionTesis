@@ -4,17 +4,15 @@ namespace Modules\ImportDataFile\Jobs;
 
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
-use App\Models\Academic\Teacher\ThesisCommittee;
 use App\Models\Academic\Thesis\ThesisProcess;
-use App\Models\Academic\Thesis\ThesisTitle;
-use App\Models\Auth\Role;
-use App\Models\Auth\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log as FacadesLog;
+use Modules\Auth\Services\AuthService;
 use Modules\Degree\Contracts\DegreeServiceInterface;
 use Modules\ImportDataFile\Events\NotificationDataProcess;
 use Modules\PeriodAcademic\Contracts\PeriodAcademicServiceInterface;
@@ -22,12 +20,12 @@ use Modules\Thesis\Contracts\ThesisTitleServiceInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Modules\ImportDataFile\DataTransferObjects\PdfThesisData;
+use Modules\PeriodAcademic\Services\PeriodAcademicService;
 use Modules\User\Contracts\UserServiceInterface;
 
 class ProcessPdfThesisData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
      * Create a new job instance.
      *
@@ -48,55 +46,51 @@ class ProcessPdfThesisData implements ShouldQueue
     public function handle()
     {
         try{
-        // Ejecutar el script de Python para procesar el archivo PDF
-        $process = new Process(['py', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
-        $process->run();
+            // Ejecutar el script de Python para procesar el archivo PDF
+            $process = new Process(['py', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
+            $process->run();
 
-        // Si el proceso falla
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
+            // Si el proceso falla
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
 
-        // Obtener la salida del script de Python (datos extraídos en formato JSON)
-        // Obtener la salida del script de Python y convertirla a UTF-8
-        $output = $process->getOutput();
-        $output = iconv('ISO-8859-1', 'UTF-8//TRANSLIT', $output); // Convertir a UTF-8 si el JSON está en ISO-8859-1
-        $studentsData = json_decode($output, true);
+            // Obtener la salida del script de Python y convertirla a UTF-8
+            $output = $process->getOutput();
+            $output = iconv('ISO-8859-1', 'UTF-8//TRANSLIT', $output); // Convertir a UTF-8 si el JSON está en ISO-8859-1
+            $studentsData = json_decode($output, true);
 
-        // Extraer las fechas de inicio y fin del periodo académico
-        $data = new PdfThesisData($studentsData);
+            // Extraer las fechas de inicio y fin del periodo académico
+            $data = new PdfThesisData($studentsData);
 
-        DB::transaction(function () use ($studentsData, $data) {
-
-            // Crear o encontrar el periodo académico
-            $periodAcademic = app(PeriodAcademicServiceInterface::class)->createPeriodAcademic((array) $data->getPeriodAcademic());
+            $periodAcademic = app(PeriodAcademicServiceInterface::class)
+                                ->createPeriodAcademic((array) $data->getPeriodAcademic(), $this->id);
             // Crear o encontrar la carrera (Degree)
-            $degree = app(DegreeServiceInterface::class)->createDegree(['name' => $studentsData['degree'], 'created_by' => $this->id, 'updated_by' => $this->id]);
+            $degree = app(DegreeServiceInterface::class)
+                    ->createDegree(['name' => $studentsData['degree'], 'created_by' => $this->id, 'updated_by' => $this->id]);
 
-            // Guardar los datos de estudiantes y sus relaciones
+            // // Guardar los datos de estudiantes y sus relaciones
             foreach ($studentsData['students'] as $studentData) {
-                // Crear o encontrar el profesor (Teacher)
-                $roleDocente = Role::firstOrCreate(['name' => 'Docente-tesis']);
-                $teacher = app(UserServiceInterface::class)->createUserWithRole($studentData['teacher'], 'Docente-tesis');
 
-                $teacher->assignRole($roleDocente);
+                $teacher = app(UserServiceInterface::class)->createUserWithRole([
+                    'name' => $studentData['tutor_name'],
+                    'email' => 'd' . strtolower(str_replace(' ', '.', substr($studentData['tutor_name'], 0,4))) . '@uleam.edu.ec',
+                    'password' => 'DocUleamFCVT',
+                ], 'Docente-tesis', $this->id);
+
 
                 // Crear o encontrar la tesis (ThesisTitle)
                 $thesis = app(ThesisTitleServiceInterface::class)->createThesisTitle([
-                    'title' => $data->getThesisTitle()
+                    'title' => $studentData['thesis_title'],
                 ]);
 
-                // Crear el usuario del estudiante si no existe
-                $roleEstudiante = Role::firstOrCreate(['name' => 'Estudiante-tesis']);
-                $user = User::firstOrCreate(
-                    ['name' => $studentData['student_name']],
-                    [
-                        'name' => $studentData['student_name'],
-                        'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
-                        'password' => $studentData['student_dni'],
-                    ]
-                );
-                $user->assignRole($roleEstudiante);
+
+                $user = app(UserServiceInterface::class)->createUserWithRole([
+                    'name' => $studentData['student_name'],
+                    'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
+                    'password' => 'EstUleamFCVT',
+                ], 'Estudiante-tesis', $this->id);
+
 
                 // Crear o encontrar el estudiante (Student) y asociar tesis y profesor
                 Student::firstOrCreate(
@@ -133,21 +127,22 @@ class ProcessPdfThesisData implements ShouldQueue
                     ]
                 );
             }
-        });
-        event(new NotificationDataProcess(
-            message: 'Proceso completado correctamente',
-            status: 'success',
-            name_document: basename($this->filePath),
-            id: $this->id
-        ));
+
+        // event(new NotificationDataProcess(
+        //     message: 'Proceso completado correctamente',
+        //     status: 'success',
+        //     name_document: basename($this->filePath),
+        //     id: $this->id
+        // ));
     } catch (\Exception $e) {
+        FacadesLog::error($e->getMessage());
         // Emitir un evento en caso de error en el proceso
-        event(new NotificationDataProcess(
-            message: 'Error en el procesamiento de datos, verifique el archivo PDF',
-            status: 'error',
-            name_document: basename($this->filePath),
-            id: $this->id
-        ));
+        // event(new NotificationDataProcess(
+        //     message: 'Error en el procesamiento de datos, verifique el archivo PDF',
+        //     status: 'error',
+        //     name_document: basename($this->filePath),
+        //     id: $this->id
+        // ));
     }
     }
 
