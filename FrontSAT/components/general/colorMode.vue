@@ -2,8 +2,8 @@
 import { useThemeStore } from '~/stores/themes/theme';
 const themeStore = useThemeStore();
 const themes =[
-  { name: 'light',    icon: 'bi bi-brightness-high' },
-  { name: 'cupcake',   icon: 'bi-moon-stars-fill' },
+  { name: 'UleamTheme',    icon: 'bi bi-pc-display' },
+  { name: 'Themegrays',   icon: 'bi bi-upc' },
   { name: 'lemonade',  icon: 'bi-cup-hot-fill' },
 ]
 function getIcon(theme) {
@@ -16,10 +16,12 @@ function setTheme(data){
 }
 </script>
 <template>
-<div class="dropdown dropdown-bottom dropdown-end">
+
+
+<div class="dropdown dropdown-bottom dropdown-end ">
   
   <div tabindex="0" role="button" class=" m-1">
-    <button type="button" class=" btn-ghost rounded-box inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white ">
+    <button type="button" class=" btn-ghost rounded-box inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white tooltip tooltip-left " data-tip="cambiar de tema">
         <i :class="getIcon(themeStore.currentTheme)" style="font-size: 2rem;" ></i>
     </button>
   </div>
@@ -30,6 +32,9 @@ function setTheme(data){
     </a>
   </ul>
 </div>
+
+
+
 </template>
 <style>
 

@@ -1,8 +1,8 @@
 import { ref } from "vue";
 const themes=[
-    "light",
-    "cupcake",
-    "lemonade",
+    "UleamTheme",
+    "Themegrays",
+    "lemonade"
 ];
 export const currentTheme = ref(themes[0]);
 
