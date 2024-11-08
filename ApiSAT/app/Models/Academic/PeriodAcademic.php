@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Support\Facades\Auth;
 class PeriodAcademic extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;
@@ -15,6 +15,7 @@ class PeriodAcademic extends Model
     protected $primaryKey = 'period_academic_id';
     protected $table = 'period_academic';
     public $incrementing = false;
+
 
 
     protected $fillable = [

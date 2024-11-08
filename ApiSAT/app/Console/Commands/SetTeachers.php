@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Academic\Teacher\Teacher;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
+use App\Models\General\CategoryArea;
 use Illuminate\Console\Command;
 
 class SetTeachers extends Command
@@ -69,6 +71,20 @@ class SetTeachers extends Command
             if (!$user->hasRole('Docente-tesis')) {
                 $user->assignRole($role);
             }
+
+
+            $categories = CategoryArea::all()->random(3)->pluck('category_area_id');
+
+            // Crear Teacher con relacion a Category
+            $teacher = Teacher::firstOrCreate([
+                'teacher_id' => $user->id,
+            ]);
+
+            $teacher->categoryAreas()->sync($categories);
+
+
+
+
 
             $this->info("Docente {$user->name} creado/actualizado y rol asignado.");
         }

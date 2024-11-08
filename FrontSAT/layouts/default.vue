@@ -1,14 +1,12 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useThemeStore } from '~/stores/themes/theme';
 import LoadPage from '~/components/load/loadPage.vue';
 import { provide } from 'vue';
 import { useRequestAnimation } from '~/composables/useRequestAnimation';
 import LoadingAnimation from '~/components/load/LoadingAnimation.vue';
 const colorMode = useColorMode()
 
-const themeStore = useThemeStore();
 const requestAnimation = useRequestAnimation();
 provide('requestAnimation', requestAnimation);
 const route = useRoute();
@@ -24,7 +22,8 @@ const showHeaderFooter = computed(() => {
 </script>
 <template>
 
- <div class="layout "  :data-theme="themeStore.currentTheme" >
+ <div class="layout">
+  
     <ClientOnly>
       <div v-if="showHeaderFooter"  class="header">
         <HeaderComp></HeaderComp>

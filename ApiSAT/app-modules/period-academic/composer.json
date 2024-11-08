@@ -1,0 +1,24 @@
+{
+	"name": "modules/period-academic",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\PeriodAcademic\\": "src/",
+			"Modules\\PeriodAcademic\\Tests\\": "tests/",
+			"Modules\\PeriodAcademic\\Database\\Factories\\": "database/factories/",
+			"Modules\\PeriodAcademic\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\PeriodAcademic\\Providers\\PeriodAcademicServiceProvider"
+			]
+		}
+	}
+}

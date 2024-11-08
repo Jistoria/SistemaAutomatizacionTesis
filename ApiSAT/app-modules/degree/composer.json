@@ -1,0 +1,24 @@
+{
+	"name": "modules/degree",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\Degree\\": "src/",
+			"Modules\\Degree\\Tests\\": "tests/",
+			"Modules\\Degree\\Database\\Factories\\": "database/factories/",
+			"Modules\\Degree\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\Degree\\Providers\\DegreeServiceProvider"
+			]
+		}
+	}
+}

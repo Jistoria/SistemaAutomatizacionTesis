@@ -15,8 +15,12 @@
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
         "modules/auth": "*",
+        "modules/degree": "*",
         "modules/import-data-file": "*",
         "modules/menu": "*",
+        "modules/period-academic": "*",
+        "modules/thesis": "*",
+        "modules/user": "*",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {
