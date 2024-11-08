@@ -3,10 +3,9 @@
   import { Editor, EditorContent, useEditor } from '@tiptap/vue-3'
   import StarterKit from '@tiptap/starter-kit'
   import Underline from '@tiptap/extension-underline'
-  import { request } from '~/stores/request/request';
-  import { content } from '#tailwind-config';
-  const requestStore = request();
-
+  import Link from '@tiptap/extension-link';
+  import Paragraph from '@tiptap/extension-paragraph';
+  import Code from '@tiptap/extension-code';
 const props = defineProps({
     modelValue: {
         type: String,
@@ -14,26 +13,65 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 
-const editor = useEditor({
-    content: props.modelValue,
-    onUpdate({ editor }) {
-        console.log(editor.getHTML());
-        emit('update:modelValue', editor.getHTML())
-    },
-    editorProps:{
-        attributes: {
-            class: 'border border-gray-400 p-4 min-h-[12rem] max-h-[12rem] overflow-y-auto outline-none prose max-w-none',
-        },
-    },
-    extensions: [
-      StarterKit,
-      Underline,
-    ],
-})
+const editor = ref(null);
+const fileInput = ref(null); // Referencia al input de archivo
 
+onMounted(() => {
+    editor.value = new Editor({
+        editorProps:{
+            attributes: {
+                class: 'border border-gray-400 p-4 min-h-[12rem] max-h-[12rem] overflow-y-auto outline-none prose max-w-none',
+            },
+        },
+        content: props.modelValue,
+        onUpdate({ editor }) {
+            emit('update:modelValue', editor.getHTML())
+        },
+        extensions: [
+            StarterKit,
+            Underline,
+            Link.configure({
+                openOnClick: true,
+                defaultProtocol: 'https',
+            }),
+        ],
+    })
+})
+onBeforeUnmount(() => {
+  if (editor.value) {
+    editor.value.destroy()
+  }
+})
+function triggerFileUpload() {
+    fileInput.value.click();
+}
+async function handleFileUpload(event) {
+  const files = event.target.files;
+  if (!files || files.length === 0) return;
+  console.log(files)
+  for (let file of files) {
+    try {
+       //En espera de la peticion para que me traiga la url
+      // Simula un retraso como si estuviera subiendo el archivo al servidor
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                // Genera una URL de prueba para el archivo
+                const fakeUrl = `https://example.com/uploads/${file.name.replace(/\s+/g, '_')}`;
+                // Inserta el nombre del archivo como un enlace en el contenido del editor
+                editor.value
+                    .chain()
+                    .focus()
+                    .insertContent(`<a href="${fakeUrl}" target="_blank">${file.name}</a> `) // Añade un espacio después del enlace para separar los archivos
+                    .run();
+                console.log(`Archivo simulado subido: ${fakeUrl}`);
+        //salida
+    } catch (error) {
+      console.error('Error al simular la subida del archivo:', error);
+    }
+  }
+  fileInput.value.value = '';
+}
 </script>
 <template>
-    hola
     <div class="container mx-auto max-w-4x; my-8 ">
         <section v-if="editor" class="buttons flexs items-center flex-wrap gap-x-4 border border-gray-400">
             <div class="grid grid-cols-2 gap-4">
@@ -67,6 +105,10 @@ const editor = useEditor({
                     </button>
                     <button @click="editor.chain().focus().redo().run()" :disabled="!editor.can().chain().focus().redo().run()" class="p-1">
                         <i class="bi bi-arrow-clockwise icon_size"></i>
+                    </button>
+                    <button @click="triggerFileUpload" >
+                        <input type="file" @change="handleFileUpload" style="display: none" ref="fileInput" />
+                        <i class="bi bi-file-earmark-arrow-up-fill icon_size"></i>
                     </button>
                 </div>
                 <div  class="flex justify-end">

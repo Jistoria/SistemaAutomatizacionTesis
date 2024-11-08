@@ -15,6 +15,10 @@
     "@nuxtjs/i18n": "^8.5.5",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@pinia/nuxt": "^0.5.5",
+    "@tiptap/extension-code": "^2.9.1",
+    "@tiptap/extension-collaboration": "^2.9.1",
+    "@tiptap/extension-link": "^2.9.1",
+    "@tiptap/extension-paragraph": "^2.9.1",
     "@tiptap/extension-underline": "^2.9.1",
     "@tiptap/pm": "^2.9.1",
     "@tiptap/starter-kit": "^2.9.1",
@@ -31,7 +35,10 @@
     "pusher-js": "^8.4.0-rc2",
     "sweetalert2": "^11.14.3",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "y-prosemirror": "^1.2.12",
+    "y-websocket": "^2.0.4",
+    "yjs": "^13.6.20"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",

@@ -10,6 +10,7 @@ import StudentPanelScreen from './panel/student_panel/studentPanelScreen.vue';
 import TeacherPanelScreen from './panel/teacher_panel/teacherPanelScreen.vue';
 import CourtPanelScreen from './panel/court_panel/courtPanelScreen.vue';
 import RequestModal from '~/components/modal/requestModal.vue';
+import UploadFiles from '~/components/general/uploadFiles.vue';
 const route = useRoute();
 const router = useRouter();
 const rol_main = ref('');
@@ -38,6 +39,7 @@ const Logout = async () => {
         <client-only>
             <button v-if="authStore.session" @click="Logout()">Logout</button>
         </client-only> -->
+        <RequestModal></RequestModal>
 
         <div v-if="rolSelect == roles.rol1" >
             <AdminTesisPanelScreen></AdminTesisPanelScreen>
