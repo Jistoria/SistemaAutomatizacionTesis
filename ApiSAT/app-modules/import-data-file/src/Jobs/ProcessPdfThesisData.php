@@ -4,6 +4,7 @@ namespace Modules\ImportDataFile\Jobs;
 
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
+use App\Models\Academic\Thesis\ThesisPhase;
 use App\Models\Academic\Thesis\ThesisProcess;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +22,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Modules\ImportDataFile\DataTransferObjects\PdfThesisData;
 use Modules\PeriodAcademic\Services\PeriodAcademicService;
+use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
 use Modules\Thesis\Contracts\ThesisProcessServiceInterface;
+use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
 use Modules\User\Contracts\StudentServiceInterface;
 use Modules\User\Contracts\UserServiceInterface;
 
@@ -80,6 +83,10 @@ class ProcessPdfThesisData implements ShouldQueue
                     'password' => 'DocUleamFCVT',
                 ], 'Docente-tesis', $this->id);
 
+                Teacher::firstOrCreate([
+                    'teacher_id' => $teacher->id,
+                ]);
+
 
                 // Crear o encontrar la tesis (ThesisTitle)
                 $thesis = app(ThesisTitleServiceInterface::class)->createThesisTitle([
@@ -106,7 +113,7 @@ class ProcessPdfThesisData implements ShouldQueue
                 ], $user->id);
 
                 // Crear la relación tutor-estudiante-tesis-periodo académico
-                app(ThesisProcessServiceInterface::class)->firstOrCreateThesisProcess([
+                $thesis_process = app(ThesisProcessServiceInterface::class)->firstOrCreateThesisProcess([
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
@@ -114,6 +121,25 @@ class ProcessPdfThesisData implements ShouldQueue
                     'date_start' => $periodAcademic->date_start,
                     'date_end' => $periodAcademic->date_end
                 ], $this->id);
+
+                $phase = app(ThesisPhasesServiceInterface::class)->getThesisPhaseByOrder(1,1);
+
+                $phase_student = app(ThesisProcessStudentServiceInterface::class)->registerThesisProcessPhase([
+                    'thesis_process_id' => $thesis_process->thesis_process_id,
+                    'thesis_phases_id' => $phase->thesis_phases_id,
+                    'approval' => false,
+                    'state_now' => 'En proceso',
+                    'teacher_id' => $teacher->id,
+                    'student_id' => $user->id,
+                    'thesis_id' => $thesis->thesis_id,
+                    'period_academic_id' => $periodAcademic->period_academic_id,
+                    'date_start' => $periodAcademic->date_start,
+                    'date_end' => $periodAcademic->date_end,
+                ], $this->id);
+
+                app(ThesisProcessStudentServiceInterface::class)->aprovedThesisProcessPhase($phase_student->thesis_process_phases_id, $this->id);
+
+
             }
 
         event(new NotificationDataProcess(

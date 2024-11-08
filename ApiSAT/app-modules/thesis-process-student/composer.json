@@ -1,0 +1,24 @@
+{
+	"name": "modules/thesis-process-student",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\ThesisProcessStudent\\": "src/",
+			"Modules\\ThesisProcessStudent\\Tests\\": "tests/",
+			"Modules\\ThesisProcessStudent\\Database\\Factories\\": "database/factories/",
+			"Modules\\ThesisProcessStudent\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\ThesisProcessStudent\\Providers\\ThesisProcessStudentServiceProvider"
+			]
+		}
+	}
+}

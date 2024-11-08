@@ -3,8 +3,10 @@
 namespace Modules\Thesis\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
 use Modules\Thesis\Contracts\ThesisProcessServiceInterface;
 use Modules\Thesis\Contracts\ThesisTitleServiceInterface;
+use Modules\Thesis\Services\ThesisPhasesService;
 use Modules\Thesis\Services\ThesisProcessService;
 use Modules\Thesis\Services\ThesisTitleService;
 
@@ -20,6 +22,11 @@ class ThesisServiceProvider extends ServiceProvider
         $this->app->bind(
             ThesisProcessServiceInterface::class,
             ThesisProcessService::class
+        );
+
+        $this->app->bind(
+           ThesisPhasesServiceInterface::class,
+            ThesisPhasesService::class
         );
 	}
 

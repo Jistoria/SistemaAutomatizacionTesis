@@ -20,6 +20,8 @@
         "modules/menu": "*",
         "modules/period-academic": "*",
         "modules/thesis": "*",
+        "modules/thesis-phases": "*",
+        "modules/thesis-process-student": "*",
         "modules/user": "*",
         "spatie/laravel-permission": "^6.9"
     },

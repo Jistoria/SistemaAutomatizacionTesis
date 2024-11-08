@@ -34,7 +34,7 @@ return new class() extends Migration {
 		});
 
 		Schema::create('students', function(Blueprint $table) {
-			$table->uuid('student_id')->references('id')->on('users');
+			$table->uuid('student_id')->references('id')->on('users')->primary();
             $table->uuid('thesis_id');
             $table->uuid('degree_id');
             $table->string('dni');
@@ -44,7 +44,7 @@ return new class() extends Migration {
 		});
 
         Schema::create('teachers', function(Blueprint $table) {
-            $table->uuid('teacher_id')->references('id')->on('users');
+            $table->uuid('teacher_id')->references('id')->on('users')->primary();
             $table->timestamps();
         });
 
