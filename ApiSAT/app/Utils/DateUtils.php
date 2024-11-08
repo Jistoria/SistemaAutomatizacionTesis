@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\ImportDataFile\Utils;
+namespace App\Utils;
 
 class DateUtils
 {

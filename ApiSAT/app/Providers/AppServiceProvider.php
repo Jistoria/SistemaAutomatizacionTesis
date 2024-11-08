@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Academic\PeriodAcademic;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Modules\PeriodAcademic\Contracts\PeriodAcademicServiceInterface;
+use Modules\PeriodAcademic\Services\PeriodAcademicService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,9 +17,7 @@ class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
     public function register(): void
-    {
-        //
-    }
+    {}
 
     /**
      * Bootstrap any application services.

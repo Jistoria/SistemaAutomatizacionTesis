@@ -51,7 +51,7 @@ class SetMenus extends Command
             [
             'name' => 'Tribunales',
             'url' => '/panel/list/listCourt',
-            'icon' => 'bi bi-ui-checks',
+            'icon' => '',
             'orden' => 3,
             ],
             [

@@ -24,9 +24,6 @@ class Student extends Model
         'degree_id',
         'dni',
         'enrollment_date',
-        'created_by_user',
-        'updated_by_user',
-        'deleted_by_user',
     ];
 
     // Relación uno a uno con el usuario (user)

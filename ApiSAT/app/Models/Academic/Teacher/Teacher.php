@@ -3,6 +3,7 @@
 namespace App\Models\Academic\Teacher;
 
 use App\Models\Auth\User;
+use App\Models\General\CategoryArea;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Teacher extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use HasFactory, HasUuids;
 
     protected $primaryKey = 'teacher_id';
     public $incrementing = false;
@@ -18,15 +19,17 @@ class Teacher extends Model
 
     protected $fillable = [
         'teacher_id',
-        'created_by_user',
-        'updated_by_user',
-        'deleted_by_user',
     ];
 
     // Relación uno a uno con el usuario (user)
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'teacher_id');
+    }
+
+    public function categoryAreas()
+    {
+        return $this->belongsToMany(CategoryArea::class, 'category_teacher', 'teacher_id', 'category_area_id');
     }
 
     // Relación con el modelo User (creador)

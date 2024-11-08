@@ -37,7 +37,9 @@ class InitServiceApi extends Command
         // Ejecutar el comandos para los roles y permisos
         $this->call('app:set-roles');
         $this->call('app:set-admin-tesis');
+        $this->call('app:set-categories');
         $this->call('app:set-teachers');
+
 
         //Generar clave Passport
         $this->call('passport:client', ['--personal' => true]);

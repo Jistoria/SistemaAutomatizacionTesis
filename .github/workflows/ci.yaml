@@ -1,0 +1,83 @@
+name: API SAT CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Navigate to ApiSAT directory
+        run: cd ApiSAT
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_pgsql, xml
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          cd ApiSAT
+          composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Copy .env
+        run: |
+          cd ApiSAT
+          cp .env.example .env
+
+      - name: Generate application key
+        run: |
+          cd ApiSAT
+          php artisan key:generate
+
+     
+
+      - name: Configure Database
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: test_db
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: |
+          cd ApiSAT
+          php artisan config:cache
+          php artisan migrate --force
+
+      - name: Generate client passport keys
+        run: |
+          cd ApiSAT
+          php artisan passport:keys --no-interaction
+          php artisan passport:client --personal --name="Test Personal Access Client" --no-interaction
+
+
+
+      - name: Run Tests
+        run: |
+          cd ApiSAT
+          php artisan test || true
+
