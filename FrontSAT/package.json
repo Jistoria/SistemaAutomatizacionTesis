@@ -15,6 +15,10 @@
     "@nuxtjs/i18n": "^8.5.5",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@pinia/nuxt": "^0.5.5",
+    "@tiptap/extension-underline": "^2.9.1",
+    "@tiptap/pm": "^2.9.1",
+    "@tiptap/starter-kit": "^2.9.1",
+    "@tiptap/vue-3": "^2.9.1",
     "@vite-pwa/nuxt": "^0.10.5",
     "axios": "^1.7.7",
     "bootstrap-icons": "^1.11.3",
@@ -30,6 +34,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
     "daisyui": "^4.12.14",
     "nuxt-auth-sanctum": "^0.5.0",
     "nuxt-translation-manager": "^1.1.1",
