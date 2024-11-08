@@ -1,0 +1,11 @@
+{
+  "car": "cotxe | cotxes",
+  "comment-multi": "Test comentari",
+  "comment-test": "Test comentari",
+  "email-address": "correu electrònic és: {email}",
+  "examples": "Exemples",
+  "html-msg": "Aquest text es representa amb <strong class='text-red-500'>HTML</strong>",
+  "html-warning": "Localitzar HTML arbitrari de manera dinàmica al vostre lloc pot ser molt perillós perquè pot provocar fàcilment vulnerabilitats XSS. Utilitzeu només la interpolació HTML en contingut de confiança i mai en contingut proporcionat per l'usuari.",
+  "language": "Idioma",
+  "pluralization": "Pluralització"
+}
