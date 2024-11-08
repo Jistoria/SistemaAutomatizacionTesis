@@ -1,28 +1,24 @@
 <script setup>
-import { Modal } from 'flowbite';
-
-import { useColorMode } from '#imports';
-const colorMode = useColorMode()
-const colorModeOpen = ref(false)
-function closeProfile() {
-    colorModeOpen.value = !colorModeOpen.value;
-}
-const themes = [
-  { name: 'system', icon: 'bi-cloud-moon' },
-  { name: 'dark', icon: 'bi-moon-stars-fill' },
-  { name: 'sepia', icon: 'bi-cup-hot-fill' }
-];
+import { useThemeStore } from '~/stores/themes/theme';
+const themeStore = useThemeStore();
+const themes =[
+  { name: 'UleamTheme',    icon: 'bi bi-pc-display' },
+  { name: 'Themegrays',   icon: 'bi bi-upc' },
+  { name: 'lemonade',  icon: 'bi-cup-hot-fill' },
+]
 function getIcon(theme) {
   const found = themes.find((item) => item.name === theme);
   return found ? found.icon : 'bi-question-circle';
 }
 </script>
 <template>
-<div class="dropdown dropdown-bottom dropdown-end">
+
+
+<div class="dropdown dropdown-bottom dropdown-end ">
   
   <div tabindex="0" role="button" class=" m-1">
     <button type="button" class=" btn-ghost rounded-box inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white ">
-        <i :class="getIcon(colorMode.preference)" style="font-size: 2rem;" ></i>
+        <i :class="getIcon(themeStore.currentTheme)" style="font-size: 2rem;" ></i>
     </button>
   </div>
 
@@ -32,7 +28,6 @@ function getIcon(theme) {
     </a>
   </ul>
 </div>
-
 </template>
 <style>
 

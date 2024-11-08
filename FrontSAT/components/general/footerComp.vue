@@ -4,9 +4,9 @@
 
 </script>
 <template>
-    <footer class="bg_Storm_Dust footer footer-center text-base-content p-4">
-        <aside >
-            <p>Todos los derechos reservados</p>
+    <footer class="bg-secondary  footer footer-center p-4">
+        <aside  >
+            <p class="text-secondary-content ">Todos los derechos reservados</p>
         </aside>       
     </footer>
 </template>
