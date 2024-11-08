@@ -1,5 +1,6 @@
 <script setup>
 import { auth } from '~/stores/auth/auth';
+import { roles } from '~/composables/roles';
 const { $echoReady } = useNuxtApp();
 const localePath = useLocalePath()
 const authStore = auth()
@@ -15,13 +16,7 @@ const route = useRoute();
 const router = useRouter();
 const rol_main = ref('');
 const rolSelect = ref('')
-const roles = {
-        rol1: 'Administrador-tesis',
-        rol2: 'Tribunal',
-        rol2: 'Secretaría',
-        rol3: 'Docente',
-        rol4: 'Estudiante'
-}
+
 onMounted(async () => {
     await $echoReady
     rolSelect.value = authStore.role[0]
@@ -40,7 +35,7 @@ const Logout = async () => {
             <button v-if="authStore.session" @click="Logout()">Logout</button>
         </client-only> -->
         <RequestModal></RequestModal>
-
+        <Observation></Observation>
         <div v-if="rolSelect == roles.rol1" >
             <AdminTesisPanelScreen></AdminTesisPanelScreen>
         </div>

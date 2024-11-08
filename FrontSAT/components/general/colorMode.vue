@@ -10,6 +10,9 @@ function getIcon(theme) {
   const found = themes.find((item) => item.name === theme);
   return found ? found.icon : 'bi-question-circle';
 }
+function setTheme(data){
+  themeStore.updateTheme(data);
+}
 </script>
 <template>
 
@@ -23,8 +26,8 @@ function getIcon(theme) {
   </div>
 
   <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] p-3 shadow">
-    <a  v-for="theme in themes"  class="mt-2 cursor-pointer rounded-box   hover:bg-slate-100 p-3"   @click="colorMode.preference = theme.name">
-       <i   :class="theme.icon" style="font-size: 1.5rem;"></i>
+    <a  v-for="theme in themes"  class="mt-2 cursor-pointer rounded-box   hover:bg-slate-100 p-3" >
+       <i   @click="setTheme(theme.name)"  :class="theme.icon" style="font-size: 1.5rem;"></i>
     </a>
   </ul>
 </div>

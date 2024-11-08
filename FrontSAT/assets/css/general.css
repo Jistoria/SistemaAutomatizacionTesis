@@ -24,3 +24,19 @@
 .icon_size{
     font-size: 1.5rem;
 }
+.icon_size_2{
+    font-size: 1.2rem;
+}
+.border_b{
+    border: 5px solid blue;
+}
+
+.border_black{
+    border: 5px solid black;
+}
+.border_g{
+    border: 5px solid green;
+}
+.border_v{
+    border: 5px solid violet;
+}
