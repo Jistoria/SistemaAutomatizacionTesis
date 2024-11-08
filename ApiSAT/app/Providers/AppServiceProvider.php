@@ -17,11 +17,7 @@ class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
     public function register(): void
-    {
-        $this->app->bind(PeriodAcademicServiceInterface::class, function (Application $app) {
-            return new PeriodAcademicService($app->make(PeriodAcademic::class));
-        });
-    }
+    {}
 
     /**
      * Bootstrap any application services.

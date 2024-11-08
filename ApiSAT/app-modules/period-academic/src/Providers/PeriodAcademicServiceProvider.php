@@ -19,9 +19,12 @@ class PeriodAcademicServiceProvider extends ServiceProvider
         ],
     ];
 	public function register(): void
-{
-
-}
+    {
+        $this->app->bind(
+            PeriodAcademicServiceInterface::class,
+            PeriodAcademicService::class
+        );
+    }
 
 	public function boot(): void
 	{

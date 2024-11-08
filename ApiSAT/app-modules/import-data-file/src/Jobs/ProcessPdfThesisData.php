@@ -21,6 +21,8 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Modules\ImportDataFile\DataTransferObjects\PdfThesisData;
 use Modules\PeriodAcademic\Services\PeriodAcademicService;
+use Modules\Thesis\Contracts\ThesisProcessServiceInterface;
+use Modules\User\Contracts\StudentServiceInterface;
 use Modules\User\Contracts\UserServiceInterface;
 
 class ProcessPdfThesisData implements ShouldQueue
@@ -93,56 +95,41 @@ class ProcessPdfThesisData implements ShouldQueue
 
 
                 // Crear o encontrar el estudiante (Student) y asociar tesis y profesor
-                Student::firstOrCreate(
-                    ['student_id' => $user->id, 'dni' => $studentData['student_dni']],
-                    [
-                        'student_id' => $user->id,
-                        'dni' => $studentData['student_dni'],
-                        'thesis_id' => $thesis->thesis_id,
-                        'degree_id' => $degree->degree_id,
-                        'enrollment_date' => now(),
-                        'created_by_user' => $this->id,
-                        'updated_by_user' => $this->id
-                    ]
-                );
+                app(StudentServiceInterface::class)->firstOrCreateStudent([
+                    'dni' => $studentData['student_dni'],
+                    'student_id' => $user->id,
+                    'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
+                    'name' => $studentData['student_name'],
+                    'thesis_id' => $thesis->thesis_id,
+                    'degree_id' => $degree->degree_id,
+                    'enrollment_date' => now(),
+                ], $user->id);
 
                 // Crear la relación tutor-estudiante-tesis-periodo académico
-                ThesisProcess::firstOrCreate(
-                    [
-                        'teacher_id' => $teacher->id,
-                        'student_id' => $user->id,
-                        'thesis_id' => $thesis->thesis_id,
-                        'period_academic_id' => $periodAcademic->period_academic_id,
-                    ],
-                    [
-                        'teacher_id' => $teacher->id,
-                        'student_id' => $user->id,
-                        'thesis_id' => $thesis->thesis_id,
-                        'period_academic_id' => $periodAcademic->period_academic_id,
-                        'state_now' => 'En proceso',
-                        'date_start' => $data->dataDates['start_date'],
-                        'date_end' => $data->dataDates['end_date'],
-                        'created_by_user' => $this->id,
-                        'updated_by_user' => $this->id
-                    ]
-                );
+                app(ThesisProcessServiceInterface::class)->firstOrCreateThesisProcess([
+                    'teacher_id' => $teacher->id,
+                    'student_id' => $user->id,
+                    'thesis_id' => $thesis->thesis_id,
+                    'period_academic_id' => $periodAcademic->period_academic_id,
+                    'date_start' => $periodAcademic->date_start,
+                    'date_end' => $periodAcademic->date_end
+                ], $this->id);
             }
 
-        // event(new NotificationDataProcess(
-        //     message: 'Proceso completado correctamente',
-        //     status: 'success',
-        //     name_document: basename($this->filePath),
-        //     id: $this->id
-        // ));
+        event(new NotificationDataProcess(
+            message: 'Proceso completado correctamente',
+            status: 'success',
+            name_document: basename($this->filePath),
+            id: $this->id
+        ));
     } catch (\Exception $e) {
         FacadesLog::error($e->getMessage());
-        // Emitir un evento en caso de error en el proceso
-        // event(new NotificationDataProcess(
-        //     message: 'Error en el procesamiento de datos, verifique el archivo PDF',
-        //     status: 'error',
-        //     name_document: basename($this->filePath),
-        //     id: $this->id
-        // ));
+        event(new NotificationDataProcess(
+            message: 'Error en el procesamiento de datos, verifique el archivo PDF',
+            status: 'error',
+            name_document: basename($this->filePath),
+            id: $this->id
+        ));
     }
     }
 
