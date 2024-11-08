@@ -1,11 +1,13 @@
   
 <script setup>
-  import { Editor, EditorContent, useEditor } from '@tiptap/vue-3'
-  import StarterKit from '@tiptap/starter-kit'
-  import Underline from '@tiptap/extension-underline'
-  import Link from '@tiptap/extension-link';
-  import Paragraph from '@tiptap/extension-paragraph';
-  import Code from '@tiptap/extension-code';
+import { Editor, EditorContent, useEditor } from '@tiptap/vue-3'
+import StarterKit from '@tiptap/starter-kit'
+import Underline from '@tiptap/extension-underline'
+import Link from '@tiptap/extension-link';
+import Paragraph from '@tiptap/extension-paragraph';
+import Code from '@tiptap/extension-code';
+import { request } from '~/stores/request/request';
+const requestStore = request();
 const props = defineProps({
     modelValue: {
         type: String,
@@ -14,7 +16,8 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const editor = ref(null);
-const fileInput = ref(null); // Referencia al input de archivo
+const fileInput = ref(null); 
+const count = ref(1);
 
 onMounted(() => {
     editor.value = new Editor({
@@ -45,14 +48,16 @@ onBeforeUnmount(() => {
 function triggerFileUpload() {
     fileInput.value.click();
 }
+
 async function handleFileUpload(event) {
   const files = event.target.files;
-  if (!files || files.length === 0) return;
-  console.log(files)
+  count.value = count.value + files.length;
+  if (count.value === 3) return;
+
   for (let file of files) {
     try {
        //En espera de la peticion para que me traiga la url
-      // Simula un retraso como si estuviera subiendo el archivo al servidor
+       // Simula un retraso como si estuviera subiendo el archivo al servidor
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 // Genera una URL de prueba para el archivo
                 const fakeUrl = `https://example.com/uploads/${file.name.replace(/\s+/g, '_')}`;
@@ -70,6 +75,7 @@ async function handleFileUpload(event) {
   }
   fileInput.value.value = '';
 }
+
 </script>
 <template>
     <div class="container mx-auto max-w-4x; my-8 ">
@@ -124,8 +130,5 @@ async function handleFileUpload(event) {
     </div>
 </template>
 <style>
-.icon_size{
-    font-size: 1.5rem;
-}
 
 </style>

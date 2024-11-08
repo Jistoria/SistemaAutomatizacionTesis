@@ -70,7 +70,7 @@
           <div class="flex justify-end space-x-2">
             <button
               @click="uploadData"
-              class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 flex items-center space-x-2"
+              class="bg-primary text-white font-semibold py-2 px-4 rounded hover:bg-primary/50 flex items-center space-x-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

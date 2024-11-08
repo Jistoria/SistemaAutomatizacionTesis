@@ -1,17 +1,33 @@
-import { requestService } from "~/services/RequestModel/RequestService"
+import { requestService } from "~/services/RequestModel/requestService"
 
 export const request = defineStore('request',{
     state: () =>({
-        requests: '',
+
     }),
     actions:{
         async  sendRequest(data){
             try {
                 console.log(data)
-                //await requestService.sendrequest(this.requests);    
+                await requestService.sendrequest(data);    
             } catch (error) {
-                console.log(data);
+                console.log(error);
             }
-        }
+        },
+        async setDocument(data){
+            try {
+                await requestService.setDocument(data);
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
+        async deleteRequest(data){
+            try {
+                await requestService.deleteDocument(data);
+            } catch (error) {
+                console.log(error);
+
+            }
+        },
     }   
 })

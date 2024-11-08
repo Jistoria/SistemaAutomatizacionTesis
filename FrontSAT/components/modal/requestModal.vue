@@ -1,20 +1,26 @@
 <script setup>
 
 import TiptapEditor from '../general/tiptap-editor.vue';
+import { request } from '~/stores/request/request';
+const requestStore = request();
 
 const form = ref({
     title:null,
     content:'<h3>....</h3>',
 })
 function sendRequest(){
-    //peticion de enviar documento
+    requestStore.sendRequest(form.value.content);
+
     console.log(form.value.content);
 }
 </script>
 <template>
     <ClientOnly>
-        <button class="btn" onclick="my_modal_4.showModal()">open modal</button>
-        <dialog id="my_modal_4" class="modal">
+        <button class="btn" onclick="modal_request.showModal()">
+            <i class="bi bi-envelope-fill icon_size"></i>
+            Enviar Solicitud
+        </button>
+        <dialog id="modal_request" class="modal">
         <div class="modal-box w-11/12 max-w-5xl">
             <h3 class="text-lg font-bold text-center">Envio de solicitud</h3>
             <p class="py-2">Razon de solicitud:</p>
@@ -38,7 +44,5 @@ function sendRequest(){
     </ClientOnly>
 </template>
 <style>
-.border_r{
-    border-right: 5px solid red;
-}
+
 </style>
