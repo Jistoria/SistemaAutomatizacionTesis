@@ -122,22 +122,36 @@ class ProcessPdfThesisData implements ShouldQueue
                     'date_end' => $periodAcademic->date_end
                 ], $this->id);
 
-                $phase = app(ThesisPhasesServiceInterface::class)->getThesisPhaseByOrder(1,1);
+                $phase = app(ThesisPhasesServiceInterface::class);
+                $phase_1 = $phase->getThesisPhaseByOrder(1,1);
+                $thesis_process_phase_student = app(ThesisProcessStudentServiceInterface::class);
 
-                $phase_student = app(ThesisProcessStudentServiceInterface::class)->registerThesisProcessPhase([
+                $phase_student = $thesis_process_phase_student->registerThesisProcessPhase([
                     'thesis_process_id' => $thesis_process->thesis_process_id,
-                    'thesis_phases_id' => $phase->thesis_phases_id,
+                    'thesis_phases_id' => $phase_1->thesis_phases_id,
                     'approval' => false,
                     'state_now' => 'En proceso',
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
                     'period_academic_id' => $periodAcademic->period_academic_id,
-                    'date_start' => $periodAcademic->date_start,
-                    'date_end' => $periodAcademic->date_end,
                 ], $this->id);
 
-                app(ThesisProcessStudentServiceInterface::class)->aprovedThesisProcessPhase($phase_student->thesis_process_phases_id, $this->id);
+                $thesis_process_phase_student->aprovedThesisProcessPhase($phase_student->thesis_process_phases_id, $this->id);
+
+                $phase_2 = $phase->getThesisPhaseByOrder(2,1);
+                $thesis_process_phase_student->registerThesisProcessPhase([
+                    [
+                    'thesis_process_id' => $thesis_process->thesis_process_id,
+                    'thesis_phases_id' => $phase_2->thesis_phases_id,
+                    'approval' => false,
+                    'state_now' => 'En proceso',
+                    'teacher_id' => $teacher->id,
+                    'student_id' => $user->id,
+                    'thesis_id' => $thesis->thesis_id,
+                    'period_academic_id' => $periodAcademic->period_academic_id,
+                    ], $this->id
+                ]);
 
 
             }
