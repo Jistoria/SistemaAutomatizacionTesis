@@ -39,7 +39,8 @@ class InitServiceApi extends Command
         $this->call('app:set-admin-tesis');
         $this->call('app:set-categories');
         $this->call('app:set-teachers');
-
+        $this->call('app:set-modules');
+        $this->call('app:set-menus');
 
         //Generar clave Passport
         $this->call('passport:client', ['--personal' => true]);

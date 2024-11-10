@@ -1,0 +1,24 @@
+{
+	"name": "modules/thesis-phases",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\ThesisPhases\\": "src/",
+			"Modules\\ThesisPhases\\Tests\\": "tests/",
+			"Modules\\ThesisPhases\\Database\\Factories\\": "database/factories/",
+			"Modules\\ThesisPhases\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\ThesisPhases\\Providers\\ThesisPhasesServiceProvider"
+			]
+		}
+	}
+}

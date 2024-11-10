@@ -4,13 +4,16 @@ namespace Modules\ImportDataFile\Jobs;
 
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
+use App\Models\Academic\Thesis\ThesisPhase;
 use App\Models\Academic\Thesis\ThesisProcess;
 use Illuminate\Bus\Queueable;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Modules\Auth\Services\AuthService;
 use Modules\Degree\Contracts\DegreeServiceInterface;
@@ -21,7 +24,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Modules\ImportDataFile\DataTransferObjects\PdfThesisData;
 use Modules\PeriodAcademic\Services\PeriodAcademicService;
+use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
 use Modules\Thesis\Contracts\ThesisProcessServiceInterface;
+use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
 use Modules\User\Contracts\StudentServiceInterface;
 use Modules\User\Contracts\UserServiceInterface;
 
@@ -80,6 +85,10 @@ class ProcessPdfThesisData implements ShouldQueue
                     'password' => 'DocUleamFCVT',
                 ], 'Docente-tesis', $this->id);
 
+                Teacher::firstOrCreate([
+                    'teacher_id' => $teacher->id,
+                ]);
+
 
                 // Crear o encontrar la tesis (ThesisTitle)
                 $thesis = app(ThesisTitleServiceInterface::class)->createThesisTitle([
@@ -106,7 +115,7 @@ class ProcessPdfThesisData implements ShouldQueue
                 ], $user->id);
 
                 // Crear la relación tutor-estudiante-tesis-periodo académico
-                app(ThesisProcessServiceInterface::class)->firstOrCreateThesisProcess([
+                $thesis_process = app(ThesisProcessServiceInterface::class)->firstOrCreateThesisProcess([
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
@@ -114,6 +123,40 @@ class ProcessPdfThesisData implements ShouldQueue
                     'date_start' => $periodAcademic->date_start,
                     'date_end' => $periodAcademic->date_end
                 ], $this->id);
+
+                $phase = app(ThesisPhasesServiceInterface::class);
+                $phase_1 = $phase->getThesisPhaseByOrder(1,1);
+                $thesis_process_phase_student = app(ThesisProcessStudentServiceInterface::class);
+
+                $phase_student = $thesis_process_phase_student->registerThesisProcessPhase([
+                    'thesis_process_id' => $thesis_process->thesis_process_id,
+                    'thesis_phases_id' => $phase_1->thesis_phases_id,
+                    'approval' => false,
+                    'state_now' => 'En proceso',
+                    'teacher_id' => $teacher->id,
+                    'student_id' => $user->id,
+                    'thesis_id' => $thesis->thesis_id,
+                    'period_academic_id' => $periodAcademic->period_academic_id,
+                ], $this->id);
+
+                $thesis_process_phase_student->aprovedThesisProcessPhase($phase_student->thesis_process_phases_id, $this->id);
+
+                $phase_2 = $phase->getThesisPhaseByOrder(1,2);
+
+                $thesis_process_phase_student->registerThesisProcessPhase(
+                    [
+                    'thesis_process_id' => $thesis_process->thesis_process_id,
+                    'thesis_phases_id' => $phase_2->thesis_phases_id,
+                    'approval' => false,
+                    'state_now' => 'En proceso',
+                    'teacher_id' => $teacher->id,
+                    'student_id' => $user->id,
+                    'thesis_id' => $thesis->thesis_id,
+                    'period_academic_id' => $periodAcademic->period_academic_id,
+                    ], $this->id
+                );
+
+
             }
 
         event(new NotificationDataProcess(
