@@ -143,8 +143,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
     {
         $thesisProcess = $this->findThesisProcessById($studentId);
         $phasesGroupedByModule = $thesisProcess->getStudentPhasesGroupedByModule();
-
-        return $phasesGroupedByModule->array();
+        return $phasesGroupedByModule;
 
     }
 

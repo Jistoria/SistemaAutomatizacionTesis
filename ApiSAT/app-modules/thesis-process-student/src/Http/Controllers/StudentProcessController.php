@@ -14,11 +14,10 @@ class StudentProcessController
     )
     {}
 
-    public function getDataDashboard(Request $request)
+    public function getProcessDataDashboard(Request $request)
     {
         try{
             $processPhase = $this->studentPhaseService->dataDashboard($request->user()->id);
-
             return ApiResponse::success($processPhase);
         }catch(\Exception $e){
             return ApiResponse::error($e->getMessage());
