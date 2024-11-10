@@ -33,6 +33,21 @@ class MenusService {
         }
 
     }
+    async getDataDashborad(){
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient('/auth/menus',{
+                method:'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
 }
 

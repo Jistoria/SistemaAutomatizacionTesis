@@ -34,8 +34,16 @@ const Logout = async () => {
         <client-only>
             <button v-if="authStore.session" @click="Logout()">Logout</button>
         </client-only> -->
-        <RequestModal></RequestModal>
-        <Observation></Observation>
+        <!-- <RequestModal></RequestModal>
+        <Observation></Observation> -->
+        <div >
+            <div class="container mx-auto  ">
+                <DataDashboard data="estudiantes"></DataDashboard>
+                <DataDashboard data="tribunales"></DataDashboard>
+
+            </div>
+        </div>
+
         <div v-if="rolSelect == roles.rol1" >
             <AdminTesisPanelScreen></AdminTesisPanelScreen>
         </div>
