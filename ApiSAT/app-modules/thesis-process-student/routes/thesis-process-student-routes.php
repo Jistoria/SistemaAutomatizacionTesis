@@ -8,5 +8,8 @@ Route::prefix('thesis-process-student')->middleware(['auth:api','role:Estudiante
 ->group(function () {
     Route::get('get-data', [StudentPhaseController::class, 'getProcessAllData']);
 
-    Route::get('get-data-dashboard', [StudentProcessController::class, 'getProcessDataDashboard']);
+    Route::get('thesis-phases-student', [StudentProcessController::class, 'getThesisPhasesStudent']);
+
+    Route::get('dashboard', [StudentProcessController::class, 'getDashboard']);
+
 });

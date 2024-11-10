@@ -5,6 +5,7 @@ namespace Modules\ThesisProcessStudent\Services;
 use App\Models\Academic\Thesis\ThesisPhase;
 use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Academic\Thesis\ThesisProcessPhases;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
@@ -139,13 +140,60 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         return $isInSequence;
     }
 
-    public function dataDashboard(string $studentId) : array
+    public function phasesGroupByModule(string $studentId) : Collection
     {
         $thesisProcess = $this->findThesisProcessById($studentId);
         $phasesGroupedByModule = $thesisProcess->getStudentPhasesGroupedByModule();
         return $phasesGroupedByModule;
-
     }
+
+    public function dataDashboard(string $studentId): array
+    {
+        // Obtener el proceso del estudiante, agrupado por módulo y fase
+        $data_student = $this->phasesGroupByModule($studentId);
+
+        // Obtener todos los módulos y sus fases
+        $phase_module = app(ThesisPhasesServiceInterface::class)->getPhasesModule();
+
+        // Formato de salida
+        $result = [];
+
+        foreach ($phase_module as $moduleName => $phases) {
+            $moduleData = [
+                'module_name' => $moduleName,
+                'module_order' => $phases->first()->module_order,
+                'phases' => []
+            ];
+
+            foreach ($phases as $phase) {
+                $phaseData = [
+                    'phase_name' => $phase->phase_name,
+                    'phase_order' => $phase->phase_order,
+                    'approval' => false, // Valor predeterminado para fases no completadas por el estudiante
+                    'state_now' => 'No habilitado',
+                ];
+
+                // Verificar si el estudiante ha completado esta fase
+                if (isset($data_student[$moduleName])) {
+                    $studentPhase = $data_student[$moduleName]->firstWhere('phase_name', $phase->phase_name);
+                    if ($studentPhase) {
+                        $phaseData['approval'] = $studentPhase->approval; // Usar el estado real del estudiante
+                        $phaseData['average'] = 50;
+                        $phaseData['date_start'] = $studentPhase->date_start;
+                        $phaseData['date_end'] = $studentPhase->date_end;
+                        $phaseData['state_now'] = $studentPhase->state_now;
+                    }
+                }
+
+                $moduleData['phases'][] = $phaseData;
+            }
+
+            $result[] = $moduleData;
+        }
+
+        return $result;
+    }
+
 
 
 

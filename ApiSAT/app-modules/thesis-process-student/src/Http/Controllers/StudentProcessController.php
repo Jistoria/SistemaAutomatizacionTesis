@@ -14,7 +14,17 @@ class StudentProcessController
     )
     {}
 
-    public function getProcessDataDashboard(Request $request)
+    public function getThesisPhasesStudent(Request $request)
+    {
+        try{
+            $processPhase = $this->studentPhaseService->phasesGroupByModule($request->user()->id);
+            return ApiResponse::success($processPhase);
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    public function getDashboard(Request $request)
     {
         try{
             $processPhase = $this->studentPhaseService->dataDashboard($request->user()->id);

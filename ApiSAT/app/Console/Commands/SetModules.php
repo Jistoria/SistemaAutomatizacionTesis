@@ -32,7 +32,7 @@ class SetModules extends Command
 
         $modulesAndPhases = [
             ['name' => 'Planificación', 'order' => 1, 'phases' => [['name' => 'Fase de Planificación', 'order' => 1]]],
-            ['name' => 'Desarrollo', 'order' => 2, 'phases' => [['name' => 'Fase Diseño', 'order' => 1], ['name' => 'Fase Desarrollo', 'order' => 2]]],
+            ['name' => 'Desarrollo', 'order' => 2, 'phases' => [['name' => 'Fase Diseño', 'order' => 1], ['name' => 'Fase Resultado', 'order' => 2]]],
             ['name' => 'Evaluación', 'order' => 3],
         ];
 
