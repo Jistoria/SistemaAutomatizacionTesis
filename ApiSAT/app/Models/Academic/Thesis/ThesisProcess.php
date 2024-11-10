@@ -74,4 +74,9 @@ class ThesisProcess extends Model
     {
         return $this->belongsTo(User::class, 'updated_by_user');
     }
+
+    public function phasesStudent()
+    {
+        return $this->hasMany(ThesisProcessPhases::class, 'thesis_process_id');
+    }
 }

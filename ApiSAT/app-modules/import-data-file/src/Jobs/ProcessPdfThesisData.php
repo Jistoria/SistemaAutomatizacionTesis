@@ -7,11 +7,13 @@ use App\Models\Academic\Teacher\Teacher;
 use App\Models\Academic\Thesis\ThesisPhase;
 use App\Models\Academic\Thesis\ThesisProcess;
 use Illuminate\Bus\Queueable;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use Modules\Auth\Services\AuthService;
 use Modules\Degree\Contracts\DegreeServiceInterface;
@@ -139,8 +141,9 @@ class ProcessPdfThesisData implements ShouldQueue
 
                 $thesis_process_phase_student->aprovedThesisProcessPhase($phase_student->thesis_process_phases_id, $this->id);
 
-                $phase_2 = $phase->getThesisPhaseByOrder(2,1);
-                $thesis_process_phase_student->registerThesisProcessPhase([
+                $phase_2 = $phase->getThesisPhaseByOrder(1,2);
+
+                $thesis_process_phase_student->registerThesisProcessPhase(
                     [
                     'thesis_process_id' => $thesis_process->thesis_process_id,
                     'thesis_phases_id' => $phase_2->thesis_phases_id,
@@ -151,7 +154,7 @@ class ProcessPdfThesisData implements ShouldQueue
                     'thesis_id' => $thesis->thesis_id,
                     'period_academic_id' => $periodAcademic->period_academic_id,
                     ], $this->id
-                ]);
+                );
 
 
             }

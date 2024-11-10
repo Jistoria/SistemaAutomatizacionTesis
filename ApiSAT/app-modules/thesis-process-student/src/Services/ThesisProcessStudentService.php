@@ -3,6 +3,7 @@
 namespace Modules\ThesisProcessStudent\Services;
 
 use App\Models\Academic\Thesis\ThesisPhase;
+use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Academic\Thesis\ThesisProcessPhases;
 use Illuminate\Support\Facades\Log;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
@@ -21,14 +22,16 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
      */
     public function __construct(
         protected ThesisProcessPhaseStudent $thesisProcessPhases,
+        protected ThesisProcess $thesisProcess,
         protected ThesisPhasesServiceInterface $thesisPhasesService
     )
     {}
 
-    public function findThesisProcessById(string $id) : ThesisProcessPhaseStudent
+    public function findThesisProcessById(string $id)
     {
-        return $this->thesisProcessPhases->find($id);
+        return $this->thesisProcess->where('student_id', $id)->with('phasesStudent')->first();
     }
+
 
     /**
      * Registra una nueva fase del proceso de tesis.
@@ -38,6 +41,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
      */
     public function registerThesisProcessPhase(array $data): ThesisProcessPhaseStudent|bool
     {
+
         if (!$this->checkBeforeRegister($data['student_id'], $data['thesis_phases_id'])) {
             return false; // No se cumplen las fases anteriores en cadena
         }
@@ -106,7 +110,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
             ->where('approval', true) // Solo fases aprobadas
             ->with([
                 'phase' => function ($query) {
-                    $query->with(['module:id,order', 'order:id,order']); // Cargar orden del módulo y fase
+                    $query->with(['module:thesis_module_id:,order', 'order:order_phases_thesis_id,order']); // Cargar orden del módulo y fase
                 }
             ])
             ->get();

@@ -10,5 +10,5 @@ interface ThesisPhasesServiceInterface
 
     public function getThesisPhaseByName(string $name): ThesisPhaseModel;
 
-    public function getThesisPhaseByOrder(int $orderPhase, int $orderModule): ThesisPhaseModel;
+    public function getThesisPhaseByOrder(int $orderPhase, int $orderModule): ?ThesisPhaseModel;
 }

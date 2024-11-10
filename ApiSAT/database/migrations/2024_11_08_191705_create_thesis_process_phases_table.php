@@ -37,7 +37,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             // Clave única compuesta para los campos especificados
-            $table->unique(['student_id', 'thesis_id', 'period_academic_id', 'thesis_phases_id'], 'unique_student_thesis_period_phase');
+            // $table->unique(['student_id', 'thesis_id', 'period_academic_id', ], 'unique_student_thesis_period_phase');
         });
     }
 
