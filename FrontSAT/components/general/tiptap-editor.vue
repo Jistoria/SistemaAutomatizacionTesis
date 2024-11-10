@@ -1,6 +1,7 @@
   
 <script setup>
 import { Editor, EditorContent, useEditor } from '@tiptap/vue-3'
+import { watch } from 'vue';
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
 import Link from '@tiptap/extension-link';
@@ -11,6 +12,10 @@ const requestStore = request();
 const props = defineProps({
     modelValue: {
         type: String,
+    },
+    isModalOpen: {
+        type: Boolean,
+        default: true,
     },
 })
 const emit = defineEmits(['update:modelValue'])
@@ -40,6 +45,21 @@ onMounted(() => {
         ],
     })
 })
+watch(
+    () => props.isModalOpen,
+  (newVal) => {
+    if (!newVal) {
+      destroyEditor();
+    }
+  }
+)
+function destroyEditor() {
+    if (editor.value) {
+        editor.value.options.content = null;
+        editor.value.content = null;
+    }
+  
+}
 onBeforeUnmount(() => {
   if (editor.value) {
     editor.value.destroy()
