@@ -5,7 +5,7 @@ export const panel = defineStore('panel',{
         name:'',
         url:'',
         icon:'',
-        menus:[],
+        menus_data:[],
         
     }),
     actions:{
@@ -13,8 +13,18 @@ export const panel = defineStore('panel',{
         async menus(){
             const response = await menusService.menus()
             console.log(response.data)
-            this.menus = response.data;
+            this.menus_data = response.data;
 
+        },
+        async dataDashboard(){
+            try {
+                const response = await menusService.getDataDashborad();
+                return response
+            } catch (error) {
+                
+            }
         }
+
     }
+
 })

@@ -45,7 +45,6 @@ const getTruncatedText = (content, id, maxChars = 100) => {
 
 </script>
 <template>
-
     <button class="btn" onclick="modal_observation.showModal()">
         <i class="bi bi-newspaper icon_size"></i>
         Obervaciones

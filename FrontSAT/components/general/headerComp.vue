@@ -15,8 +15,9 @@ function closeProfile() {
   profileOpen.value = false;
 }
 onMounted(async()=>{
+    console.log('entro')
     const response = await panelStore.menus() 
-    console.log(panelStore.menus)
+    console.log(panelStore.menus_data)
 })
 const routeNames = {
   '/panel/list/listDefense': 'Sustentacion',
@@ -43,7 +44,7 @@ const currentRouteName = computed(() => routeNames[route.path] || 'Dashboard');
       <ul class="menu bg-info text-base-content min-h-full w-80 p-4">
         <a class="flex w-full items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-lime-800"
         :class="{'bg-gray-200 text-lime-800': route.path === menus.url,}" 
-        v-for="menus in panelStore.menus">
+        v-for="menus in panelStore.menus_data">
         <div >
           <span class="text-2xl pe-3"><i :class="menus.icon"></i></span>
           <NuxtLink :to="menus.url" >

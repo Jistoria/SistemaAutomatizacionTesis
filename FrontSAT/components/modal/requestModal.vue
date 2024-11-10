@@ -3,6 +3,7 @@
 import TiptapEditor from '../general/tiptap-editor.vue';
 import { request } from '~/stores/request/request';
 const requestStore = request();
+const isModalOpen = ref(false);
 
 const form = ref({
     title:null,
@@ -10,13 +11,24 @@ const form = ref({
 })
 function sendRequest(){
     requestStore.sendRequest(form.value.content);
-
     console.log(form.value.content);
 }
+function openModal() {
+    console.log('openModal');
+  isModalOpen.value = true;
+}
+
+function closeModal() {
+    console.log('closeModal');
+    form.content = '<h3>....</h3>';
+    console.log(form.content)
+    isModalOpen.value = false;
+}
+
 </script>
 <template>
     <ClientOnly>
-        <button class="btn" onclick="modal_request.showModal()">
+        <button class="btn" onclick="modal_request.showModal()" @click="openModal">
             <i class="bi bi-envelope-fill icon_size"></i>
             Enviar Solicitud
         </button>
@@ -27,14 +39,14 @@ function sendRequest(){
             <div class="grid grid-rows-1 grid-flow-col gap-4">
                 <div >
                     <form @submit.prevent="sendRequest">
-                        <TiptapEditor v-model="form.content" ></TiptapEditor>
+                        <TiptapEditor v-model="form.content" :isModalOpen="isModalOpen" ></TiptapEditor>
                     </form>
                 </div>
             </div>
             <div class="modal-action">
                     <div >
                         <form method="dialog">
-                            <button class="btn">Close</button>
+                            <button @click="closeModal"  class="btn">Close</button>
                         </form>
                     </div>
             </div>
