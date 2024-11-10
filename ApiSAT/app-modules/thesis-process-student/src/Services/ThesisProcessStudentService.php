@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\ThesisProcessPhaseStudent;
+use Modules\ThesisProcessStudent\Models\ThesisProcessStudent;
 
 /**
  * Servicio para gestionar el proceso de tesis de los estudiantes.
@@ -22,7 +23,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
      */
     public function __construct(
         protected ThesisProcessPhaseStudent $thesisProcessPhases,
-        protected ThesisProcess $thesisProcess,
+        protected ThesisProcessStudent $thesisProcess,
         protected ThesisPhasesServiceInterface $thesisPhasesService
     )
     {}
@@ -136,6 +137,15 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         }
 
         return $isInSequence;
+    }
+
+    public function dataDashboard(string $studentId) : array
+    {
+        $thesisProcess = $this->findThesisProcessById($studentId);
+        $phasesGroupedByModule = $thesisProcess->getStudentPhasesGroupedByModule();
+
+        return $phasesGroupedByModule->array();
+
     }
 
 

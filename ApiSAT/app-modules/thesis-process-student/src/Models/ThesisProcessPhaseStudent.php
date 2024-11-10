@@ -30,4 +30,18 @@ class ThesisProcessPhaseStudent extends ThesisProcessPhases
         return false;
     }
 
+    public function checkBeforeAproved () : bool
+    {
+        $phase = $this->phase;
+        $phases = $this->thesisProcess->phases;
+        $phases = $phases->where('thesis_phases_id', $phase->thesis_phases_id);
+        if (isEmpty($phases)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 }
