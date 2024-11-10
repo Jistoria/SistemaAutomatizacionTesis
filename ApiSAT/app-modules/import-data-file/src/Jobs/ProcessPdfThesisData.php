@@ -136,6 +136,7 @@ class ProcessPdfThesisData implements ShouldQueue
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
+                    'date_start' => $periodAcademic->date_start,
                     'period_academic_id' => $periodAcademic->period_academic_id,
                 ], $this->id);
 
