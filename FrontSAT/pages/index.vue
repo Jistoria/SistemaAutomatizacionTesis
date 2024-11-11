@@ -44,7 +44,7 @@ const Logout = async () => {
             </div>
         </div>
 
-        <div v-if="rolSelect == roles.rol1" >
+        <div class="hidden" v-if="rolSelect == roles.rol1" >
             <AdminTesisPanelScreen></AdminTesisPanelScreen>
         </div>
         <div v-if="rolSelect == roles.rol2" >

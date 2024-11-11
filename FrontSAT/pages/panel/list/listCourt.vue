@@ -44,15 +44,15 @@ onMounted(async () => {
             </div>
             <div >
                 <div class="justify-self-center">
-                    <div class="justify-self-center font-bold">
+                    <div class="flex justify-center font-bold mt-2">
                         <a>Promedio:</a>
                     </div>
-                    <div class="justify-self-center pb-3 pt-3 ">
+                    <div class="flex justify-center pb-3 pt-3 ">
                         <button>
                             {{ listCourt.average }}
                         </button>
                     </div>
-                    <div>
+                    <div class="flex justify-center mb-3">
                         <button class="btn neutral"> 
                             Ver mas <i class="bi bi-info-lg"></i>
                         </button>
