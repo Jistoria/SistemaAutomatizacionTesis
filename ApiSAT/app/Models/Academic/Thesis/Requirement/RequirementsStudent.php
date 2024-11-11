@@ -39,4 +39,9 @@ class RequirementsStudent extends Model
     {
         return $this->belongsTo(ThesisProcessPhases::class, 'thesis_process_phases_id', 'thesis_process_phases_id');
     }
+
+    public function requirement()
+    {
+        return $this->belongsTo(Requirement::class, 'requirements_id', 'requirements_id');
+    }
 }

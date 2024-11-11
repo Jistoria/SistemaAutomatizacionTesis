@@ -17,5 +17,10 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
         return $this->requirements->create($data);
     }
 
+    public function requirementsPhaseStudent(string $id): Requirements
+    {
+        return $this->requirements->where('thesis_process_phases_id', $id)->first();
+    }
+
 
 }

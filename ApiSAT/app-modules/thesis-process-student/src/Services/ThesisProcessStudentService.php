@@ -218,7 +218,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
                     $studentPhase = $data_student[$moduleName]->firstWhere('phase_name', $phase->phase_name);
                     if ($studentPhase) {
                         $phaseData['approval'] = $studentPhase->approval; // Usar el estado real del estudiante
-                        $phaseData['average'] = 50;
+                        $phaseData['progress'] = $studentPhase->state_now == 'Aprobado' ? 100 : $studentPhase->progress;
                         $phaseData['date_start'] = $studentPhase->date_start;
                         $phaseData['date_end'] = $studentPhase->date_end;
                         $phaseData['state_now'] = $studentPhase->state_now;

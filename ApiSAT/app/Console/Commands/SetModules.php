@@ -82,7 +82,9 @@ class SetModules extends Command
                         foreach ($phaseData['requirements'] as $requirement) {
                             $requirement = new Requirement([
                                 'name' => $requirement,
+                                'description' => 'Documento que se debe entregar a lo largo de la fase',
                                 'thesis_phases_id' => $phase->thesis_phases_id,
+                                'approved_role' => 'Docente-tesis',
                                 'created_by_user' => $adminId->id,
                                 'updated_by_user' => $adminId->id
                             ]);

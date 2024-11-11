@@ -4,13 +4,16 @@ namespace Modules\ThesisProcessStudent\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
+use Modules\ThesisProcessStudent\Services\RequirementsStudentService;
 use Modules\ThesisProcessStudent\Services\ThesisProcessStudentService;
 
 class StudentProcessController
 {
 
     public function __construct(
-        protected ThesisProcessStudentService $studentPhaseService
+        protected ThesisProcessStudentService $studentPhaseService,
+        protected RequirementsStudentService $requirementsStudentService
+
     )
     {}
 
@@ -28,6 +31,16 @@ class StudentProcessController
     {
         try{
             $processPhase = $this->studentPhaseService->dataDashboard($request->user()->id);
+            return ApiResponse::success($processPhase);
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    public function getRequirementsPhase($phasProcessPhaseId)
+    {
+        try{
+            $processPhase = $this->requirementsStudentService->requirementsPhaseStudent($phasProcessPhaseId);
             return ApiResponse::success($processPhase);
         }catch(\Exception $e){
             return ApiResponse::error($e->getMessage());
