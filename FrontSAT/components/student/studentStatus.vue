@@ -50,7 +50,6 @@ function formatDate(date) {
 
 <template>
   <div class="container mx-auto p-6 space-y-6">
-    <h2 class="text-2xl font-bold text-center text-primary">Estado del Estudiante</h2>
     
     <div v-if="loading" class="flex justify-center items-center py-8">
       <!-- Loading Spinner from DaisyUI -->

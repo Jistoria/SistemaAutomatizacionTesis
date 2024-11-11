@@ -38,7 +38,7 @@ const currentRouteName = computed(() => routeNames[route.path] || 'Dashboard');
       </label>
       <p class="text-info text-lg ms-4">{{currentRouteName}}</p>
     </div>
-    <div class="drawer-side">
+    <div class="drawer-side z-10">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
       <ul class="menu bg-info text-base-content min-h-full w-80 p-4">
         <a class="flex w-full items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-lime-800"
