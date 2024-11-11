@@ -1,80 +1,80 @@
   
 <script setup>
-import { Editor, EditorContent, useEditor } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
-import Underline from '@tiptap/extension-underline'
-import Link from '@tiptap/extension-link';
-import Paragraph from '@tiptap/extension-paragraph';
-import Code from '@tiptap/extension-code';
-import { request } from '~/stores/request/request';
-const requestStore = request();
-const props = defineProps({
-    modelValue: {
-        type: String,
-    },
-})
-const emit = defineEmits(['update:modelValue'])
+// import { Editor, EditorContent, useEditor } from '@tiptap/vue-3'
+// import StarterKit from '@tiptap/starter-kit'
+// import Underline from '@tiptap/extension-underline'
+// import Link from '@tiptap/extension-link';
+// import Paragraph from '@tiptap/extension-paragraph';
+// import Code from '@tiptap/extension-code';
+// import { request } from '~/stores/request/request';
+// const requestStore = request();
+// const props = defineProps({
+//     modelValue: {
+//         type: String,
+//     },
+// })
+// const emit = defineEmits(['update:modelValue'])
 
-const editor = ref(null);
-const fileInput = ref(null); 
-const count = ref(1);
+// const editor = ref(null);
+// const fileInput = ref(null); 
+// const count = ref(1);
 
-onMounted(() => {
-    editor.value = new Editor({
-        editorProps:{
-            attributes: {
-                class: 'border border-gray-400 p-4 min-h-[12rem] max-h-[12rem] overflow-y-auto outline-none prose max-w-none',
-            },
-        },
-        content: props.modelValue,
-        onUpdate({ editor }) {
-            emit('update:modelValue', editor.getHTML())
-        },
-        extensions: [
-            StarterKit,
-            Underline,
-            Link.configure({
-                openOnClick: true,
-                defaultProtocol: 'https',
-            }),
-        ],
-    })
-})
-onBeforeUnmount(() => {
-  if (editor.value) {
-    editor.value.destroy()
-  }
-})
-function triggerFileUpload() {
-    fileInput.value.click();
-}
+// onMounted(() => {
+//     editor.value = new Editor({
+//         editorProps:{
+//             attributes: {
+//                 class: 'border border-gray-400 p-4 min-h-[12rem] max-h-[12rem] overflow-y-auto outline-none prose max-w-none',
+//             },
+//         },
+//         content: props.modelValue,
+//         onUpdate({ editor }) {
+//             emit('update:modelValue', editor.getHTML())
+//         },
+//         extensions: [
+//             StarterKit,
+//             Underline,
+//             Link.configure({
+//                 openOnClick: true,
+//                 defaultProtocol: 'https',
+//             }),
+//         ],
+//     })
+// })
+// onBeforeUnmount(() => {
+//   if (editor.value) {
+//     editor.value.destroy()
+//   }
+// })
+// function triggerFileUpload() {
+//     fileInput.value.click();
+// }
 
-async function handleFileUpload(event) {
-  const files = event.target.files;
-  count.value = count.value + files.length;
-  if (count.value === 3) return;
+// async function handleFileUpload(event) {
+//   const files = event.target.files;
+//   count.value = count.value + files.length;
+//   if (count.value === 3) return;
 
-  for (let file of files) {
-    try {
-       //En espera de la peticion para que me traiga la url
-       // Simula un retraso como si estuviera subiendo el archivo al servidor
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                // Genera una URL de prueba para el archivo
-                const fakeUrl = `https://example.com/uploads/${file.name.replace(/\s+/g, '_')}`;
-                // Inserta el nombre del archivo como un enlace en el contenido del editor
-                editor.value
-                    .chain()
-                    .focus()
-                    .insertContent(`<a href="${fakeUrl}" target="_blank">${file.name}</a> `) // Añade un espacio después del enlace para separar los archivos
-                    .run();
-                console.log(`Archivo simulado subido: ${fakeUrl}`);
-        //salida
-    } catch (error) {
-      console.error('Error al simular la subida del archivo:', error);
-    }
-  }
-  fileInput.value.value = '';
-}
+//   for (let file of files) {
+//     try {
+//        //En espera de la peticion para que me traiga la url
+//        // Simula un retraso como si estuviera subiendo el archivo al servidor
+//                 await new Promise((resolve) => setTimeout(resolve, 1000));
+//                 // Genera una URL de prueba para el archivo
+//                 const fakeUrl = `https://example.com/uploads/${file.name.replace(/\s+/g, '_')}`;
+//                 // Inserta el nombre del archivo como un enlace en el contenido del editor
+//                 editor.value
+//                     .chain()
+//                     .focus()
+//                     .insertContent(`<a href="${fakeUrl}" target="_blank">${file.name}</a> `) // Añade un espacio después del enlace para separar los archivos
+//                     .run();
+//                 console.log(`Archivo simulado subido: ${fakeUrl}`);
+//         //salida
+//     } catch (error) {
+//       console.error('Error al simular la subida del archivo:', error);
+//     }
+//   }
+//   fileInput.value.value = '';
+// }
 
 </script>
 <template>

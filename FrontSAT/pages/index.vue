@@ -46,11 +46,12 @@ const Logout = async () => {
             <ManagementPanelScreen></ManagementPanelScreen>
         </div>
         <div v-if="rolSelect == roles.rol4" >
-            <StudentPanelScreen></StudentPanelScreen>
-        </div>
-        <div v-if="rolSelect == roles.rol5" >
             <TeacherPanelScreen></TeacherPanelScreen>
         </div>
+        <div v-if="rolSelect == roles.rol5" >
+            <StudentPanelScreen></StudentPanelScreen>
+        </div>
+        
     </div>
 
 
