@@ -8,6 +8,7 @@ use App\Models\Academic\Thesis\ThesisProcessPhases;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
+use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\ThesisProcessPhaseStudent;
 use Modules\ThesisProcessStudent\Models\ThesisProcessStudent;
@@ -25,7 +26,8 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
     public function __construct(
         protected ThesisProcessPhaseStudent $thesisProcessPhases,
         protected ThesisProcessStudent $thesisProcess,
-        protected ThesisPhasesServiceInterface $thesisPhasesService
+        protected ThesisPhasesServiceInterface $thesisPhasesService,
+        protected RequirementsStudentService $requirementsStudentService
     )
     {}
 
@@ -48,8 +50,45 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
             return false; // No se cumplen las fases anteriores en cadena
         }
 
-        return $this->thesisProcessPhases->create($data);
+            // Crear la fase del proceso de tesis para el estudiante
+        $thesisProcessPhaseStudent = $this->thesisProcessPhases->create($data);
+
+        // Verificar si la fase requiere requisitos
+        $this->asyncRequirements($data['thesis_phases_id'], $thesisProcessPhaseStudent);
+
+        return $thesisProcessPhaseStudent;
     }
+
+
+    protected function asyncRequirements(string $idPhase, ThesisProcessPhaseStudent $phaseProcess): void
+    {
+        // Obtener los requisitos de la fase
+        $phase = $this->thesisPhasesService->getThesisPhase($idPhase);
+        $requirements = $phase->requirements;
+
+        // Verificar que existan requisitos para esta fase
+        if ($requirements->isEmpty()) {
+            return;
+        }
+
+        foreach ($requirements as $requirement) {
+            $data = [
+                'student_id' => $phaseProcess->student_id,
+                'period_academic_id' => $phaseProcess->period_academic_id,
+                'thesis_process_phases_id' => $phaseProcess->thesis_process_phases_id,
+                'requirements_id' => $requirement->requirements_id,
+                'requirements_data' => $requirement->description,
+                'approved' => false,
+                'approved_by_user' => null,
+                'url_file' => null,
+                'send_date' => null,
+                'approved_date' => null,
+                'approved_role' => $requirement->approval_role,
+            ];
+            $this->requirementsStudentService->asyncRequirementsStudent($data);
+        }
+    }
+
 
     /**
      * Aprueba una fase del proceso de tesis si cumple con los requisitos.
@@ -89,6 +128,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         }
         return false;
     }
+
 
     protected function checkThesisPhaseAproval(string $studentId, string $moduleId, string $phaseId):bool
     {

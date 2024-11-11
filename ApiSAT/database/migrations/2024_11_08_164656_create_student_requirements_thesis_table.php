@@ -15,7 +15,9 @@ return new class extends Migration
             $table->uuid('student_requirements_id')->primary();
             $table->uuid('student_id')->nullable();
             $table->uuid('period_academic_id')->nullable();
+            $table->uuid('thesis_phases_id')->nullable();
             $table->uuid('thesis_process_phases_id')->nullable();
+            $table->uuid('requirements_id')->nullable();
             $table->text('requirements_data')->nullable();
             $table->boolean('approved')->nullable();
             $table->uuid('approved_by_user')->nullable();

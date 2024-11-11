@@ -20,6 +20,7 @@ class RequirementsStudent extends Model
         'student_id',
         'period_academic_id',
         'thesis_process_phases_id',
+        'requirements_id',
         'requirements_data',
         'approved',
         'approved_by_user',
@@ -34,7 +35,7 @@ class RequirementsStudent extends Model
         'approved_date' => 'datetime',
     ];
 
-    public function thesisProcess()
+    public function thesisProcessPhase()
     {
         return $this->belongsTo(ThesisProcessPhases::class, 'thesis_process_phases_id', 'thesis_process_phases_id');
     }
