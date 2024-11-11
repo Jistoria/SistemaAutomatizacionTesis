@@ -2,6 +2,7 @@
 
 namespace Modules\ThesisProcessStudent\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\Requirements;
 
@@ -17,9 +18,9 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
         return $this->requirements->create($data);
     }
 
-    public function requirementsPhaseStudent(string $id): Requirements
+    public function requirementsPhaseStudent(string $id): Collection
     {
-        return $this->requirements->where('thesis_process_phases_id', $id)->first();
+        return $this->requirements->dataRequirementsStudent($id);
     }
 
 

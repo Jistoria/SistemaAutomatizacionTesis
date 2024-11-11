@@ -37,10 +37,10 @@ class StudentProcessController
         }
     }
 
-    public function getRequirementsPhase($phasProcessPhaseId)
+    public function getRequirementsPhase($phasesProcessPhaseId)
     {
         try{
-            $processPhase = $this->requirementsStudentService->requirementsPhaseStudent($phasProcessPhaseId);
+            $processPhase = $this->requirementsStudentService->requirementsPhaseStudent($phasesProcessPhaseId);
             return ApiResponse::success($processPhase);
         }catch(\Exception $e){
             return ApiResponse::error($e->getMessage());

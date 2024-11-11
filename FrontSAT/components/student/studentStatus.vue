@@ -29,7 +29,7 @@ onMounted(async () => {
 function animatePercentages() {
   Object.keys(animatedPercentages.value).forEach((key) => {
     const [moduleIndex, phaseIndex] = key.split('-');
-    const targetPercentage = studentStore.dashboard_status[moduleIndex].phases[phaseIndex].average || 0;
+    const targetPercentage = studentStore.dashboard_status[moduleIndex].phases[phaseIndex].progress || 0;
     let currentPercentage = 0;
     const interval = setInterval(() => {
       if (currentPercentage >= targetPercentage) {

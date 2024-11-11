@@ -207,6 +207,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
 
             foreach ($phases as $phase) {
                 $phaseData = [
+                    'thesis_process_phases_id' => null,
                     'phase_name' => $phase->phase_name,
                     'phase_order' => $phase->phase_order,
                     'approval' => false, // Valor predeterminado para fases no completadas por el estudiante
@@ -217,6 +218,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
                 if (isset($data_student[$moduleName])) {
                     $studentPhase = $data_student[$moduleName]->firstWhere('phase_name', $phase->phase_name);
                     if ($studentPhase) {
+                        $phaseData['thesis_process_phases_id'] = $studentPhase->thesis_process_phases_id;
                         $phaseData['approval'] = $studentPhase->approval; // Usar el estado real del estudiante
                         $phaseData['progress'] = $studentPhase->state_now == 'Aprobado' ? 100 : $studentPhase->progress;
                         $phaseData['date_start'] = $studentPhase->date_start;
