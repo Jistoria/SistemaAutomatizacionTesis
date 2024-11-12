@@ -77,7 +77,7 @@ const sampleRequirements = ref([
     filename: "Archivo rechazado", 
     status: "rejected", 
     approved: false, 
-    comment: 'Este archivo fue rechazado debido a errores en varias secciones, incluyendo la falta de coherencia en los argumentos y errores tipográficos en todo el documento. Se recomienda rehacer partes significativas y mejorar la estructura de los párrafos.', 
+    comment: 'sssssssssssss fffffffffff fffffffffffffffffff ffffffffffffffffff ffffffffffffffffffff ssssssssss sssssssssss sssssssssssss sssssssssssssss sssssssssssss sssssssssssssss ssssssssssssssss sssssssssssssssss sssssssssssssssss ssssssssssssssss ssssssssssssssss ssssssssssssssssss sssssssssssssss sssssssssssssss Este archivo fue rechazado debido a errores en varias secciones, incluyendo la falta de coherencia en los argumentos y errores tipográficos en todo el documento. Se recomienda rehacer partes significativas y mejorar la estructura de los párrafos.', 
     details: 'El documento no cumple con los lineamientos básicos del proyecto. Las citas no están en el formato correcto, y hay muchas secciones que carecen de profundidad en el análisis. También faltan gráficos explicativos que deberían estar en la sección de resultados para mejor comprensión.' 
   },
 ]);
@@ -119,6 +119,34 @@ const submitRequirement = (index) => {
       Revisar Requisitos
     </button>
   </div>
+  <!-- Modal de Información -->
+  <div v-if="isInfoModalOpen" class="modal modal-open flex items-center justify-center bg-gray-800 bg-opacity-75 fixed inset-0 z-100">
+    <div class="modal-box max-w-2xl p-6 bg-white shadow-lg rounded-lg">
+      <h2 class="font-bold text-lg mb-4 text-gray-800 text-center">Información del Requisito</h2>
+      
+      <!-- Sección dividida en dos mitades -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Detalles del Requisito -->
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-2">Detalles del Requisito</h3>
+          <p v-if="selectedRequirement.details" class="text-gray-600">{{ selectedRequirement.details }}</p>
+          <p v-else class="text-gray-500 italic">No hay detalles para este requisito.</p>
+        </div>
+        
+        <!-- Comentarios -->
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-2">Comentarios</h3>
+          <p v-if="selectedRequirement.comment" class="text-gray-600">{{ selectedRequirement.comment }}</p>
+          <p v-else class="text-gray-500 italic">No hay comentarios para esta tarea.</p>
+        </div>
+      </div>
+
+      <!-- Acción de Cerrar -->
+      <div class="modal-action justify-end mt-4">
+        <button @click="closeInfoModal" class="btn btn-outline btn-primary px-4 py-2 rounded-lg text-sm">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal para Estudiantes -->
   <div v-if="isStudentModalOpen" class="modal modal-open flex items-center justify-center bg-gray-800 bg-opacity-75 fixed inset-0 z-50">
@@ -151,34 +179,7 @@ const submitRequirement = (index) => {
                 <i class="bi bi-info-circle-fill"></i>
               </button>
             </td>
-              <!-- Modal de Información -->
-                <div v-if="isInfoModalOpen" class="modal modal-open flex items-center justify-center bg-gray-800 bg-opacity-75 fixed inset-0 z-50">
-                  <div class="modal-box max-w-2xl p-6 bg-white shadow-lg rounded-lg">
-                    <h2 class="font-bold text-lg mb-4 text-gray-800 text-center">Información del Requisito</h2>
-                    
-                    <!-- Sección dividida en dos mitades -->
-                    <div class="grid grid-cols-2 gap-4">
-                      <!-- Detalles del Requisito -->
-                      <div>
-                        <h3 class="font-semibold text-gray-700 mb-2">Detalles del Requisito</h3>
-                        <p v-if="selectedRequirement.details" class="text-gray-600">{{ selectedRequirement.details }}</p>
-                        <p v-else class="text-gray-500 italic">No hay detalles para este requisito.</p>
-                      </div>
-                      
-                      <!-- Comentarios -->
-                      <div>
-                        <h3 class="font-semibold text-gray-700 mb-2">Comentarios</h3>
-                        <p v-if="selectedRequirement.comment" class="text-gray-600">{{ selectedRequirement.comment }}</p>
-                        <p v-else class="text-gray-500 italic">No hay comentarios para esta tarea.</p>
-                      </div>
-                    </div>
-
-                    <!-- Acción de Cerrar -->
-                    <div class="modal-action justify-end mt-4">
-                      <button @click="closeInfoModal" class="btn btn-outline btn-primary px-4 py-2 rounded-lg text-sm">Cerrar</button>
-                    </div>
-                  </div>
-                </div>
+              
             <!-- Subida de archivo -->
             <td class="text-center px-4 py-2">
               <div class="flex items-center justify-center gap-2">
