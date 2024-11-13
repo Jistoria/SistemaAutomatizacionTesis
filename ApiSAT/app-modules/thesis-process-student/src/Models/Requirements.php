@@ -14,6 +14,7 @@ class Requirements extends RequirementsStudent
             ->join('requirements', 'student_requirements.requirements_id', '=', 'requirements.requirements_id')
             ->select([
                 'student_requirements.student_requirements_id',
+                'student_requirements.status',
                 'student_requirements.student_id',
                 'student_requirements.period_academic_id',
                 'student_requirements.thesis_process_phases_id',

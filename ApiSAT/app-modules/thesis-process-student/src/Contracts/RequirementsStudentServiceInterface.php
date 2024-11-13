@@ -10,5 +10,5 @@ interface RequirementsStudentServiceInterface
 
     public function requirementsPhaseStudent(string $id): Collection;
 
-    public function updateDocumentRequirementStudent(int $id, string $document): void;
+    public function updateDocumentRequirementStudent(string $id, string $document): void;
 }

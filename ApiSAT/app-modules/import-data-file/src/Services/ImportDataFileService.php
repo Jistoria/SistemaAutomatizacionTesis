@@ -37,14 +37,14 @@ class ImportDataFileService
         ProcessPdfThesisData::dispatch(Storage::disk('public')->path($filePath), $id);
     }
 
-    public function importDataPdfRequirementStudent(UploadedFile $file, string $userId, int $requirementStudentId) : void
+    public function importDataPdfRequirementStudent(UploadedFile $file, string $userId, string $requirementStudentId) : void
     {
         // Guardar el archivo en el almacenamiento temporal
-        $name_document = $file->getClientOriginalName().'_'.now()->format('Y-m-d_H-i-s').'.pdf';
+        $name_document = $file->getClientOriginalName().'_'.now()->format('Y-m-d_H-i-s').$file->getClientOriginalExtension();
 
-        $filePath = $file->storeAs('pdfs-students'.$userId, $name_document, 'public');
+        $filePath = $file->storeAs('pdfs-students/'.$userId, $name_document, 'public');
 
-        app(RequirementsStudentServiceInterface::class)->updateDocumentRequirementStudent($requirementStudentId, $name_document);
+        app(RequirementsStudentServiceInterface::class)->updateDocumentRequirementStudent($requirementStudentId, $filePath);
     }
 
 }

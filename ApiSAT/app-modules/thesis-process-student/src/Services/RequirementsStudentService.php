@@ -23,9 +23,9 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
         return $this->requirements->dataRequirementsStudent($id);
     }
 
-    public function updateDocumentRequirementStudent(int $id, string $document): void
+    public function updateDocumentRequirementStudent(string $id, string $document): void
     {
-        $this->requirements->find($id)->update(['url_file' => $document, 'send_date' => now()]);
+        $this->requirements->find($id)->update(['url_file' => $document, 'send_date' => now(), 'status' => 'Enviado']);
     }
 
 
