@@ -11,5 +11,5 @@ interface ThesisTitleServiceInterface
      * @param array $data Los datos del título de tesis.
      * @return ThesisTitle El título de tesis creado.
      */
-    public function createThesisTitle(array $data): ThesisTitle;
+    public function createThesisTitle(array $data, string|array $categoriesIds = null): ThesisTitle;
 }

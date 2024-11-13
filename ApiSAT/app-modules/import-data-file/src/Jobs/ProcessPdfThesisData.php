@@ -85,15 +85,16 @@ class ProcessPdfThesisData implements ShouldQueue
                     'password' => 'DocUleamFCVT',
                 ], 'Docente-tesis', $this->id);
 
-                Teacher::firstOrCreate([
+                $te = Teacher::firstOrCreate([
                     'teacher_id' => $teacher->id,
                 ]);
 
+                $categoryIds = $te->categoryAreas->pluck('category_area_id')->take(2)->toArray();
 
                 // Crear o encontrar la tesis (ThesisTitle)
                 $thesis = app(ThesisTitleServiceInterface::class)->createThesisTitle([
                     'title' => $studentData['thesis_title'],
-                ]);
+                ], $categoryIds);
 
 
                 $user = app(UserServiceInterface::class)->createUserWithRole([

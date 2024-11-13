@@ -2,6 +2,7 @@
 
 namespace App\Models\Academic\Thesis;
 
+use App\Models\General\CategoryArea;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,4 +18,16 @@ class ThesisTitle extends Model
     protected $fillable = [
         'title',
     ];
+
+    public function thesisProcess()
+    {
+        return $this->hasMany(ThesisProcess::class, 'thesis_id');
+    }
+
+
+    public function categoryAreas()
+    {
+        return $this->belongsToMany(CategoryArea::class, 'category_thesis', 'thesis_id', 'category_area_id');
+    }
+
 }

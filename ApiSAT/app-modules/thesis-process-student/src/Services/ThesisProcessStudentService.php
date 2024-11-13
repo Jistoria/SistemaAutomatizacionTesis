@@ -33,7 +33,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
 
     public function findThesisProcessById(string $id)
     {
-        return $this->thesisProcess->where('student_id', $id)->with('phasesStudent')->first();
+        return $this->thesisProcess->where('student_id', $id)->with(['tutor', 'tutor.user','tutor.categoryAreas', 'thesis', 'thesis.categoryAreas', 'periodAcademic'])->first();
     }
 
 
