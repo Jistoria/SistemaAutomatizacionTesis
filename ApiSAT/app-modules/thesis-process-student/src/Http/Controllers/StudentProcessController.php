@@ -17,6 +17,16 @@ class StudentProcessController
     )
     {}
 
+    public function getThesisProcess(Request $request)
+    {
+        try{
+            $processPhase = $this->studentPhaseService->findThesisProcessById($request->user()->id);
+            return ApiResponse::success($processPhase);
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
     public function getThesisPhasesStudent(Request $request)
     {
         try{

@@ -28,6 +28,7 @@ class RequirementsStudent extends Model
         'send_date',
         'approved_date',
         'approved_role',
+        'status',
     ];
 
     protected $casts = [
