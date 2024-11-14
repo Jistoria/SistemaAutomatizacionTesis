@@ -20,7 +20,7 @@ return new class extends Migration
             $table->uuid('requirements_id')->nullable();
             $table->text('requirements_data')->nullable();
             $table->boolean('approved')->nullable();
-            $table->enum('status', ['Aprovado', 'Pendiente', 'Rechazado', 'Enviado'])->default('Pendiente');
+            $table->enum('status', ['Aprobado', 'Pendiente', 'Rechazado', 'Enviado'])->default('Pendiente');
             $table->uuid('approved_by_user')->nullable();
             $table->string('url_file')->nullable();
             $table->timestamp('send_date')->nullable();

@@ -22,6 +22,7 @@
         "modules/thesis": "*",
         "modules/thesis-phases": "*",
         "modules/thesis-process-student": "*",
+        "modules/thesis-tutor": "*",
         "modules/user": "*",
         "spatie/laravel-permission": "^6.9"
     },

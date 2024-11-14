@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5461c058d679ce42bde67c9840b89c3f",
+    "content-hash": "2672e118e7bf8f26d9fdf6555c1d0078",
     "packages": [
         {
             "name": "brick/math",
@@ -3762,6 +3762,38 @@
                     "Modules\\ThesisProcessStudent\\Tests\\": "tests/",
                     "Modules\\ThesisProcessStudent\\Database\\Factories\\": "database/factories/",
                     "Modules\\ThesisProcessStudent\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "modules/thesis-tutor",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/thesis-tutor",
+                "reference": "958058be6bf6a2e4e4915ffbb7fd532a50dd5e6f"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\ThesisTutor\\Providers\\ThesisTutorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\ThesisTutor\\": "src/",
+                    "Modules\\ThesisTutor\\Tests\\": "tests/",
+                    "Modules\\ThesisTutor\\Database\\Factories\\": "database/factories/",
+                    "Modules\\ThesisTutor\\Database\\Seeders\\": "database/seeders/"
                 }
             },
             "license": [

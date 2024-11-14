@@ -1,0 +1,24 @@
+{
+	"name": "modules/thesis-tutor",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\ThesisTutor\\": "src/",
+			"Modules\\ThesisTutor\\Tests\\": "tests/",
+			"Modules\\ThesisTutor\\Database\\Factories\\": "database/factories/",
+			"Modules\\ThesisTutor\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\ThesisTutor\\Providers\\ThesisTutorServiceProvider"
+			]
+		}
+	}
+}

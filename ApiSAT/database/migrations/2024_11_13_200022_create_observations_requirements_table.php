@@ -21,7 +21,7 @@ return new class extends Migration
 
             // Foreign keys
             $table->foreign('created_by_user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('student_requirements_id')->references('id')->on('student_requirements')->onDelete('cascade');
+            $table->foreign('student_requirements_id')->references('student_requirements_id')->on('student_requirements')->onDelete('cascade');
         });
     }
 
