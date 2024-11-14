@@ -61,4 +61,8 @@ class Student extends Model
     {
         return $this->belongsTo(User::class, 'deleted_by_user');
     }
+
+    //Relacion a Tutor
+
+
 }

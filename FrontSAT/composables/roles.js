@@ -3,5 +3,5 @@ export const roles = {
     rol2: 'Tribunal',
     rol3: 'Secretaría',
     rol4: 'Docente',
-    rol5: 'Estudiante'
+    rol5: 'Estudiante-tesis'
 }

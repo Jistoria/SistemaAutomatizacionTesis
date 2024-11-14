@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Academic\Thesis\Requirement\Requirement;
 use App\Models\Auth\User;
 use Illuminate\Console\Command;
 
@@ -32,7 +33,11 @@ class SetModules extends Command
 
         $modulesAndPhases = [
             ['name' => 'Planificación', 'order' => 1, 'phases' => [['name' => 'Fase de Planificación', 'order' => 1]]],
-            ['name' => 'Desarrollo', 'order' => 2, 'phases' => [['name' => 'Fase Diseño', 'order' => 1], ['name' => 'Fase Desarrollo', 'order' => 2]]],
+            ['name' => 'Desarrollo', 'order' => 2,
+                'phases' => [
+                    ['name' => 'Fase Diseño', 'order' => 1, 'requirements' => ['PAT-04-F-004', 'Trabajo Escrito']],
+                    ['name' => 'Fase Resultado', 'order' => 2, 'requirements' => ['Informe de Similitud', 'Registro de tutorías de titulación'] ]]
+            ],
             ['name' => 'Evaluación', 'order' => 3],
         ];
 
@@ -70,6 +75,22 @@ class SetModules extends Command
                     ]);
 
                     $order->save();
+
+                    if (isset($phaseData['requirements'])) {
+                        $this->info('Creando requisitos para la fase ' . $phaseData['name']);
+
+                        foreach ($phaseData['requirements'] as $requirement) {
+                            $requirement = new Requirement([
+                                'name' => $requirement,
+                                'description' => 'Documento que se debe entregar a lo largo de la fase',
+                                'thesis_phases_id' => $phase->thesis_phases_id,
+                                'approval_role' => 'Docente-tesis',
+                                'created_by_user' => $adminId->id,
+                                'updated_by_user' => $adminId->id
+                            ]);
+                            $requirement->save();
+                        }
+                    }
 
                 }
             }

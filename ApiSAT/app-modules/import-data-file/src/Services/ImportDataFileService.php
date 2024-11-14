@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Modules\ImportDataFile\Jobs\ProcessPdfThesisData;
 use \Illuminate\Http\UploadedFile;
+use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 
 class ImportDataFileService
 {
@@ -34,6 +35,16 @@ class ImportDataFileService
 
         // Despachar el Job para procesar el PDF
         ProcessPdfThesisData::dispatch(Storage::disk('public')->path($filePath), $id);
+    }
+
+    public function importDataPdfRequirementStudent(UploadedFile $file, string $userId, string $requirementStudentId) : void
+    {
+        // Guardar el archivo en el almacenamiento temporal
+        $name_document = $file->getClientOriginalName().'_'.now()->format('Y-m-d_H-i-s').$file->getClientOriginalExtension();
+
+        $filePath = $file->storeAs('pdfs-students/'.$userId, $name_document, 'public');
+
+        app(RequirementsStudentServiceInterface::class)->updateDocumentRequirementStudent($requirementStudentId, $filePath);
     }
 
 }

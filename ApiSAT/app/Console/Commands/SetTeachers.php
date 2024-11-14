@@ -33,7 +33,7 @@ class SetTeachers extends Command
     {
         // Lista de docentes con nombres y apellidos completos
         $teachers = [
-            ['first_name' => 'WILLIAM', 'second_name' => 'JESUS', 'last_name' => 'ZAMORA', 'second_last_name' => 'MERO'],
+            ['first_name' => 'WILLIAN', 'second_name' => 'JESUS', 'last_name' => 'ZAMORA', 'second_last_name' => 'MERO'],
             ['first_name' => 'JORGE', 'second_name' => 'IVAN', 'last_name' => 'PINCAY', 'second_last_name' => 'PONCE'],
             ['first_name' => 'EDISON', 'second_name' => 'ERNESTO', 'last_name' => 'ALMEIDA', 'second_last_name' => 'ZAMBRANO'],
             ['first_name' => 'MARCO', 'second_name' => 'WELLINGTON', 'last_name' => 'AYOVI', 'second_last_name' => 'RAMIREZ'],
@@ -51,10 +51,12 @@ class SetTeachers extends Command
         foreach ($teachers as $teacher) {
             // Generar UUID y email basado en el primer nombre y primer apellido
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
-            $email = strtolower($teacher['first_name'] . '.' . $teacher['last_name'] . '@uleam.edu.ec');
+
 
             // Concatenar el nombre completo
-            $fullName = $teacher['first_name'] . ' ' . $teacher['second_name'] . ' ' . $teacher['last_name'] . ' ' . $teacher['second_last_name'];
+            $fullName =  $teacher['last_name'] . ' ' . $teacher['second_last_name'].' '.$teacher['first_name'] . ' ' . $teacher['second_name'] . ' ';
+
+            $email = 'd' . strtolower(str_replace(' ', '.', substr($fullName, 0,4))) . '@uleam.edu.ec';
 
             // Crear o buscar el usuario docente
             $user = User::firstOrCreate(

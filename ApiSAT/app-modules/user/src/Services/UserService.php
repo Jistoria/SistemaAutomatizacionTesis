@@ -19,8 +19,8 @@ class UserService
      */
     public function createUserWithRole(array $data, string|array $role, string $userId): User
     {
-        $user= $this->user->firstOrCreate(['name' => $data['name']], [
-            'email' => $data['email'],
+        $user= $this->user->firstOrCreate(['email' => $data['email']], [
+            'name' => $data['name'],
             'password' => $data['password'],
             'created_by_user' => $userId,
             'updated_by_user' => $userId,

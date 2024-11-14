@@ -1,4 +1,3 @@
-  
 <script setup>
 import { Editor, EditorContent, useEditor } from '@tiptap/vue-3'
 import { watch } from 'vue';
