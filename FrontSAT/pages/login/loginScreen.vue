@@ -1,6 +1,7 @@
 <script setup>
 import { auth } from '~/stores/auth/auth';
 import { useRoute, useRouter } from 'vue-router';
+import { firstLoad } from '~/composables/firs_load';
 const { $echoReady } = useNuxtApp();
 
 const authStore = auth()
@@ -26,8 +27,11 @@ onMounted(async () => {
 const Login = async () => {
     openAnimation('spinner');
     await authStore.login(email.value, password.value)
-    closeAnimation();
-    router.push('/')
+    const response = await firstLoad();
+    if(response){
+        closeAnimation();
+        router.push('/')
+    }
 }
 
 </script>

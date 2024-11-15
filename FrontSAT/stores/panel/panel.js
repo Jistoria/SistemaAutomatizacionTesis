@@ -10,7 +10,6 @@ export const panel = defineStore('panel',{
         
     }),
     actions:{
-            //el with credentials
         async menus(){
             const response = await menusService.menus()
             console.log(response.data)
@@ -25,7 +24,6 @@ export const panel = defineStore('panel',{
                 
             }
         },
-        //estudiantes
         async getlistStudents(){
             const data = [
                 {
