@@ -13,6 +13,7 @@ export const student = defineStore('student',{
             this.setActualPhase(response.faseActual);
             const response2 = await studentService.getRequeriments(token,this.faseActual.thesis_process_phases_id);
             await this.setRequeriments(response2.data)
+            console.log(this.requeriments)
             return
         },
         async setRequeriments(requeriments){
