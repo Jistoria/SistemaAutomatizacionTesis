@@ -121,8 +121,8 @@ class ProcessPdfThesisData implements ShouldQueue
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
                     'period_academic_id' => $periodAcademic->period_academic_id,
-                    'date_start' => $periodAcademic->date_start,
-                    'date_end' => $periodAcademic->date_end
+                    'date_start' => $periodAcademic->start_date,
+                    'date_end' => $periodAcademic->end_date
                 ], $this->id);
 
                 $phase = app(ThesisPhasesServiceInterface::class);

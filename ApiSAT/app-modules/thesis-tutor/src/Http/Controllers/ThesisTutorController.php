@@ -2,6 +2,7 @@
 
 namespace Modules\ThesisTutor\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use Modules\ThesisTutor\Services\ThesisTutorService;
 
@@ -14,8 +15,20 @@ class ThesisTutorController
 
     public function myStudents(Request $request)
     {
-        $students = $this->thesisTutorService->getMyStudents($request->user()->id);
+        try{
+            $students = $this->thesisTutorService->getMyStudents($request->user()->id);
+            return ApiResponse::success($students);
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 
-        return response()->json($students);
+    public function requirementsStudent(Request $request)
+    {
+        try{
+            return ApiResponse::success('requirements_student');
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
     }
 }

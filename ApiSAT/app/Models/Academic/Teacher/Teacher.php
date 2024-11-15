@@ -2,6 +2,7 @@
 
 namespace App\Models\Academic\Teacher;
 
+use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Auth\User;
 use App\Models\General\CategoryArea;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -13,6 +14,8 @@ class Teacher extends Model
 {
     use HasFactory, HasUuids;
 
+
+    protected $table = 'teachers';
     protected $primaryKey = 'teacher_id';
     public $incrementing = false;
     protected $keyType = 'uuid';
@@ -49,4 +52,15 @@ class Teacher extends Model
     {
         return $this->belongsTo(User::class, 'deleted_by_user');
     }
+
+    public function students_process()
+    {
+        return $this->hasMany(ThesisProcess::class, 'teacher_id', 'teacher_id');
+    }
+
+    public function isTutorOf($studentId)
+    {
+        return $this->students_process()->where('student_id', $studentId)->exists();
+    }
+
 }
