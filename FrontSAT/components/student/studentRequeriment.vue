@@ -14,6 +14,7 @@ const selectedFiles = ref({}); // Almacena archivos temporalmente por índice
 
 // Abre el modal de información y carga datos específicos
 const openInfoModal = (index) => {
+  console.log(studentStore.requeriments)
   const requirement = studentStore.requeriments[index];
   selectedRequirement.value = {
     details: requirement?.description || "No hay detalles para este requisito.",

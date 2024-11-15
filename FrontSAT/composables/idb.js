@@ -1,28 +1,9 @@
-
-
-/**
- * Función para acceder a la tabla (Object Store) especificada y obtener los elementos.
- * 
- * @function consult
- * @async
- * @param {string} tableName - El nombre de la tabla (Object Store) a consultar.
- * @returns {Promise<Object|Array|{error: string}>} - Devuelve el primer elemento de la tabla como objeto, 
- * un array vacío si no hay elementos, o un objeto de error si ocurre algún problema.
- * 
- * @example
- * const { consult } = useIdb();
- * const result = await consult('miTabla');
- * if (result.error) {
- *   console.error(result.error);
- * } else {
- *   console.log(result);
- * }
- */
-// composables/useIndexedDB.js
 import { getDatabase } from '~/plugins/idb';
 
 export function useIdb() {
-  // Función para acceder a la tabla (Object Store) especificada y obtener los elementos
+  /**
+   * Consultar todos los elementos en una tabla (Object Store).
+   */
   const consult = async (tableName) => {
     try {
       // Obtener la base de datos usando el método getDatabase
@@ -57,8 +38,94 @@ export function useIdb() {
       return { error: 'Error al acceder a IndexedDB.' };
     }
   };
+  const consults = async (tableName, key) => {
+    try {
+      const db = await getDatabase();
+  
+      if (!db) {
+        console.error('No se pudo acceder a la base de datos.');
+        return { error: 'No se pudo acceder a la base de datos.' };
+      }
+  
+      if (!db.objectStoreNames.contains(tableName)) {
+        console.error(`La tabla '${tableName}' no existe.`);
+        return { error: `La tabla '${tableName}' no existe.` };
+      }
+  
+      const tx = db.transaction(tableName, 'readonly');
+      const store = tx.objectStore(tableName);
+  
+      if (key) {
+        const item = await store.get(key);
+
+        return item || null;
+      } else {
+        const items = await store.getAll();
+
+        return items;
+      }
+    } catch (error) {
+      console.error('Error al acceder a IndexedDB:', error);
+      return { error: 'Error al acceder a IndexedDB.' };
+    }
+  };
+  
+  /**
+   * Guardar un elemento en una tabla (Object Store) específica.
+   */
+  const setData = async (tableName, key, value) => {
+    try {
+      const db = await getDatabase();
+      if (!db) {
+        throw new Error('No se pudo acceder a la base de datos.');
+      }
+  
+      const tx = db.transaction(tableName, 'readwrite');
+      const store = tx.objectStore(tableName);
+  
+      if (key) {
+        // Proporciona la clave explícitamente
+        await store.put(value, key);
+      } else {
+        // Si no hay clave, intenta guardar sin ella (requiere autoincrement)
+        await store.put(value);
+      }
+  
+      await tx.done;
+      // console.log(`Datos guardados correctamente en la tabla '${tableName}'.`);
+    } catch (error) {
+      console.error('Error al guardar datos en IndexedDB:', error);
+    }
+  };
+
+  /**
+   * Limpiar todos los elementos de una tabla (Object Store) específica.
+   */
+  const clearData = async (tableName) => {
+    try {
+      const db = await getDatabase();
+      if (!db) {
+        throw new Error('No se pudo acceder a la base de datos.');
+      }
+
+      console.log(`Limpiando todos los datos de la tabla '${tableName}'...`);
+
+      const tx = db.transaction(tableName, 'readwrite');
+      const store = tx.objectStore(tableName);
+      await store.clear();
+      await tx.done;
+
+      console.log(`Tabla '${tableName}' limpiada correctamente.`);
+    } catch (error) {
+      console.error('Error al limpiar datos en IndexedDB:', error);
+    }
+  };
 
   return {
-    consult
+    consult,
+    consults,
+    setData,
+    clearData,
   };
 }
+
