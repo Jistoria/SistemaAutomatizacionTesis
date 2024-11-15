@@ -19,18 +19,22 @@ const openDetailsModal = async () => {
 };
 const closeDetailsModal = () => (isDetailsModalOpen.value = false);
 const formatUserName = (name) => {
-  // Convierte el nombre a minúsculas y luego capitaliza la primera letra de cada palabra
+  if (!name || typeof name !== 'string') {
+    return ''; // Retorna un string vacío si el nombre no es válido
+  }
   return name
-        .toLowerCase()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 };
 
 onMounted(async () => {
   await studentStore.getDataStatus(authStore.token);
-
-
+  
+  console.log(studentStore.dashboard_status);
+  console.log(studentStore.faseActual);
+  console.log(studentStore.requeriments);
 });
 
 </script>

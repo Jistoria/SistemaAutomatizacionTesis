@@ -9,7 +9,7 @@ const loading = ref(true);
 const animatedPercentages = ref({});
 
 onMounted(async () => {
-  await studentStore.getDataStatus(authStore.token);
+  
 
   studentStore.dashboard_status.forEach((module, moduleIndex) => {
     module.phases.forEach((phase, phaseIndex) => {

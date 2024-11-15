@@ -3,10 +3,20 @@ import { Bars3Icon } from '@heroicons/vue/24/outline';
 import { panel } from '~/stores/panel/panel';
 import { useRoute } from 'vue-router';
 import { auth } from '~/stores/auth/auth';
+
+const { openAnimation, closeAnimation } = inject('requestAnimation');
+
 const authStore = auth()
 const Logout = async () => {
-    await authStore.logout()
-}
+  const router = useRouter(); // Obtener la instancia del router
+
+  openAnimation('spinner'); // Mostrar animación de carga
+  await authStore.logout(); // Llamar al logout
+  closeAnimation(); // Cerrar animación de carga
+
+  // Redirigir a la página de login
+  router.push('/login/loginScreen');
+};
 const panelStore = panel();
 const profileOpen = ref(false);
 const asideOpen = ref(false);

@@ -1,4 +1,6 @@
-import { studentService } from '~/services/studentModel/studentService';
+import { defineStore } from 'pinia'
+import { studentService } from '~/services/studentModel/studentService'
+import { useIdb } from '~/composables/idb'
 
 export const student = defineStore('student',{
     state: () =>({

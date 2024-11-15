@@ -1,4 +1,5 @@
 import { authService } from '~/services/authModel/authService';
+
 /**
  * Define una tienda de autenticación utilizando Pinia.
  * 
@@ -65,12 +66,13 @@ export const auth = defineStore('auth',{
         async logout(){
             try {
                 const response = await authService.logout()
+                console.log(response)
                 if(response == true){
+                    console.log('cerrando sesion')
                     this.setLogout()
-                    nextTick(() => {
-                        navigateTo('/login/loginScreen'); 
-                    });
+                    
                 }
+                return true
             } catch (error) {
                 console.error('Error en logout en el store:', error);
                 throw error;
