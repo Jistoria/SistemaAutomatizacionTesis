@@ -3,6 +3,7 @@
 namespace Modules\ThesisTutor\Services;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\ThesisTutor\Models\Tutor;
 
 class ThesisTutorService
@@ -12,9 +13,9 @@ class ThesisTutorService
     )
     {}
 
-    public function getMyStudents(string $user) : ?Collection
+    public function getMyStudents(string $user, int $paginate = null) : Collection|LengthAwarePaginator|null
     {
-        $studendts = $this->teacher->where('teacher_id', $user)->first()->getStudents();
+        $studendts = $this->teacher->where('teacher_id', $user)->first()->getStudents($paginate);
 
         return $studendts;
     }

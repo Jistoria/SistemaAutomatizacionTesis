@@ -16,7 +16,7 @@ class ThesisTutorController
     public function myStudents(Request $request)
     {
         try{
-            $students = $this->thesisTutorService->getMyStudents($request->user()->id);
+            $students = $this->thesisTutorService->getMyStudents($request->user()->id, $request->input('pagination'));
             return ApiResponse::success($students);
         }catch(\Exception $e){
             return ApiResponse::error($e->getMessage());

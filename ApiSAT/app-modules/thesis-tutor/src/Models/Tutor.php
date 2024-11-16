@@ -10,9 +10,9 @@ class Tutor extends Teacher
      /**
      * Obtener los estudiantes asociados con el tutor.
      */
-    public function getStudents()
+    public function getStudents(int $paginate = null)
     {
-        return $this->students_process()
+        $data = $this->students_process()
             ->join('thesis_titles', 'thesis_process.thesis_id', '=', 'thesis_titles.thesis_id')
             ->join('period_academic', 'thesis_process.period_academic_id', '=', 'period_academic.period_academic_id')
             ->join('students', 'thesis_process.student_id', '=', 'students.student_id')
@@ -49,7 +49,7 @@ class Tutor extends Teacher
                 'thesis_process.updated_at',
 
                 DB::raw('COUNT(student_requirements.student_requirements_id) as total_requirements'),
-                DB::raw('SUM(CASE WHEN student_requirements.approved = \'Aprobado\' THEN 1 ELSE 0 END) as total_requirements_approved'),
+                DB::raw('SUM(CASE WHEN student_requirements.status = \'Aprobado\' THEN 1 ELSE 0 END) as total_requirements_approved'),
                 DB::raw('SUM(CASE WHEN student_requirements.status = \'Pendiente\' THEN 1 ELSE 0 END) as total_requirements_pending'),
                 DB::raw('SUM(CASE WHEN student_requirements.status = \'Rechazado\' THEN 1 ELSE 0 END) as total_requirements_rejected'),
                 DB::raw('SUM(CASE WHEN student_requirements.status = \'Enviado\' THEN 1 ELSE 0 END) as total_requirements_sent'),
@@ -98,8 +98,9 @@ class Tutor extends Teacher
                 'thesis_process.created_at',
                 'thesis_process.updated_at',
             ])
-            ->orderBy('users.name')
-            ->paginate(3);
+            ->orderBy('users.name');
+
+            return $paginate ? $data->paginate($paginate) : $data->get();
     }
 
 
