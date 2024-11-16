@@ -48,6 +48,12 @@ class Tutor extends Teacher
                 'thesis_process.created_at',
                 'thesis_process.updated_at',
 
+                DB::raw('COUNT(student_requirements.student_requirements_id) as total_requirements'),
+                DB::raw('SUM(CASE WHEN student_requirements.approved = true THEN 1 ELSE 0 END) as total_requirements_approved'),
+                DB::raw('SUM(CASE WHEN student_requirements.approved = false THEN 1 ELSE 0 END) as total_requirements_pending'),
+                DB::raw('SUM(CASE WHEN student_requirements.status = \'Rechazado\' THEN 1 ELSE 0 END) as total_requirements_rejected'),
+                DB::raw('SUM(CASE WHEN student_requirements.status = \'Enviado\' THEN 1 ELSE 0 END) as total_requirements_sent'),
+
                 DB::raw('JSON_AGG(
                     JSON_BUILD_OBJECT(
                         \'student_requirements_id\', student_requirements.student_requirements_id,
@@ -62,15 +68,7 @@ class Tutor extends Teacher
                         \'status\', student_requirements.status,
                         \'requirement_name\', requirements.name
                     )
-                ) as requirements'),
-
-                DB::raw('COUNT(student_requirements.student_requirements_id) as total_requirements'),
-                DB::raw('SUM(CASE WHEN student_requirements.approved = true THEN 1 ELSE 0 END) as total_requirements_approved'),
-                DB::raw('SUM(CASE WHEN student_requirements.approved = false THEN 1 ELSE 0 END) as total_requirements_pending'),
-                DB::raw('SUM(CASE WHEN student_requirements.status = \'Rechazado\' THEN 1 ELSE 0 END) as total_requirements_rejected'),
-                DB::raw('SUM(CASE WHEN student_requirements.status = \'Enviado\' THEN 1 ELSE 0 END) as total_requirements_sent'),
-
-
+                ) as requirements')
             ])
             ->where('thesis_process_phases.state_now', '=', 'En proceso')
             ->groupBy([
@@ -87,8 +85,6 @@ class Tutor extends Teacher
 
                 'thesis_phases.name',
                 'thesis_process_phases.state_now',
-
-                'student_requirements.student_requirements_id',
 
                 'period_academic.period_academic_id',
                 'period_academic.name',
