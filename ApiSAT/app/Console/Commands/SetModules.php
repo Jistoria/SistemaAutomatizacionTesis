@@ -36,8 +36,8 @@ class SetModules extends Command
             ['name' => 'Desarrollo', 'order' => 2,
                 'phases' => [
                     ['name' => 'Fase Diseño', 'order' => 1, 'requirements' => [
-                        ['name' => 'PAT-04-F-004', 'type' => 'document', 'extension' => ['pdf', 'docx']],
-                        ['name' => 'Trabajo Escrito', 'type' => 'document', 'extension' => ['docx']]
+                        ['name' => 'PAT-04-F-004', 'type' => 'document', 'extension' => 'docx'],
+                        ['name' => 'Trabajo Escrito', 'type' => 'document', 'extension' => 'docx']
                         ]],
                     ['name' => 'Fase Resultado', 'order' => 2, 'requirements' => [
                         ['name' => 'Informe de Similitud', 'type' => 'document', 'extension' => ['docx']],
