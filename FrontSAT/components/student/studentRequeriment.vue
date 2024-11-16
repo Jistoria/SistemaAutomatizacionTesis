@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { student } from '~/stores/dashboards/student';
 import { auth } from '~/stores/auth/auth';
 import { sweetAlert } from '~/composables/sweetAlert';
+const { openAnimation, closeAnimation } = inject('requestAnimation');
 
 const studentStore = student();
 const authStore = auth();
@@ -33,15 +34,14 @@ const openStudentModal = () => isStudentModalOpen.value = true;
 const closeStudentModal = () => isStudentModalOpen.value = false;
 
 // Maneja la selección de archivo y validación del nombre
-const handleFileUpload = (event, index) => {
+const handleFileUpload = (event, fileName,index) => {
   const file = event.target.files[0];
   if (file) {
-    const requiredFilename = studentStore.requeriments[index]?.name || "archivo_requerido.ext";
-    if (file.name === requiredFilename) {
+    if (file.name === fileName) {
       selectedFiles.value[index] = file; // Almacena el archivo temporalmente
     } else {
       swal.showAlert('error', 'right', {
-        title: `El archivo no coincide, debe llamarse: ${requiredFilename}`,
+        title: `El archivo no coincide, debe llamarse: ${fileName}`,
         confirmType: 'timer',
       });
       event.target.value = ""; // Resetea el input
@@ -57,23 +57,48 @@ const clearFile = (index) => {
 };
 
 // Prepara el archivo para envío (sin hacer la petición)
-const submitRequirement = (index) => {
-  const file = selectedFiles.value[index];
+const submitRequirement = async (index) => {
+  if (authStore.online == true ){
+    const file = selectedFiles.value[index];
   if (file) {
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("requirementStudentId", studentStore.requeriments[index].student_requirements_id);
     console.log("FormData contents:");
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value.name || value}`);
     }
-    clearFile(index); // Limpia el archivo después de mostrar el FormData
+    openAnimation("spinner");
+      await studentStore.sendRequeriments(authStore.token, formData);
+    closeAnimation();
+
+    
   } else {
     swal.showAlert("error", "right", {
       title: "No se ha seleccionado ningún archivo para este requerimiento",
       confirmType: "timer",
     });
   }
+  }else {
+      swal.showAlert('warning', 'normal', {
+      title: 'Atención',
+      text: 'Para poder usar esta acción requiere tener conexión',
+      confirmType: 'normal',
+  });
+  }
 };
+function getFullFileName(name, extension) {
+  const fileName = name || 'Archivo sin nombre';
+  let fileExtension = extension || '';
+
+  // Remover comillas de la extensión, si existen
+  fileExtension = fileExtension.replace(/['"]+/g, '');
+
+  // Concatenar con un punto solo si hay una extensión válida
+  return fileExtension ? `${fileName}.${fileExtension}` : fileName;
+}
+
+
 </script>
 <template>
   <div class="flex justify-end mt-4 space-x-4">
@@ -107,8 +132,7 @@ const submitRequirement = (index) => {
           >
             <!-- Nombre del archivo -->
             <td class="text-gray-700 px-4 py-2">
-              <span v-if="requirement.status === 'Enviado'">Documento enviado para revisión</span>
-              <span v-else>{{ requirement.name || 'Archivo sin nombre' }}</span>
+              <span>{{ getFullFileName(requirement.name,requirement.extension) || 'Archivo sin nombre' }}</span>
             </td>
 
             <!-- Información -->
@@ -129,12 +153,12 @@ const submitRequirement = (index) => {
                   <input 
                     type="file" 
                     accept="file" 
-                    @change="handleFileUpload($event, index)" 
+                    @change="handleFileUpload($event, getFullFileName(requirement.name,requirement.extension),index)" 
                     :id="`file-input-${index}`" 
                     class="hidden"
                   />
                 </label>
-                <span v-if="requirement.status === 'Enviado'" class="text-gray-500 italic">No se puede subir archivo</span>
+                <span v-if="requirement.status === 'Enviado'" class="text-gray-500 italic">Archivo enviado para su revision</span>
                 <span v-else-if="selectedFiles[index]" class="text-sm text-gray-600 truncate max-w-[120px]">
                   {{ selectedFiles[index].name }}
                 </span>

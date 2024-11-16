@@ -28,6 +28,14 @@ const formatUserName = (name) => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };
+function formatDate(dateString) {
+  if (!dateString) return 'Fecha no disponible';
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0'); // Asegura dos dígitos
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Meses empiezan en 0
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
 
 onMounted(async () => {
   await studentStore.getDataStatus(authStore.token);
@@ -35,6 +43,7 @@ onMounted(async () => {
   console.log(studentStore.dashboard_status);
   console.log(studentStore.faseActual);
   console.log(studentStore.requeriments);
+  console.log(studentStore.generalData);
 });
 
 </script>
@@ -47,13 +56,17 @@ onMounted(async () => {
       <button class="btn btn-outline btn-primary flex items-center">
         <i class="bi bi-envelope mr-2"></i> Enviar Solicitud
       </button>
+      
     </header>
 
     <!-- Status Section -->
     <section class="mb-8 w-full overflow-x-auto">
       <h2 class="text-xl sm:text-2xl font-bold text-center text-primary mb-4">
-        Estado del Proyecto: NOMBRE DEL PROYECTO
+        Estado del Proyecto:
       </h2>
+      <p class="text-center text-gray-800 font-medium text-lg sm:text-xl leading-relaxed">
+        {{ formatUserName(studentStore.generalData.thesis.title) }}
+      </p>
       <div class="flex justify-center">
         <!-- Contenedor principal con padding adicional a la izquierda -->
         <div class="w-full max-w-5xl p-2 sm:p-4 lg:p-6 flex gap-4 overflow-x-auto pl-4">
@@ -75,27 +88,74 @@ onMounted(async () => {
       </div>
     </section>
 
-    <!-- Details Modal -->
-    <div v-if="isDetailsModalOpen" class="modal modal-open flex items-center justify-center bg-gray-800 bg-opacity-75 fixed inset-0 z-100">
-      <div class="modal-box max-w-full sm:max-w-lg max-h-[70vh] overflow-y-auto p-6 bg-white shadow-lg rounded-lg">
-        <h3 class="font-bold text-lg mb-4 text-gray-800">Detalles de Recursos</h3>
-        <div v-if="studentStore.requeriments && studentStore.requeriments.length">
-          <div v-for="(requirement, index) in studentStore.requeriments" :key="requirement.student_requirements_id" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
-            <p class="text-gray-700"><strong class="text-gray-800">Tutor a cargo:</strong> {{ requirement.approved_role || 'No especificado' }}</p>
-            <p class="text-gray-700"><strong class="text-gray-800">Tema:</strong> {{ requirement.name || 'No especificado' }}</p>
-            <p class="text-gray-700"><strong class="text-gray-800">Fecha de fin:</strong> {{ requirement.send_date || 'No especificado' }}</p>
-            <p class="text-gray-700"><strong class="text-gray-800">Requisitos de la actividad:</strong> {{ requirement.description || 'No especificado' }}</p>
-            <hr class="my-4 border-t border-gray-200"/>
+    <div v-if="isDetailsModalOpen" class="modal modal-open flex items-center justify-center bg-gray-900 bg-opacity-75 fixed inset-0 z-100">
+      <div class="modal-box max-w-full sm:max-w-lg max-h-[70vh] overflow-y-auto p-6 bg-white shadow-lg rounded-md">
+        <!-- Título del Modal -->
+        <h3 class="font-bold text-2xl mb-6 text-gray-800 border-b border-gray-300 pb-2">Detalles de Recursos</h3>
+    
+        <!-- Título de la Tesis -->
+        <div class="mb-6">
+          <div class="flex items-center space-x-2 mb-2">
+            <span class="badge bg-red-500 text-white text-sm font-semibold rounded-md py-1 px-2">Tesis</span>
+            <h4 class="text-gray-800 font-semibold text-lg">Título</h4>
           </div>
+          <p class="text-gray-700 text-base leading-relaxed">
+            {{ formatUserName(studentStore.generalData.thesis?.title) || 'Sin título disponible' }}
+          </p>
         </div>
-        <div v-else class="text-center text-gray-500">
-          Cargando...
+    
+        <!-- Categorías -->
+        <div class="mb-6">
+          <div class="flex items-center space-x-2 mb-2">
+            <span class="badge bg-blue-500 text-white text-sm font-semibold rounded-md py-1 px-2">Categorías</span>
+            <h4 class="text-gray-800 font-semibold text-lg">Asociadas</h4>
+          </div>
+          <ul class="list-disc pl-5 text-gray-700 text-sm mt-2 space-y-2">
+            <li v-for="(area, index) in studentStore.generalData.thesis?.category_areas" :key="index">
+              <strong class="text-gray-800">{{ area.name }}</strong>: {{ area.description }}
+            </li>
+          </ul>
         </div>
-        <div class="modal-action justify-end mt-4">
-          <button @click="closeDetailsModal" class="btn btn-outline btn-primary">Cerrar</button>
+    
+        <!-- Periodo Académico -->
+        <div class="mb-6">
+          <div class="flex items-center space-x-2 mb-2">
+            <span class="badge bg-gray-700 text-white text-sm font-semibold rounded-md py-1 px-2">Periodo</span>
+            <h4 class="text-gray-800 font-semibold text-lg">Académico</h4>
+          </div>
+          <p class="text-gray-700 text-sm mt-1">
+            <strong>Nombre:</strong> {{ studentStore.generalData.period_academic?.name || 'Sin nombre' }}
+          </p>
+          <p class="text-gray-700 text-sm mt-1">
+            <strong>Inicio:</strong> {{ formatDate(studentStore.generalData.period_academic?.start_date) }}
+          </p>
+          <p class="text-gray-700 text-sm mt-1">
+            <strong>Fin:</strong> {{ formatDate(studentStore.generalData.period_academic?.end_date) }}
+          </p>
+        </div>
+    
+        <!-- Tutor -->
+        <div class="mb-6">
+          <div class="flex items-center space-x-2 mb-2">
+            <span class="badge bg-yellow-500 text-black text-sm font-semibold rounded-md py-1 px-2">Tutor</span>
+            <h4 class="text-gray-800 font-semibold text-lg">Asignado</h4>
+          </div>
+          <p class="text-gray-700 text-sm">
+            {{ formatUserName(studentStore.generalData.tutor?.user?.name) || 'Sin tutor asignado' }}
+          </p>
+        </div>
+    
+        <!-- Botón para cerrar el modal -->
+        <div class="modal-action justify-end mt-6">
+          <button @click="closeDetailsModal" class="btn bg-gray-800 text-white font-semibold py-2 px-6 rounded-md hover:bg-gray-700">
+            Cerrar
+          </button>
         </div>
       </div>
     </div>
+    
+    
+    
 
     <!-- Requirements Section -->
     <section class="mb-8">

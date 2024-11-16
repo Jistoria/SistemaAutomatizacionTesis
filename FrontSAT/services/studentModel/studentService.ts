@@ -49,6 +49,22 @@ class StudentService {
             return error;
         }
     }
+    async getGeneralData(token: string) {
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient('/thesis-process-student/thesis-process', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+            });
+
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
     async getRequeriments(token: string, id: string) {
         const fetchClient = this.getFetchClient();
         try {
