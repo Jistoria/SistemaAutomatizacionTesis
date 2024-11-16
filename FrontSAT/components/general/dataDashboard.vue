@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps } from 'vue';
-const datashow = ref(false);
+const datashow = ref(true);
 import { dashboardData } from '~/composables/dashboardData';
 
 const props = defineProps({

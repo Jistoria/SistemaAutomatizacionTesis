@@ -1,11 +1,18 @@
 <script setup>
 import { panel } from '~/stores/panel/panel';
 const panelStore = panel();
-const studentlist= ref(null)
+const studentlist= ref(null);
+const { openAnimation, closeAnimation } = inject('requestAnimation');
+
+
 onMounted(async () => {
     const response = await panelStore.getlistStudents();
     studentlist.value = panelStore.stuendent_data;
+    console.log(response);
+    //studentlist.value = response;
 });
+
+
 const chageDatacolor = (data)=>{
     if(data == 'Habilitado'){
         return  'bg-success p-2 rounded-lg' 
@@ -13,6 +20,16 @@ const chageDatacolor = (data)=>{
         return  'bg-neutral p-2 rounded-lg' 
     }
 }
+const details_student = (data)=>{
+    //implementar fase de carga
+    openAnimation('spinner');
+    console.log(data);
+    panelStore.detailStudent(data);
+    closeAnimation();
+
+
+}
+
 
 </script>
 <template>
@@ -23,80 +40,53 @@ const chageDatacolor = (data)=>{
                     <div class="flex items-center space-x-1 ">
                         <i class="bi bi-person-fill icon_size"></i>
                         <span>
-                            {{ dataList.user.name }}
+                            <!-- nombre -->
+                            {{ dataList.name }}
                         </span>
                     </div>
                     <div class="flex items-center space-x-1">
                         <i class="bi bi-calendar-fill icon_size pe-2"></i>
-                        <span>{{ dataList.user.phase }}</span>
+                        <!-- phase -->
+                        <span>{{dataList.state_now}}</span>
                     </div>
                     <div class="flex items-center space-x-1">
-                        
-                        <span :class="chageDatacolor(dataList.user.status)" >{{ dataList.user.status }}</span>
+                        <!-- estado del usuario -->
+                        <span :class="chageDatacolor('habilitado')" >{{dataList.state_now}}</span>
                     </div>
                 </div>
                 <div class="p-6 italic">
-                    {{ dataList.description}}
+                    <!-- descripcion -->
+                    {{ dataList.title }}
                 </div>
             </div>
-            <div class=" justify-center p-1 hidden">
-                <div class="grid grid-cols-2 gap-4 mb-3">
-                    <div>
-                        <div class="text-center border border-gray-900">
-                            <a>Diseño</a>
-                        </div>
-                        <div >
-                            <div class="overflow-x-auto ">
-                                <table class="table">
-                                    <!-- head -->
-                                    <thead >
-                                    <tr class="text-center border bg-gray-400 border-gray-900">
-                                        <th>Parcial 1</th>
-                                        <th>Parcial 2</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <!-- row 1 -->
-                                    <tr class="text-center border border-gray-900">
-                                        <td>{{ dataList.evaluations[0].scores[0].score }}</td>
-                                        <td>{{ dataList.evaluations[0].scores[1].score }}</td>
-                                    </tr>
-                                   </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-center border border-gray-900">
-                            <a>Resultado</a>
-                        </div>
-                        <div >
-                            <div class="overflow-x-auto ">
-                                <table class="table">
-                                    <!-- head -->
-                                    <thead >
-                                    <tr class="text-center border bg-gray-400 border-gray-900">
-                                        <th>Parcial 1</th>
-                                        <th>Parcial 2</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <!-- row 1 -->
-                                    <tr class="text-center border border-gray-900">
-                                        <td>{{ dataList.evaluations[1].scores[0].score }}</td>
-                                        <td>{{ dataList.evaluations[1].scores[1].score }}</td>
-                                    </tr>
-                                   </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class=" justify-center p-1 ">
                 <div >
-                    <div class=" text-center ">
-                        <a class="bg-white rounded  p-2">
-                            Ver detalles <i class="bi bi-info-lg"></i>
-                        </a>
+                    <div class="grid grid-cols-2">
+                        <div>
+                            <div class="text-center italic">Documentos:</div>
+                            <div class="grid grid-cols-3 text-center p-3">
+                                <div >
+                                    <i class="bi bi-hourglass-bottom"></i>
+                                    <a class="ms-2">2</a>     
+                                    
+                                </div>
+                                <div>
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <a class="ms-2">3</a>     
+                                </div>
+                                <div >
+                                    <i class="bi bi-x-circle-fill"></i>
+                                    <a class="ms-2">5</a>     
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex  ">
+                            <div class="justify-self-center p-4">
+                                <button @click="details_student(dataList.student_id)" class="btn btn-neutro">
+                                    <i class="bi bi-info"></i>Ver mas
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

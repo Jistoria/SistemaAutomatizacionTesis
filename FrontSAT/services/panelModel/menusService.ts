@@ -49,14 +49,30 @@ class MenusService {
     }
     async getListStudents(){
         const fetchClient = this.getFetchClient();
+        console.log('entre al getlist student')
         try {
-            const response = await fetchClient('/auth/menus',{
+            const response = await fetchClient('/thesis-tutor/my-students',{
                 method:'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             })
+            console.log('respuesta de regreso')
             return response
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async getdetailsStudent(id:any){
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient(`/thesis-tutor/my-students/${id}`,{
+                method:'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            console.log(response);
         } catch (error) {
             console.log(error)
         }
