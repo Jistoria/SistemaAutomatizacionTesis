@@ -27,7 +27,9 @@ class Requirements extends RequirementsStudent
                 'student_requirements.approved_role',
                 'requirements.requirements_id as requirements_id',
                 'requirements.name as name',
-                'requirements.description as description'
+                'requirements.description as description',
+                'requirements.type as type',
+                'requirements.extension as extension',
             ])
             ->orderBy('student_requirements.student_requirements_id')
             ->get();

@@ -15,6 +15,9 @@ return new class extends Migration
             $table->uuid('requirements_id')->primary();
             $table->uuid('thesis_phases_id')->nullable();
             $table->string('name')->nullable();
+            $table->string('type')->nullable();
+            $table->json('extension')->nullable();
+            $table->string('url_resource')->nullable();
             $table->text('description')->nullable();
             $table->string('approval_role')->nullable();
             $table->timestamps();
