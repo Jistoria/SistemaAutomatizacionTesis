@@ -19,4 +19,9 @@ class ThesisTutorService
         return $studendts;
     }
 
+    public function changeStatusRequirementStudent(string $user, string $student_requirements_id) : void
+    {
+        $this->teacher->where('teacher_id', $user)->first()->changeStatusRequirement($student_requirements_id);
+    }
+
 }
