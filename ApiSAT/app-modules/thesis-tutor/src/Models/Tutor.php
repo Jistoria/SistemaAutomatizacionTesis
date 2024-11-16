@@ -99,7 +99,7 @@ class Tutor extends Teacher
                 'thesis_process.updated_at',
             ])
             ->orderBy('users.name')
-            ->get();
+            ->paginate(3);
     }
 
 
