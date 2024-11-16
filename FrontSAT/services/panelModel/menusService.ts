@@ -51,7 +51,7 @@ class MenusService {
         const fetchClient = this.getFetchClient();
         console.log('entre al getlist student')
         try {
-            const response = await fetchClient('/thesis-tutor/my-students',{
+            const response = await fetchClient('/thesis-tutor/my-students?pagination=2',{
                 method:'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,18 +64,8 @@ class MenusService {
         }
     }
     async getdetailsStudent(id:any){
-        const fetchClient = this.getFetchClient();
-        try {
-            const response = await fetchClient(`/thesis-tutor/my-students/${id}`,{
-                method:'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            console.log(response);
-        } catch (error) {
-            console.log(error)
-        }
+        return 
+
     }
 
 }

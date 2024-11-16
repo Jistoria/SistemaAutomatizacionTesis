@@ -1,15 +1,20 @@
 <script setup>
 import { panel } from '~/stores/panel/panel';
+import { useRouter } from 'vue-router';
+import { StudentDetails } from '~/stores/details/studentDetails';
+const studentDetailsStore = StudentDetails();
 const panelStore = panel();
 const studentlist= ref(null);
 const { openAnimation, closeAnimation } = inject('requestAnimation');
 
+const router = useRouter();
 
 onMounted(async () => {
-    const response = await panelStore.getlistStudents();
-    studentlist.value = panelStore.stuendent_data;
-    console.log(response);
-    //studentlist.value = response;
+    await panelStore.getlistStudents();
+    studentlist.value = panelStore.stuendent_data.map((data) => ({
+        ...data,
+        requirements: JSON.parse(data.requirements), 
+    }));
 });
 
 
@@ -21,21 +26,19 @@ const chageDatacolor = (data)=>{
     }
 }
 const details_student = (data)=>{
-    //implementar fase de carga
-    openAnimation('spinner');
     console.log(data);
-    panelStore.detailStudent(data);
-    closeAnimation();
-
-
+    studentDetailsStore.setStudentDetails(data);
+    router.push('/panel/details/studentDetails');
 }
+
 
 
 </script>
 <template>
-    <div class="container mx-auto  mt-10">
+    
+    <div class="container mx-auto  mt-10 ">
         <div v-for="dataList in studentlist" class="bg-gray-300  rounded-lg grid grid-cols-3 gap-4 items-center p-4 mt-2 mb-2">
-            <div class=" col-span-2 bg-white ms-2 rounded-lg">
+            <div class=" col-span-2 bg-white ms-2 rounded-lg ">
                 <div class="flex items-center mt-5 space-x-4 text-gray-600 text-xs ps-6 pt-3 ">
                     <div class="flex items-center space-x-1 ">
                         <i class="bi bi-person-fill icon_size"></i>
@@ -67,22 +70,22 @@ const details_student = (data)=>{
                             <div class="grid grid-cols-3 text-center p-3">
                                 <div >
                                     <i class="bi bi-hourglass-bottom"></i>
-                                    <a class="ms-2">2</a>     
+                                    <a class="ms-2">{{ dataList.total_requirements_pending }}</a>     
                                     
                                 </div>
                                 <div>
                                     <i class="bi bi-check-circle-fill"></i>
-                                    <a class="ms-2">3</a>     
+                                    <a class="ms-2">{{dataList.total_requirements_approved}}</a>     
                                 </div>
                                 <div >
                                     <i class="bi bi-x-circle-fill"></i>
-                                    <a class="ms-2">5</a>     
+                                    <a class="ms-2">{{ dataList.total_requirements_rejected }}</a>     
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex  ">
                             <div class="justify-self-center p-4">
-                                <button @click="details_student(dataList.student_id)" class="btn btn-neutro">
+                                <button @click="details_student(dataList)" class="btn btn-neutro">
                                     <i class="bi bi-info"></i>Ver mas
                                 </button>
                             </div>
@@ -92,6 +95,7 @@ const details_student = (data)=>{
             </div>
         </div>
     </div>
+
 </template>
 <style>
 

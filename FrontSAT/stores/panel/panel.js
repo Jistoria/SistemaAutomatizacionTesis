@@ -39,14 +39,16 @@ export const panel = defineStore('panel',{
                   this.isLoaded = true;
                   const response = await menusService.getListStudents();
                   console.log('respuesta obtenida', response.data);
-                  this.stuendent_data = response.data;
-                  return response.data
+                  
+                  this.stuendent_data = response.data.data;
+
               } catch (error) {
                   
               }
             }
         },
         async detailStudent(id){
+          const response = await menusService.detailStudent(id);
           console.log('id', id);
           
         }
