@@ -31,4 +31,13 @@ class ThesisTutorController
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    public function changeStatusRequirementStudent(Request $request)
+    {
+        try{
+            return ApiResponse::success('change_status_requirement_student');
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }

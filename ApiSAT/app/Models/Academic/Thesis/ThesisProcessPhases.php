@@ -65,4 +65,6 @@ class ThesisProcessPhases extends Model
     {
         return $this->belongsTo(ThesisPhase::class, 'thesis_phases_id');
     }
+
+
 }
