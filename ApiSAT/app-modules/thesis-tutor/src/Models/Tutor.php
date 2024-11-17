@@ -71,7 +71,7 @@ class Tutor extends Teacher
                     )
                 ) as requirements')
             ])
-            ->where('thesis_process_phases.state_now', '=', 'En proceso')
+            ->where('thesis_process_phases.state_now', '=', State::IN_PROCESS)
             ->groupBy([
                 'students.dni',
                 'users.id',

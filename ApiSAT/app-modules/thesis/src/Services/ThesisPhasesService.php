@@ -32,10 +32,6 @@ class ThesisPhasesService implements ThesisPhasesServiceInterface
             $query->where('order', $orderPhase);
         })->first();
 
-        if (!$thesisPhase) {
-            Log::info("No se encontró ninguna fase con el módulo de orden $orderModule y fase de orden $orderPhase");
-        }
-
         return $thesisPhase;
     }
 

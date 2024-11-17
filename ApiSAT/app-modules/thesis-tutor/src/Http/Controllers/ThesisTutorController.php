@@ -3,7 +3,9 @@
 namespace Modules\ThesisTutor\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Utils\State;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Modules\ThesisTutor\Services\ThesisTutorService;
 
 class ThesisTutorController
@@ -34,8 +36,19 @@ class ThesisTutorController
 
     public function changeStatusRequirementStudent(Request $request)
     {
+        $allowedStates = State::getAllStates();
+
+        $request->validate([
+            'status' => ['required', Rule::in($allowedStates)],
+        ]);
         try{
-            return ApiResponse::success('change_status_requirement_student');
+            $statusEnum = State::fromEnum($request->input('status'));
+            $this->thesisTutorService->changeStatusRequirementStudent(
+                $request->user()->id,
+                $request->route('student_requirements_id'),
+                $statusEnum
+            );
+            return ApiResponse::success('status_changed');
         }catch(\Exception $e){
             return ApiResponse::error($e->getMessage());
         }
