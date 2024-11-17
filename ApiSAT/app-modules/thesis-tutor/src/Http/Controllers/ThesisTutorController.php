@@ -42,7 +42,7 @@ class ThesisTutorController
             'status' => ['required', Rule::in($allowedStates)],
         ]);
         try{
-            $statusEnum = State::fromEnum($request->input('status'));
+            $statusEnum = State::toEnum($request->input('status'));
             $this->thesisTutorService->changeStatusRequirementStudent(
                 $request->user()->id,
                 $request->route('student_requirements_id'),

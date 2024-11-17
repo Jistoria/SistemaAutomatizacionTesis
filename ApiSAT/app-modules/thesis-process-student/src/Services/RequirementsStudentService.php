@@ -35,12 +35,11 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
 
         $requirement = $this->requirements->find($studentRequirementsId);
         $requirement->status = $status;
-        $requirement->updated_by = $updatedBy;
 
-        if ($status === State::APPROVED) {
+        if ($status->value === State::APPROVED) {
             $requirement->approved = true;
             $requirement->approved_date = now();
-            $requirement->approved_by = $updatedBy;
+            $requirement->approved_by_user = $updatedBy;
         }
 
         $requirement->save();
