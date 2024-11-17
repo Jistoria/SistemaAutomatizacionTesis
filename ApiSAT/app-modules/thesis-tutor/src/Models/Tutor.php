@@ -3,6 +3,7 @@
 namespace Modules\ThesisTutor\Models;
 
 use App\Models\Academic\Teacher\Teacher;
+use App\Utils\State;
 use Illuminate\Support\Facades\DB;
 
 class Tutor extends Teacher
@@ -49,10 +50,10 @@ class Tutor extends Teacher
                 'thesis_process.updated_at',
 
                 DB::raw('COUNT(student_requirements.student_requirements_id) as total_requirements'),
-                DB::raw('SUM(CASE WHEN student_requirements.status = \'Aprobado\' THEN 1 ELSE 0 END) as total_requirements_approved'),
-                DB::raw('SUM(CASE WHEN student_requirements.status = \'Pendiente\' THEN 1 ELSE 0 END) as total_requirements_pending'),
-                DB::raw('SUM(CASE WHEN student_requirements.status = \'Rechazado\' THEN 1 ELSE 0 END) as total_requirements_rejected'),
-                DB::raw('SUM(CASE WHEN student_requirements.status = \'Enviado\' THEN 1 ELSE 0 END) as total_requirements_sent'),
+                DB::raw('SUM(CASE WHEN student_requirements.status = \'' . State::APPROVED . '\' THEN 1 ELSE 0 END) as total_requirements_approved'),
+                DB::raw('SUM(CASE WHEN student_requirements.status = \'' . State::SENT . '\' THEN 1 ELSE 0 END) as total_requirements_sent'),
+                DB::raw('SUM(CASE WHEN student_requirements.status = \'' . State::REJECTED . '\' THEN 1 ELSE 0 END) as total_requirements_rejected'),
+                DB::raw('SUM(CASE WHEN student_requirements.status = \'' . State::IN_PROCESS . '\' THEN 1 ELSE 0 END) as total_requirements_in_process'),
 
                 DB::raw('JSON_AGG(
                     JSON_BUILD_OBJECT(

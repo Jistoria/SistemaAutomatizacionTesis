@@ -3,8 +3,7 @@
 namespace Modules\ThesisProcessStudent\Services;
 
 use App\Models\Academic\Thesis\ThesisPhase;
-use App\Models\Academic\Thesis\ThesisProcess;
-use App\Models\Academic\Thesis\ThesisProcessPhases;
+use App\Utils\State;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
@@ -79,6 +78,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
                 'requirements_id' => $requirement->requirements_id,
                 'requirements_data' => $requirement->description,
                 'approved' => false,
+                'state_now' => State::PENDING,
                 'approved_by_user' => null,
                 'url_file' => null,
                 'send_date' => null,
@@ -105,7 +105,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
             $thesisProcessPhase->update([
                 'approval' => true,
                 'date_approved' => now(),
-                'state_now' => 'Aprobado',
+                'state_now' => State::APPROVED,
                 'updated_by_user' => $userId,
                 'date_end' => now()
             ]);
@@ -211,7 +211,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
                     'phase_name' => $phase->phase_name,
                     'phase_order' => $phase->phase_order,
                     'approval' => false, // Valor predeterminado para fases no completadas por el estudiante
-                    'state_now' => 'No habilitado',
+                    'state_now' => State::NOT_ENABLED,
                 ];
 
                 // Verificar si el estudiante ha completado esta fase
@@ -220,7 +220,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
                     if ($studentPhase) {
                         $phaseData['thesis_process_phases_id'] = $studentPhase->thesis_process_phases_id;
                         $phaseData['approval'] = $studentPhase->approval; // Usar el estado real del estudiante
-                        $phaseData['progress'] = $studentPhase->state_now == 'Aprobado' ? 100 : $studentPhase->progress;
+                        $phaseData['progress'] = $studentPhase->state_now == State::APPROVED ? 100 : $studentPhase->progress;
                         $phaseData['date_start'] = $studentPhase->date_start;
                         $phaseData['date_end'] = $studentPhase->date_end;
                         $phaseData['state_now'] = $studentPhase->state_now;

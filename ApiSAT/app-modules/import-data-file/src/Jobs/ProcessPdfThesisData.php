@@ -3,6 +3,7 @@
 namespace Modules\ImportDataFile\Jobs;
 
 use App\Models\Academic\Teacher\Teacher;
+use App\Utils\State;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -135,7 +136,7 @@ class ProcessPdfThesisData implements ShouldQueue
                     'thesis_process_id' => $thesis_process->thesis_process_id,
                     'thesis_phases_id' => $phase_1->thesis_phases_id,
                     'approval' => false,
-                    'state_now' => 'En proceso',
+                    'state_now' => State::IN_PROCESS,
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
@@ -152,7 +153,7 @@ class ProcessPdfThesisData implements ShouldQueue
                     'thesis_process_id' => $thesis_process->thesis_process_id,
                     'thesis_phases_id' => $phase_2->thesis_phases_id,
                     'approval' => false,
-                    'state_now' => 'En proceso',
+                    'state_now' => State::IN_PROCESS,
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,

@@ -2,6 +2,7 @@
 
 namespace Modules\ThesisProcessStudent\Services;
 
+use App\Utils\State;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\Requirements;
@@ -25,7 +26,7 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
 
     public function updateDocumentRequirementStudent(string $id, string $document): void
     {
-        $this->requirements->find($id)->update(['url_file' => $document, 'send_date' => now(), 'status' => 'Enviado']);
+        $this->requirements->find($id)->update(['url_file' => $document, 'send_date' => now(), 'status' => State::SENT]);
     }
 
 
