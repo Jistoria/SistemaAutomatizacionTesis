@@ -2,20 +2,13 @@
 
 namespace Modules\ImportDataFile\Jobs;
 
-use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
-use App\Models\Academic\Thesis\ThesisPhase;
-use App\Models\Academic\Thesis\ThesisProcess;
 use Illuminate\Bus\Queueable;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Log as FacadesLog;
-use Modules\Auth\Services\AuthService;
 use Modules\Degree\Contracts\DegreeServiceInterface;
 use Modules\ImportDataFile\Events\NotificationDataProcess;
 use Modules\PeriodAcademic\Contracts\PeriodAcademicServiceInterface;
@@ -23,7 +16,6 @@ use Modules\Thesis\Contracts\ThesisTitleServiceInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Modules\ImportDataFile\DataTransferObjects\PdfThesisData;
-use Modules\PeriodAcademic\Services\PeriodAcademicService;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
 use Modules\Thesis\Contracts\ThesisProcessServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
@@ -67,6 +59,7 @@ class ProcessPdfThesisData implements ShouldQueue
             $output = iconv('ISO-8859-1', 'UTF-8//TRANSLIT', $output); // Convertir a UTF-8 si el JSON está en ISO-8859-1
             $studentsData = json_decode($output, true);
 
+
             // Extraer las fechas de inicio y fin del periodo académico
             $data = new PdfThesisData($studentsData);
 
@@ -81,7 +74,16 @@ class ProcessPdfThesisData implements ShouldQueue
 
                 $teacher = app(UserServiceInterface::class)->createUserWithRole([
                     'name' => $studentData['tutor_name'],
-                    'email' => 'd' . strtolower(str_replace(' ', '.', substr($studentData['tutor_name'], 0,4))) . '@uleam.edu.ec',
+                    'email' => 'd' . strtolower(
+                                    preg_replace(
+                                        '/[^a-zA-Z0-9]/', // Expresión regular para eliminar caracteres especiales
+                                        '.',              // Reemplaza caracteres no válidos con un punto
+                                        str_replace(
+                                            ' ', '.',      // Reemplaza espacios por puntos
+                                            substr($studentData['tutor_name'], 0, 4) // Toma los primeros 4 caracteres del nombre del tutor
+                                        )
+                                    )
+                                ) . '@uleam.edu.ec',
                     'password' => 'DocUleamFCVT',
                 ], 'Docente-tesis', $this->id);
 

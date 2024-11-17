@@ -2,6 +2,7 @@
 namespace Modules\ImportDataFile\DataTransferObjects;
 
 use App\Utils\DateUtils;
+use Illuminate\Support\Facades\Log;
 
 class PdfThesisData
 {
@@ -10,6 +11,7 @@ class PdfThesisData
 
     public function __construct(array $data)
     {
+        Log::info('PdfThesisData: ' . json_encode($data));
         $this->data = $data;
         $this->dataDates = $this->extractDataDate($data);
     }
@@ -65,10 +67,10 @@ class PdfThesisData
         $startDateString = DateUtils::convertMonthToEnglish($data['start_date']);
         $endDateString = DateUtils::convertMonthToEnglish($data['end_date']);
 
-        $startDate = preg_replace('/^[a-z]+, /i', '', $startDateString); // Eliminar día de la semana
+        $startDate = preg_replace('/^\pL+, /u', '', $startDateString); // Eliminar día de la semana
         $startDate = preg_replace('/\sde\s/i', ' ', $startDate); // Eliminar la palabra "de"
 
-        $endDate = preg_replace('/^[a-z]+, /i', '', $endDateString); // Eliminar día de la semana
+        $endDate = preg_replace('/^\pL+, /u', '', $endDateString); // Eliminar día de la semana
         $endDate = preg_replace('/\sde\s/i', ' ', $endDate); // Eliminar la palabra "de"
         // Convierte las fechas usando el formato "d F Y"
         $formattedStartDate = \Carbon\Carbon::createFromFormat('d F Y', $startDate)->toDateString();
