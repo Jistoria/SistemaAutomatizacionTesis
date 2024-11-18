@@ -1,11 +1,15 @@
 // plugins/echoChannel.client.ts
 import { useNuxtApp } from '#imports';
 import { auth } from '~/stores/auth/auth';
+import { conexion } from '~/stores/conexion/conexion';
 
 export default defineNuxtPlugin(() => {
   const { $echo } = useNuxtApp();
   const authStore = auth();
+  const conexionStore = conexion();
   authStore.online = false;
+  conexionStore.status = 'reconnecting';
+  
 
   // Crear una promesa que resolverá cuando se conecte o timeout
   const echoReady = new Promise((resolve) => {
@@ -34,10 +38,11 @@ export default defineNuxtPlugin(() => {
       if (states.current === 'connected') {
         console.log('Conectado a Pusher');
         clearTimeout(timeout); // Cancelar timeout en caso de éxito
-
+        conexionStore.setConnected();
         if (!isInitialConnection && (previousState === 'disconnected' || previousState === 'unavailable')) {
           isReconnecting = true;
           console.log('Reconexión detectada');
+          
           // Lógica específica para reconexión
         } else {
           isReconnecting = false;
@@ -48,15 +53,17 @@ export default defineNuxtPlugin(() => {
         isInitialConnection = false;
       } else if (states.current === 'disconnected' || states.current === 'unavailable') {
         console.log('Desconectado de Pusher');
+        conexionStore.setDisconnected();
         authStore.online = false;
         isReconnecting = false;
       } else if (states.current === 'connecting') {
         console.log('Intentando conectar...');
-
+        conexionStore.setReconnecting();
         // Temporizador para detectar reconexión
         setTimeout(() => {
           if (states.current === 'connecting' && (previousState === 'disconnected' || previousState === 'unavailable')) {
             isReconnecting = true;
+            
             console.log('Reconectando...');
           }
         }, 3000);

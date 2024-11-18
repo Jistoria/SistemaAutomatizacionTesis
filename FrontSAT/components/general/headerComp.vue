@@ -79,6 +79,7 @@ const currentRouteName = computed(() => routeNames[route.path] || 'Dashboard');
     </div>
   </div>
 </div>
+<ConexionNotify relativeTo="header" />
 </template>
 <style>
 

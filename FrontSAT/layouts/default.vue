@@ -26,9 +26,13 @@ const showHeaderFooter = computed(() => {
 
  <div class="layout "  :data-theme="themeStore.currentTheme" >
     <ClientOnly>
-      <div v-if="showHeaderFooter"  class="header">
-        <HeaderComp></HeaderComp>
+      <!-- Header con alertas -->
+      <div v-if="showHeaderFooter" class="header">
+        <HeaderComp />
+        <ConexionNotify isBelowHeader />
       </div>
+      <!-- Alertas generales en la parte superior -->
+      <ConexionNotify v-if="!showHeaderFooter" />
     </ClientOnly>
     <div class="content " >
         <div>
