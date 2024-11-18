@@ -11,7 +11,7 @@ class Tutor extends Teacher
      /**
      * Obtener los estudiantes asociados con el tutor.
      */
-    public function getStudents(int $paginate = null)
+    public function getStudents(int $paginate = null, string $search = null, string $order = null)
     {
         $data = $this->students_process()
             ->join('thesis_titles', 'thesis_process.thesis_id', '=', 'thesis_titles.thesis_id')
@@ -71,7 +71,15 @@ class Tutor extends Teacher
                     )
                 ) as requirements')
             ])
-            ->where('thesis_process_phases.state_now', '=', State::IN_PROCESS)
+            ->where('thesis_process_phases.state_now', '=', State::IN_PROCESS);
+
+            if ($search) {
+                $data->where(function ($query) use ($search) {
+                    $query->where('users.name', 'ilike', '%' . $search . '%')
+                          ->orWhere('thesis_titles.title', 'ilike', '%' . $search . '%');
+                });
+            }
+            $data
             ->groupBy([
                 'students.dni',
                 'users.id',
@@ -99,7 +107,7 @@ class Tutor extends Teacher
                 'thesis_process.created_at',
                 'thesis_process.updated_at',
             ])
-            ->orderBy('users.name');
+            ->orderBy('users.name', $order ?? 'asc');
 
             return $paginate ? $data->paginate($paginate) : $data->get();
     }

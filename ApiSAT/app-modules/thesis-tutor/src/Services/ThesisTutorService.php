@@ -33,10 +33,10 @@ class ThesisTutorService
      *                                             un paginador si se utiliza paginación,
      *                                             o null si no hay estudiantes.
      */
-    public function getMyStudents(string $user, int $paginate = null): Collection|LengthAwarePaginator|null
+    public function getMyStudents(string $user, int $paginate = null, string $search = null, string $order = null): Collection|LengthAwarePaginator|null
     {
         // Obtiene el tutor por su ID y llama al método getStudents para obtener sus estudiantes.
-        $students = $this->teacher->where('teacher_id', $user)->first()?->getStudents($paginate);
+        $students = $this->teacher->where('teacher_id', $user)->first()?->getStudents($paginate, $search, $order);
 
         return $students;
     }
