@@ -47,12 +47,13 @@ class MenusService {
             console.log(error)
         }
     }
-    async getListStudents(){
+    async getListStudents(page: Number, filter: String ,search: String){
         const fetchClient = this.getFetchClient();
         console.log('entre al getlist student')
         try {
-            const response = await fetchClient('/thesis-tutor/my-students?pagination=2',{
-                method:'GET',
+            const pagination = 4; 
+            const response = await fetchClient(`/thesis-tutor/my-students?pagination=${pagination}&page=${page}&filter=${filter}&search=${search}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },

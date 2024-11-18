@@ -2,21 +2,36 @@
 import { panel } from '~/stores/panel/panel';
 import { useRouter } from 'vue-router';
 import { StudentDetails } from '~/stores/details/studentDetails';
+import { usePaginationStore } from '~/stores/pagination/pagination';
+
 const studentDetailsStore = StudentDetails();
 const panelStore = panel();
+
+const paginationStore = usePaginationStore();
+
+// Obtener los datos visibles desde el store de paginación
+const visibleData = computed(() => paginationStore.visible_data);
+
+onMounted(async () => {
+  await panelStore.getlistStudents(1) 
+  paginationStore.setupPagination({
+    dataStore: panelStore.stuendent_data,
+    pageSize: 2,
+    listName: 'estudiante',
+  });
+  console.log(visibleData.value);
+});
+
+onUnmounted(() => {
+  paginationStore.resetPagination();
+});
 const studentlist= ref(null);
 const { openAnimation, closeAnimation } = inject('requestAnimation');
 
 const router = useRouter();
 
-onMounted(async () => {
-    await panelStore.getlistStudents();
-    studentlist.value = panelStore.stuendent_data.map((data) => ({
-        ...data,
-        requirements: JSON.parse(data.requirements), 
-    }));
-});
-
+const listName = 'estudiante';
+const pageSize = 2;
 
 const chageDatacolor = (data)=>{
     if(data == 'Habilitado'){
@@ -37,7 +52,8 @@ const details_student = (data)=>{
 <template>
     
     <div class="container mx-auto  mt-10 ">
-        <div v-for="dataList in studentlist" class="bg-gray-300  rounded-lg grid grid-cols-3 gap-4 items-center p-4 mt-2 mb-2">
+        <FilterSearch />
+        <div v-for="dataList in visibleData" class="bg-gray-300  rounded-lg grid grid-cols-3 gap-4 items-center p-4 mt-2 mb-2">
             <div class=" col-span-2 bg-white ms-2 rounded-lg ">
                 <div class="flex items-center mt-5 space-x-4 text-gray-600 text-xs ps-6 pt-3 ">
                     <div class="flex items-center space-x-1 ">
@@ -93,7 +109,9 @@ const details_student = (data)=>{
                     </div>
                 </div>
             </div>
+            
         </div>
+        <Pagination :listName="listName" :pageSize="pageSize" />
     </div>
 
 </template>
