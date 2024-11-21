@@ -5,12 +5,11 @@ services:
     plan: free
     dockerfilePath: ./ApiSAT/Dockerfile
     buildCommand: ""
-    startCommand: "cd ApiSAT && php artisan serve --host=0.0.0.0 --port=8000"
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        sync: false # Render maneja esto como secreto
+        sync: false 
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
@@ -24,7 +23,7 @@ services:
       - key: DB_DATABASE
         fromDatabase:
           name: SistemaAutomatizacionTesis-DB
-          property: databaseName
+          property: database
       - key: DB_USERNAME
         fromDatabase:
           name: SistemaAutomatizacionTesis-DB
