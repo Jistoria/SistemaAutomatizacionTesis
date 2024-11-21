@@ -31,22 +31,28 @@ class InitServiceApi extends Command
         //     $this->info('Archivo .env creado correctamente');
         // }
 
-        // Ejecutar las migraciones
-        $this->call('migrate:fresh');
+        $this->info('DB_CONNECTION: ' . env('DB_CONNECTION'));
+        $this->info('DB_HOST: ' . env('DB_HOST'));
+        $this->info('DB_DATABASE: ' . env('DB_DATABASE'));
+        $this->info('DB_USERNAME: ' . env('DB_USERNAME'));
+        $this->info('DB_PASSWORD: ' . env('DB_PASSWORD'));
 
-        // Ejecutar el comandos para los roles y permisos
-        $this->call('app:set-roles');
-        $this->call('app:set-admin-tesis');
-        $this->call('app:set-categories');
-        $this->call('app:set-teachers');
-        $this->call('app:set-modules');
-        $this->call('app:set-menus');
+        // // Ejecutar las migraciones
+        // $this->call('migrate:fresh');
 
-        //Generar clave Passport
-        $this->call('passport:client', ['--personal' => true]);
+        // // Ejecutar el comandos para los roles y permisos
+        // $this->call('app:set-roles');
+        // $this->call('app:set-admin-tesis');
+        // $this->call('app:set-categories');
+        // $this->call('app:set-teachers');
+        // $this->call('app:set-modules');
+        // $this->call('app:set-menus');
+
+        // //Generar clave Passport
+        // $this->call('passport:client', ['--personal' => true]);
 
 
-        // Mostrar mensaje de finalización
-        $this->info('Servicio API inicializado correctamente');
+        // // Mostrar mensaje de finalización
+        // $this->info('Servicio API inicializado correctamente');
     }
 }
