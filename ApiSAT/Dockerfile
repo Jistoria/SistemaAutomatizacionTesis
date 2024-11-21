@@ -26,14 +26,11 @@ RUN apt-get update && apt-get install -y \
 # Instalar extensiones de PHP necesarias para Laravel
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Instalar pdfplumber con pip3 usando --break-system-packages
-RUN pip3 install pdfplumber --break-system-packages
-
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar los archivos del proyecto al contenedor
-COPY .. /var/www/html
+COPY .. /var/www
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
