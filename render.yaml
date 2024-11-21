@@ -6,7 +6,6 @@ services:
     dockerfilePath: ./ApiSAT/Dockerfile
     buildCommand: ""
     startCommand: ""
-    sourceDir: ./ApiSAT
     envVars:
       - key: DATABASE_URL
         FromDatabase:
