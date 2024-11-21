@@ -24,6 +24,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copiar archivos de la aplicación
 COPY .. /var/www
 
+RUN ls -la /var/www
+
 # Establecer el directorio de trabajo
 WORKDIR /var/www
 
