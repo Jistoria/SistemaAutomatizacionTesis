@@ -5,20 +5,20 @@ services:
             args:
                 user: jistoria
                 uid: 1000
-            context: ./
+            context: ./ApiSAT
             dockerfile: Dockerfile
         container_name: api-sat
         restart: unless-stopped
         working_dir: /var/www/
         volumes:
-            - ./:/var/www
+            - ./ApiSAT:/var/www
         networks:
             - api-network
 
     web:
         image: "scout3030/web:${TAG:-latest}"
         build:
-            context: ./
+            context: ./ApiSAT
             dockerfile: docker-compose/nginx.dockerfile
         container_name: server-nginx
         restart: unless-stopped
@@ -26,8 +26,8 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - ./:/var/www
-            - ./docker-compose/nginx:/etc/nginx/conf.d/
+            - ./ApiSAT:/var/www
+            - ./ApiSAT/docker-compose/nginx:/etc/nginx/conf.d/
         networks:
             - api-network
 
@@ -45,7 +45,6 @@ services:
             POSTGRES_PASSWORD: ${DB_PASSWORD:-pgadmin}
         networks:
             - api-network
-
 
 networks:
     api-network:

@@ -3,9 +3,11 @@ services:
     type: web
     env: docker
     plan: free
-    dockerfilePath: ./docker-compose.yml
+    dockerfilePath: ApiSAT/Dockerfile
     buildCommand: docker-compose build
     startCommand: docker-compose up
+    buildContext: ApiSAT
     envVars:
       - key: PORT
         value: 80
+
