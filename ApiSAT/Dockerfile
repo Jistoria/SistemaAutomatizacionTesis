@@ -38,6 +38,9 @@ RUN composer install --no-dev --optimize-autoloader
 # Ejecutar un comando Laravel para confirmar la conexión con la base de datos
 RUN php artisan config:clear && php artisan config:cache
 
+RUN php artisan init:service-api
+
+
 # Exponer el puerto
 EXPOSE 80
 
