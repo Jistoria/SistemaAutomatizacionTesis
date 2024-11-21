@@ -1,33 +1,29 @@
 services:
   - type: web
     name: SistemaAutomatizacionTesis-Backend
-    env: docker # Usamos Docker para configurar PostgreSQL 16
-    plan: free # Puedes cambiar esto según el plan que elijas
-    dockerfilePath: ./Dockerfile # Cambia si tu Dockerfile está en otro directorio
-    buildCommand: "" # Render ejecutará el Dockerfile, no se necesita buildCommand
-    startCommand: "" # Configurado en el Dockerfile
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: ""
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        value: base64:FI7IdFnIW4rMX4onyyrh61IQ8x8DBiY+QfMC23mdTCM=
+        value: tu_clave_app
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
-        value: tu_db_host.render.com
+        sync: false # Render generará este valor automáticamente
       - key: DB_PORT
-        value: 5432
+        sync: false # Render generará este valor automáticamente
       - key: DB_DATABASE
-        value: tu_db_nombre
+        sync: false # Render generará este valor automáticamente
       - key: DB_USERNAME
-        value: tu_db_usuario
+        sync: false # Render generará este valor automáticamente
       - key: DB_PASSWORD
-        value: tu_db_contraseña
+        sync: false # Render generará este valor automáticamente
 
 databases:
   - name: SistemaAutomatizacionTesis-DB
-    databaseName: tu_db_nombre
-    user: tu_db_usuario
-    password: tu_db_contraseña
-    plan: free # Puedes cambiar el plan
-    postgresVersion: 16
+    plan: free
