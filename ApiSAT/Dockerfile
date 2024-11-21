@@ -1,5 +1,6 @@
 FROM php:8.2-fpm
 
+
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
@@ -9,30 +10,32 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libxml2-dev \
     zip \
-    unzip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    unzip
 
-# Instalar extensiones de PHP necesarias para Laravel
+# Limpiar caché
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Instalar extensiones de PHP
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Instalar Composer
+# Copiar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar los archivos de la aplicación
+# Copiar archivos de la aplicación
 COPY .. /var/www
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
 
 # Configurar permisos
-RUN mkdir -p /var/www/storage \
-    && chown -R www-data:www-data /var/www/storage \
+RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Configurar Laravel y cachear configuración
+
+# Ejecutar un comando Laravel para confirmar la conexión con la base de datos
 RUN php artisan config:clear && php artisan config:cache
 
 # Exponer el puerto
