@@ -33,7 +33,21 @@ RUN chown -R www-data:www-data /var/www \
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan init:service-api
+# Verificar el contenido del archivo .env
+RUN echo "Verificando archivo .env:" && cat .env || echo ".env no encontrado o no accesible"
+
+# Depurar variables de entorno desde el entorno Docker
+RUN echo "Verificando variables de entorno Docker:" && env
+
+# Intentar cargar el entorno en Laravel y listar las variables
+RUN php -r "print_r(getenv());"
+
+# Ejecutar un comando Laravel para confirmar la conexión con la base de datos
+RUN php artisan config:clear && php artisan config:cache
+RUN php artisan migrate:status || echo "Problema al conectar con la base de datos."
+
+# Ejecutar tu comando personalizado
+RUN php artisan init:service-api || echo "Error al inicializar el servicio API."
 
 # Exponer el puerto
 EXPOSE 80
