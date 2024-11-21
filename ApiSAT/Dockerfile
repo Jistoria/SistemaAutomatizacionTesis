@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
-ARG user
-ARG uid
+ENV user=${USER}
+ENV uid=${UID}
 
 
 # Install system dependencies
@@ -24,11 +24,10 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Crear usuario con los argumentos
+# Crear usuario con los valores de las variables de entorno
 RUN useradd -G www-data,root -u ${uid} -d /home/${user} ${user} && \
     mkdir -p /home/${user}/.composer && \
     chown -R ${user}:${user} /home/${user}
-
 
 # Set working directory
 WORKDIR /var/www
