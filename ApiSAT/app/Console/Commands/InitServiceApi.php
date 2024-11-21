@@ -32,10 +32,7 @@ class InitServiceApi extends Command
         // }
 
         $this->info('DB_CONNECTION: ' . env('DATABASE_URL'));
-        $this->info('DB_HOST: ' . env('DB_HOST'));
-        $this->info('DB_DATABASE: ' . env('DB_DATABASE'));
-        $this->info('DB_USERNAME: ' . env('DB_USERNAME'));
-        $this->info('DB_PASSWORD: ' . env('DB_PASSWORD'));
+
 
         // // Ejecutar las migraciones
         // $this->call('migrate:fresh');
