@@ -32,7 +32,7 @@ class InitServiceApi extends Command
         // }
 
         // // Ejecutar las migraciones
-        $this->call('migrate');
+        $this->call('migrate', ['--force' => true]);
 
         // Ejecutar el comandos para los roles y permisos
         // $this->call('app:set-roles');
@@ -43,7 +43,7 @@ class InitServiceApi extends Command
         // $this->call('app:set-menus');
 
         //Generar clave Passport
-        $this->call('passport:client', ['--personal' => true]);
+        // $this->call('passport:client', ['--personal' => true, '--name' => 'Personal Access Client']);
 
 
         // Mostrar mensaje de finalización
