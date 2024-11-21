@@ -33,7 +33,7 @@ RUN chown -R www-data:www-data /var/www \
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan migrate --force
+RUN php artisan init:service-api
 
 # Exponer el puerto
 EXPOSE 80
