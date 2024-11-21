@@ -1,7 +1,6 @@
 FROM php:8.2-fpm
 
-
-# Install system dependencies
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -12,13 +11,13 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip
 
-# Clear cache
+# Limpiar caché
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# Instalar extensiones de PHP
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Get latest Composer
+# Copiar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar archivos de la aplicación
@@ -37,8 +36,6 @@ RUN composer install --no-dev --optimize-autoloader
 # Exponer el puerto
 EXPOSE 8000
 
-# Ejecutar migraciones
-RUN php artisan migrate
-
 # Comando de inicio
 CMD php artisan serve --host=0.0.0.0 --port=8000
+
