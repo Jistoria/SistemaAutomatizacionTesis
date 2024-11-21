@@ -37,7 +37,7 @@ RUN pip3 install pdfplumber --break-system-packages
 
 
 # Configurar permisos para Laravel
-RUN chown -R www-data:www-data /var/www/ \
+RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
 # Instalar dependencias de Laravel
