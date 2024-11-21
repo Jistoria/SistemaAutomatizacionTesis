@@ -3,14 +3,14 @@ services:
     name: SistemaAutomatizacionTesis-Backend
     env: docker
     plan: free
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./ApiSAT/Dockerfile
     buildCommand: ""
     startCommand: ""
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_KEY
-        value: tu_clave_app
+        value: base64:FI7IdFnIW4rMX4onyyrh61IQ8x8DBiY+QfMC23mdTCM=
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
