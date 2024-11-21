@@ -19,4 +19,3 @@ services:
 databases:
   - name: SistemaAutomatizacionTesis-DB
     plan: free
-    postgresVersion: 16
