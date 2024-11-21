@@ -1,4 +1,3 @@
-# Usa una imagen oficial de PHP con FPM
 FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
@@ -22,15 +21,19 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copiar los archivos del proyecto a la imagen
 COPY . /var/www
 
-# Establecer el directorio de trabajo
-WORKDIR /var/www
+# Crear el directorio de almacenamiento y sus subdirectorios necesarios
+RUN mkdir -p /var/www/storage \
+    /var/www/storage/app \
+    /var/www/storage/framework \
+    /var/www/storage/logs && \
+    chown -R www-data:www-data /var/www/storage && \
+    chmod -R 755 /var/www/storage
 
 # Configurar permisos y optimizar el autoloader de Composer
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage \
-    && composer install --no-dev --optimize-autoloader
+RUN chown -R www-data:www-data /var/www && \
+    composer install --no-dev --optimize-autoloader
 
-# Establecer entorno de producción para Laravel
+# Configurar entorno de producción para Laravel
 ENV APP_ENV=production \
     APP_DEBUG=false
 
@@ -47,3 +50,4 @@ EXPOSE 80
 
 # Comando para iniciar Laravel
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+
