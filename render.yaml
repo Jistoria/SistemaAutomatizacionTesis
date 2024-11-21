@@ -5,3 +5,26 @@ services:
     plan: free
     dockerfilePath: ApiSAT/Dockerfile
     buildCommand: docker-compose build
+    envVars:
+      - key: PORT
+        value: 80
+      - key: DB_HOST
+        value: sistema-automatizacion-db
+      - key: DB_DATABASE
+        value: system_thesis_db
+      - key: DB_USERNAME
+        value: postgres
+      - key: DB_PASSWORD
+        value: pgadmin
+
+  - name: sistema-automatizacion-db
+    type: database
+    plan: free
+    databaseType: postgres
+    envVars:
+      - key: POSTGRES_DB
+        value: system_thesis_db
+      - key: POSTGRES_USER
+        value: postgres
+      - key: POSTGRES_PASSWORD
+        value: pgadmin
