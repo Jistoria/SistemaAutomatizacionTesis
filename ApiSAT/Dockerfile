@@ -1,22 +1,28 @@
-# Usa la imagen oficial de Laravel PHP con extensiones necesarias
 FROM php:8.2-fpm
 
-# Instalar dependencias del sistema
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
     libonig-dev \
+    libpq-dev \
     libxml2-dev \
     zip \
-    unzip \
-    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
+    unzip
 
-# Instalar Composer
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
+
+# Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar archivos de la aplicación
-COPY . /var/www
+COPY .ApiSAT /var/www
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
@@ -30,6 +36,9 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Exponer el puerto
 EXPOSE 8000
+
+# Ejecutar migraciones
+RUN php artisan migrate
 
 # Comando de inicio
 CMD php artisan serve --host=0.0.0.0 --port=8000
