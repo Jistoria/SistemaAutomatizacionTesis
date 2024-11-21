@@ -1,0 +1,15 @@
+services:
+  - name: sistema-automatizacion
+    type: web
+    env: docker
+    plan: free
+    dockerfilePath: ./docker-compose.yml
+    buildCommand: docker-compose build
+    startCommand: docker-compose up
+    envVars:
+      - key: SERVER_PORT
+        value: 80
+      - key: SERVER_PORT_SSL
+        value: 443
+      - key: TAG
+        value: latest
