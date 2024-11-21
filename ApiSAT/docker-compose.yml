@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+    app:
+        image: "laratest/app:${TAG:-latest}"
+        build:
+            args:
+                user: jistoria
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        container_name: api-sat
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - api-network
+
+    web:
+        image: "scout3030/web:${TAG:-latest}"
+        build:
+            context: ./
+            dockerfile: docker-compose/nginx.dockerfile
+        container_name: server-nginx
+        restart: unless-stopped
+        ports:
+            - ${SERVER_PORT:-80}:80
+            - ${SERVER_PORT_SSL:-443}:443
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d/
+        networks:
+            - test-network
+
+    db:
+        image: postgres:16
+        container_name: postgres-db
+        restart: unless-stopped
+        ports:
+            - "5433:5432"
+        volumes:
+            - dbdata:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: ${DB_DATABASE:-system_thesis_db}
+            POSTGRES_USER: ${DB_USERNAME:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-pgadmin}
+        networks:
+            - api-network
+
+
+networks:
+    api-network:
+        driver: bridge
+
+volumes:
+    dbdata:
