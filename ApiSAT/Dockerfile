@@ -22,9 +22,11 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar archivos de la aplicación
-COPY . /var/www
+COPY .. /var/www
 
 RUN ls -la /var/www
+
+RUN ls -la /var/www/html
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
@@ -35,11 +37,6 @@ RUN chown -R www-data:www-data /var/www \
 
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
-
-
-
-# Generar la clave de la aplicación
-RUN php artisan key:generate
 
 
 # Ejecutar un comando Laravel para confirmar la conexión con la base de datos
