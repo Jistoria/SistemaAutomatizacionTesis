@@ -11,12 +11,30 @@ services:
         value: production
       - key: APP_KEY
         generateValue: true
-      - key: DATABASE_URL
-        fromDatabase:
-          name: SistemaAutomatizacionTesis-DB
-          property: connectionString
+      - key: APP_DEBUG
+        value: false
       - key: DB_CONNECTION
         value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: username
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: password
 
 databases:
   - name: SistemaAutomatizacionTesis-DB
