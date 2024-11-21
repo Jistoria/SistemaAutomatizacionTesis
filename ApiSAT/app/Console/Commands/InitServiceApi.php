@@ -31,7 +31,7 @@ class InitServiceApi extends Command
         //     $this->info('Archivo .env creado correctamente');
         // }
 
-        $this->info('DB_CONNECTION: ' . env('DB_CONNECTION'));
+        $this->info('DB_CONNECTION: ' . env('DATABASE_URL'));
         $this->info('DB_HOST: ' . env('DB_HOST'));
         $this->info('DB_DATABASE: ' . env('DB_DATABASE'));
         $this->info('DB_USERNAME: ' . env('DB_USERNAME'));
