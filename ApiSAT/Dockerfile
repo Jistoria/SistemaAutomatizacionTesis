@@ -21,7 +21,7 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar archivos de la aplicación
-COPY ./ApiSAT /var/www
+COPY .. /var/www
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
