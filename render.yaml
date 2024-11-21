@@ -5,10 +5,3 @@ services:
     plan: free
     dockerfilePath: ApiSAT/Dockerfile
     buildCommand: docker-compose build
-    envVars:
-      - key: PORT
-        value: 80
-      - key: USER
-        value: jistoria
-      - key: UID
-        value: 1000
