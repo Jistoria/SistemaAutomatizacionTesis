@@ -35,15 +35,15 @@ class InitServiceApi extends Command
         $this->call('migrate', ['--force' => true]);
 
         // Ejecutar el comandos para los roles y permisos
-        // $this->call('app:set-roles');
-        // $this->call('app:set-admin-tesis');
-        // $this->call('app:set-categories');
-        // $this->call('app:set-teachers');
-        // $this->call('app:set-modules');
-        // $this->call('app:set-menus');
+        $this->call('app:set-roles');
+        $this->call('app:set-admin-tesis');
+        $this->call('app:set-categories');
+        $this->call('app:set-teachers');
+        $this->call('app:set-modules');
+        $this->call('app:set-menus');
 
         //Generar clave Passport
-        // $this->call('passport:client', ['--personal' => true, '--name' => 'Personal Access Client']);
+        $this->call('passport:client', ['--personal' => true, '--name' => 'Personal Access Client']);
 
 
         // Mostrar mensaje de finalización
