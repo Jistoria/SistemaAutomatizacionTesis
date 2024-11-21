@@ -31,25 +31,16 @@ class InitServiceApi extends Command
         //     $this->info('Archivo .env creado correctamente');
         // }
 
-        $this->info('APP_ENV: ' . env('APP_ENV'));
-        $this->info('DB_CONNECTION: ' . env('DB_CONNECTION'));
-        $this->info('DB_HOST: ' . env('DB_HOST'));
-        $this->info('DB_PORT: ' . env('DB_PORT'));
-        $this->info('DB_DATABASE: ' . env('DB_DATABASE'));
-        $this->info('DB_USERNAME: ' . env('DB_USERNAME'));
-        $this->info('DB_PASSWORD: ' . env('DB_PASSWORD'));
-
-
         // // Ejecutar las migraciones
-        $this->call('migrate:fresh');
+        $this->call('migrate');
 
         // Ejecutar el comandos para los roles y permisos
-        $this->call('app:set-roles');
-        $this->call('app:set-admin-tesis');
-        $this->call('app:set-categories');
-        $this->call('app:set-teachers');
-        $this->call('app:set-modules');
-        $this->call('app:set-menus');
+        // $this->call('app:set-roles');
+        // $this->call('app:set-admin-tesis');
+        // $this->call('app:set-categories');
+        // $this->call('app:set-teachers');
+        // $this->call('app:set-modules');
+        // $this->call('app:set-menus');
 
         //Generar clave Passport
         $this->call('passport:client', ['--personal' => true]);
