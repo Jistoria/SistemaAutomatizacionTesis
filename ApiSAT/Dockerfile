@@ -38,5 +38,5 @@ RUN composer install --no-dev --optimize-autoloader
 EXPOSE 80
 
 # Comando de inicio
-CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80"]
+CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && php artisan serve --host=0.0.0.0 --port=80"]
 

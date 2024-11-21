@@ -32,6 +32,7 @@ class InitServiceApi extends Command
         // }
 
         $this->info('APP_ENV: ' . env('APP_ENV'));
+        $this->info('DB_CONNECTION: ' . env('DB_CONNECTION'));
 
 
         // // Ejecutar las migraciones

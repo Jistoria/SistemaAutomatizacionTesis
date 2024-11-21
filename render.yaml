@@ -30,7 +30,7 @@ services:
       - key: DB_USERNAME
         fromDatabase:
           name: SistemaAutomatizacionTesis-DB
-          property: username
+          property: user
       - key: DB_PASSWORD
         fromDatabase:
           name: SistemaAutomatizacionTesis-DB
