@@ -34,6 +34,10 @@ RUN chown -R www-data:www-data /var/www \
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
+ENV APP_ENV production
+ENV APP_DEBUG false
+ENV LOG_CHANNEL stderr
+ENV DB_CONNECTION pgsql
 
 # Ejecutar un comando Laravel para confirmar la conexión con la base de datos
 RUN php artisan config:clear && php artisan config:cache
