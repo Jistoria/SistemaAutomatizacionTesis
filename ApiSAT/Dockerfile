@@ -34,15 +34,9 @@ RUN chown -R www-data:www-data /var/www \
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
-
-# Ejecutar un comando Laravel para confirmar la conexión con la base de datos
-RUN php artisan config:clear && php artisan config:cache
-
-RUN php artisan init:service-api
-
-
 # Exponer el puerto
 EXPOSE 80
 
 # Comando de inicio
-CMD php artisan serve --host=0.0.0.0 --port=80
+CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80"]
+
