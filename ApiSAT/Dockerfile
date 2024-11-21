@@ -1,7 +1,6 @@
 FROM php:8.2-fpm
 
-
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema, incluyendo las necesarias para Python y pdfplumber
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -10,31 +9,44 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    python3 \
+    python3-pip \
+    libjpeg-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libwebp-dev \
+    tcl-dev \
+    tk-dev \
+    python3-dev \
+    build-essential \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Limpiar caché
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Instalar extensiones de PHP
+# Instalar extensiones de PHP necesarias para Laravel
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Copiar Composer
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar archivos de la aplicación
-COPY .. /var/www
+# Copiar los archivos del proyecto al contenedor
+COPY .. /var/www/html
 
-# Establecer el directorio de trabajo
-WORKDIR /var/www
+# Instalar pdfplumber con pip3 usando --break-system-packages
+RUN pip3 install pdfplumber --break-system-packages
 
-# Configurar permisos
-RUN chown -R www-data:www-data /var/www \
+
+# Configurar permisos para Laravel
+RUN chown -R www-data:www-data /var/www/ \
     && chmod -R 755 /var/www/storage
 
-# Instalar dependencias de Composer
+# Instalar dependencias de Laravel
 RUN composer install --no-dev --optimize-autoloader
 
-# Exponer el puerto
+# Configurar Laravel
+RUN php artisan config:clear && php artisan config:cache
+
+# Exponer el puerto del servidor
 EXPOSE 80
 
 # Comando de inicio
