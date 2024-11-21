@@ -8,7 +8,7 @@ services:
     startCommand: ""
     envVars:
       - key: DATABASE_URL
-        FromDatabase:
+        fromDatabase:
           name: SistemaAutomatizacionTesis-DB
           property: connectionString
 
