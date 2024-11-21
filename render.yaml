@@ -6,7 +6,6 @@ services:
     dockerfilePath: ApiSAT/Dockerfile
     buildCommand: docker-compose build
     startCommand: docker-compose up
-    buildContext: ApiSAT
     envVars:
       - key: PORT
         value: 80
