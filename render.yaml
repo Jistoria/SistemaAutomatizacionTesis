@@ -5,33 +5,13 @@ services:
     plan: free
     dockerfilePath: ./ApiSAT/Dockerfile
     buildCommand: ""
+    startCommand: ""
+    sourceDir: ./ApiSAT
     envVars:
-      - key: APP_ENV
-        value: production
-      - key: APP_KEY
-        sync: false 
-      - key: DB_CONNECTION
-        value: pgsql
-      - key: DB_HOST
-        fromDatabase:
+      - key: DATABASE_URL
+        FromDatabase:
           name: SistemaAutomatizacionTesis-DB
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: SistemaAutomatizacionTesis-DB
-          property: port
-      - key: DB_DATABASE
-        fromDatabase:
-          name: SistemaAutomatizacionTesis-DB
-          property: database
-      - key: DB_USERNAME
-        fromDatabase:
-          name: SistemaAutomatizacionTesis-DB
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: SistemaAutomatizacionTesis-DB
-          property: password
+          property: connectionString
 
 databases:
   - name: SistemaAutomatizacionTesis-DB

@@ -33,6 +33,16 @@ RUN chown -R www-data:www-data /var/www \
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
+# Copiar el archivo de entorno
+COPY .env.example .env
+
+
+
+# Generar la clave de la aplicación
+RUN php artisan key:generate
+
+
+
 # Verificar el contenido del archivo .env
 RUN echo "Verificando archivo .env:" && cat .env || echo ".env no encontrado o no accesible"
 
