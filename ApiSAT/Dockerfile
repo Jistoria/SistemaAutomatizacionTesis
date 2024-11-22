@@ -42,6 +42,8 @@ WORKDIR /var/www
 # Configurar permisos
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
+RUN chown -R www-data:www-data /var/www
+RUN chmod -R 755 /var/www
 
 
 
