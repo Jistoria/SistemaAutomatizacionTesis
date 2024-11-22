@@ -31,8 +31,15 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
+# Instalar la extensión de Composer
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+    && docker-php-ext-install \
+    pcntl
+
 # Instalar supervisor
 RUN apt-get update && apt-get install -y supervisor
+
+
 
 
 # Instalar pdfplumber con pip3 usando --break-system-packages
@@ -47,9 +54,13 @@ COPY .. /var/www
 # Establecer el directorio de trabajo
 WORKDIR /var/www
 
+# Limpiar los logs
+RUN truncate -s 0 /var/www/storage/logs/laravel.log
+
+
 # Configurar permisos
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 
 # Instalar dependencias de Composer
