@@ -42,8 +42,6 @@ WORKDIR /var/www
 # Configurar permisos
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
-RUN chown -R www-data:www-data /var/www
-RUN chmod -R 755 /var/www
 
 
 
@@ -53,9 +51,9 @@ RUN composer install --no-dev --optimize-autoloader
 # Copiar configuración de Nginx
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
-RUN cat /etc/nginx/conf.d/default.conf
+RUN rm /etc/nginx/sites-enabled/default
 
-RUN ls /etc/nginx/conf.d/default.conf
+RUN cat /etc/nginx/conf.d/default.conf
 
 RUN ls -la /var/www/public
 
@@ -63,4 +61,4 @@ RUN ls -la /var/www/public
 EXPOSE 80
 
 # Comando de inicio
-CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && php-fpm && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && service nginx start && php-fpm"]
