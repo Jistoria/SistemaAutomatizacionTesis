@@ -6,7 +6,6 @@ services:
     rootDir: ApiSAT
     dockerfilePath: ./Dockerfile
     buildCommand: ""
-    startCommand: "php artisan config:clear && php artisan config:cache && php artisan init:service-api && php artisan queue:work --sleep=3 --tries=3"
     envVars:
       - key: APP_ENV
         value: production
