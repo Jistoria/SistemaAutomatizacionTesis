@@ -34,7 +34,7 @@ RUN pip3 install pdfplumber --break-system-packages
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar los archivos del proyecto al contenedor
-COPY .. /var/www
+COPY . /var/www
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
