@@ -43,7 +43,7 @@ WORKDIR /var/www
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
-RUN ls -la /var/www
+
 
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
@@ -51,8 +51,12 @@ RUN composer install --no-dev --optimize-autoloader
 # Copiar configuración de Nginx
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
+RUN cat /etc/nginx/conf.d/default.conf
+
+RUN ls -la /var/www/public
+
 # Exponer el puerto
 EXPOSE 80
 
 # Comando de inicio
-CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && service nginx start && php-fpm"]
+CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && nginx -g 'daemon off;' && php-fpm"]
