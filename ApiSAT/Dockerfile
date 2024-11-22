@@ -49,9 +49,13 @@ RUN chown -R www-data:www-data /var/www \
 RUN composer install --no-dev --optimize-autoloader
 
 # Copiar configuración de Nginx
-COPY ./default.conf /etc/nginx/sites-available/default.conf
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 
-RUN cat /etc/nginx/sites-available/default.conf
+RUN nginx -t
+
+RUN cat /etc/nginx/conf.d/default.conf
+
+RUN ls /etc/nginx/conf.d/default.conf
 
 RUN ls -la /var/www/public
 
