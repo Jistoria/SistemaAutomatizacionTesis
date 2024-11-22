@@ -43,6 +43,8 @@ WORKDIR /var/www
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
+RUN ls -la /var/www
+
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 

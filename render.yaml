@@ -3,7 +3,8 @@ services:
     name: SistemaAutomatizacionTesis-Backend
     env: docker
     plan: free
-    dockerfilePath: ./ApiSAT/Dockerfile
+    dockerContext: ./ApiSAT
+    dockerfilePath: ./Dockerfile
     buildCommand: ""
     startCommand: ""
     envVars:
