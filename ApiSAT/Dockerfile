@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     tk-dev \
     python3-dev \
     build-essential \
+    nginx \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instalar extensiones de PHP necesarias para Laravel
@@ -28,7 +29,6 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Instalar pdfplumber con pip3 usando --break-system-packages
 RUN pip3 install pdfplumber --break-system-packages
-
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -46,9 +46,11 @@ RUN chown -R www-data:www-data /var/www \
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
+# Copiar configuración de Nginx
+COPY ./default.conf /etc/nginx/conf.d/default.conf
+
 # Exponer el puerto
 EXPOSE 80
 
 # Comando de inicio
-CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && php artisan serve --host=0.0.0.0 --port=80"]
-
+CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && service nginx start && php-fpm"]

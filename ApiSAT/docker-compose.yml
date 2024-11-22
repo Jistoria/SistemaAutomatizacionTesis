@@ -1,54 +1,18 @@
+version: "3.8"
+
 services:
-    app:
-        image: "laratest/app:${TAG:-latest}"
-        build:
-            args:
-                user: jistoria
-                uid: 1000
-            context: ./ApiSAT
-            dockerfile: Dockerfile
-        container_name: api-sat
-        restart: unless-stopped
-        working_dir: /var/www/
-        volumes:
-            - ./ApiSAT:/var/www
-        networks:
-            - api-network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www
+      - ./storage/logs:/var/www/storage/logs
+    ports:
+      - "8000:80"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - QUEUE_CONNECTION=database
 
-    web:
-        image: "scout3030/web:${TAG:-latest}"
-        build:
-            context: ./ApiSAT
-            dockerfile: docker-compose/nginx.dockerfile
-        container_name: server-nginx
-        restart: unless-stopped
-        ports:
-            - "80:80"
-            - "443:443"
-        volumes:
-            - ./ApiSAT:/var/www
-            - ./ApiSAT/docker-compose/nginx:/etc/nginx/conf.d/
-        networks:
-            - api-network
 
-    db:
-        image: postgres:16
-        container_name: postgres-db
-        restart: unless-stopped
-        ports:
-            - "5433:5432"
-        volumes:
-            - dbdata:/var/lib/postgresql/data
-        environment:
-            POSTGRES_DB: ${DB_DATABASE:-system_thesis_db}
-            POSTGRES_USER: ${DB_USERNAME:-postgres}
-            POSTGRES_PASSWORD: ${DB_PASSWORD:-pgadmin}
-        networks:
-            - api-network
-
-networks:
-    api-network:
-        driver: bridge
-
-volumes:
-    dbdata:
