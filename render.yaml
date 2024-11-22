@@ -6,6 +6,9 @@ services:
     rootDir: ApiSAT
     dockerfilePath: ./Dockerfile
     buildCommand: ""
+    ports:
+      - "80:80"
+      - "8080:8080"
     envVars:
       - key: APP_ENV
         value: production
