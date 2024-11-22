@@ -31,6 +31,10 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
+# Instalar supervisor
+RUN apt-get update && apt-get install -y supervisor
+
+
 # Instalar pdfplumber con pip3 usando --break-system-packages
 RUN pip3 install pdfplumber --break-system-packages
 
@@ -56,12 +60,11 @@ COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 RUN rm /etc/nginx/sites-enabled/default
 
-RUN cat /etc/nginx/conf.d/default.conf
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN ls -la /var/www/public
 
 # Exponer el puerto
 EXPOSE 80
 
 # Comando de inicio
-CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && service nginx start && php-fpm"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
