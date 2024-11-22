@@ -53,8 +53,6 @@ RUN composer install --no-dev --optimize-autoloader
 # Copiar configuración de Nginx
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
-RUN nginx -t
-
 RUN cat /etc/nginx/conf.d/default.conf
 
 RUN ls /etc/nginx/conf.d/default.conf
