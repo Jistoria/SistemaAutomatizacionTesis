@@ -35,6 +35,8 @@ services:
           property: password
       - key: QUEUE_CONNECTION
         value: redis
+      - key: REDIS_CLIENT
+        value: phpredis
       - key: REDIS_HOST
         fromService:
           name: SistemaAutomatizacionTesis-Redis
