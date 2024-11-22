@@ -47,7 +47,7 @@ class ProcessPdfThesisData implements ShouldQueue
     {
         try{
             // Ejecutar el script de Python para procesar el archivo PDF
-            $process = new Process(['py', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
+            $process = new Process(['python3', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
             $process->run();
 
             // Si el proceso falla
@@ -168,6 +168,7 @@ class ProcessPdfThesisData implements ShouldQueue
             message: 'Proceso completado correctamente',
             status: 'success',
             name_document: basename($this->filePath),
+            error: '',
             id: $this->id
         ));
     } catch (\Exception $e) {
@@ -176,6 +177,7 @@ class ProcessPdfThesisData implements ShouldQueue
             message: 'Error en el procesamiento de datos, verifique el archivo PDF',
             status: 'error',
             name_document: basename($this->filePath),
+            error: $e->getMessage(),
             id: $this->id
         ));
     }

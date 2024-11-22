@@ -21,6 +21,7 @@ class NotificationDataProcess implements ShouldBroadcast
         public string $message,
         public string $status,
         public string $name_document,
+        public string $error = '',
         public string $id
     )
     {
@@ -47,6 +48,7 @@ class NotificationDataProcess implements ShouldBroadcast
         return [
             'message' => $this->message,
             'status' => $this->status,
+            'error' => $this->error,
             'name_document' => $this->name_document
         ];
     }
