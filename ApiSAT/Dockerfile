@@ -74,8 +74,10 @@ RUN rm /etc/nginx/sites-enabled/default
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
-# Exponer el puerto
+# Exponer los puertos necesarios
 EXPOSE 80
+EXPOSE 8080
+
 
 # Comando de inicio
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
