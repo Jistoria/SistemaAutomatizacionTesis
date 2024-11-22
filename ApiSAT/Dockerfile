@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-# Instalar dependencias del sistema, incluyendo las necesarias para Python y Redis
+# Instalar dependencias del sistema, incluyendo las necesarias para Python y pdfplumber
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -22,14 +22,10 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     build-essential \
     nginx \
-    redis-server \
-    supervisor \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instalar extensiones de PHP necesarias para Laravel
-RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd \
-    && pecl install redis \
-    && docker-php-ext-enable redis
+RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Instalar pdfplumber con pip3 usando --break-system-packages
 RUN pip3 install pdfplumber --break-system-packages
@@ -47,19 +43,21 @@ WORKDIR /var/www
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
+
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Copiar configuración de Nginx
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
-# Copiar configuración de Supervisor
-COPY ./worker.conf /etc/supervisor/conf.d/worker.conf
-
 RUN rm /etc/nginx/sites-enabled/default
+
+RUN cat /etc/nginx/conf.d/default.conf
+
+RUN ls -la /var/www/public
 
 # Exponer el puerto
 EXPOSE 80
 
 # Comando de inicio
-CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && service redis-server start && service nginx start && service supervisor start && php-fpm"]
+CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && service nginx start && php-fpm"]

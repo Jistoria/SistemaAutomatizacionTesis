@@ -34,7 +34,24 @@ services:
         fromDatabase:
           name: SistemaAutomatizacionTesis-DB
           property: password
+      - key: QUEUE_CONNECTION
+        value: redis
+      - key: REDIS_HOST
+        fromService:
+          name: SistemaAutomatizacionTesis-Redis
+          type: redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          name: SistemaAutomatizacionTesis-Redis
+          type: redis
+          property: port
 
 databases:
   - name: SistemaAutomatizacionTesis-DB
+    plan: free
+
+services:
+  - name: SistemaAutomatizacionTesis-Redis
+    type: redis
     plan: free
