@@ -34,7 +34,7 @@ RUN pip3 install pdfplumber --break-system-packages
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copiar los archivos del proyecto al contenedor
-COPY . /var/www
+COPY .. /var/www
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www
@@ -49,9 +49,9 @@ RUN chown -R www-data:www-data /var/www \
 RUN composer install --no-dev --optimize-autoloader
 
 # Copiar configuración de Nginx
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+COPY ./default.conf /etc/nginx/sites-available/default.conf
 
-RUN cat /etc/nginx/conf.d/default.conf
+RUN cat /etc/nginx/sites-available/default.conf
 
 RUN ls -la /var/www/public
 
@@ -59,4 +59,4 @@ RUN ls -la /var/www/public
 EXPOSE 80
 
 # Comando de inicio
-CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && nginx -g 'daemon off;' && php-fpm"]
+CMD ["sh", "-c", "php artisan config:clear && php artisan config:cache && php artisan init:service-api && php-fpm && nginx -g 'daemon off;'"]
