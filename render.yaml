@@ -6,7 +6,7 @@ services:
     rootDir: ApiSAT
     dockerfilePath: ./Dockerfile
     buildCommand: ""
-    startCommand: ""
+    startCommand: "php artisan config:clear && php artisan config:cache && php artisan init:service-api && php artisan queue:work --sleep=3 --tries=3"
     envVars:
       - key: APP_ENV
         value: production
@@ -47,11 +47,10 @@ services:
           type: redis
           property: port
 
-databases:
-  - name: SistemaAutomatizacionTesis-DB
-    plan: free
-
-services:
   - name: SistemaAutomatizacionTesis-Redis
     type: redis
+    plan: free
+
+databases:
+  - name: SistemaAutomatizacionTesis-DB
     plan: free
