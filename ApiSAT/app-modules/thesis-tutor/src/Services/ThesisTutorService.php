@@ -70,4 +70,9 @@ class ThesisTutorService
     {
         return $this->observationRequirement->where('student_requirements_id', $student_requirements_id)->get();
     }
+
+    public function deleteObservationsRequirement(string $student_requirements_id): void
+    {
+        $this->observationRequirement->where('student_requirements_id', $student_requirements_id)->delete();
+    }
 }

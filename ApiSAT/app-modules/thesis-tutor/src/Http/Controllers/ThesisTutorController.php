@@ -87,4 +87,16 @@ class ThesisTutorController
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    public function deleteObservationsRequirement(Request $request)
+    {
+        try{
+            $this->thesisTutorService->deleteObservationsRequirement(
+                $request->route('observation_requirement_id')
+            );
+            return ApiResponse::success('Observación eliminada correctamente');
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }
