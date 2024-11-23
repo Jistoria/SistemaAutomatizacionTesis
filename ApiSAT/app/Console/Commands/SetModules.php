@@ -40,8 +40,8 @@ class SetModules extends Command
                         ['name' => 'Trabajo Escrito', 'type' => 'document', 'extension' => 'docx']
                         ]],
                     ['name' => 'Fase Resultado', 'order' => 2, 'requirements' => [
-                        ['name' => 'Informe de Similitud', 'type' => 'document', 'extension' => ['docx']],
-                        ['name' => 'Registro de tutorías de titulación', 'type' => 'document', 'extension' => ['docx', 'xlsx']]
+                        ['name' => 'Informe de Similitud', 'type' => 'document', 'extension' => 'docx'],
+                        ['name' => 'Registro de tutorías de titulación', 'type' => 'document', 'extension' => 'docx']
                         ]
                     ]
                     ]

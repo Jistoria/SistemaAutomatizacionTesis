@@ -3,6 +3,7 @@
 namespace Modules\ImportDataFile\Contracts;
 
 use Illuminate\Http\UploadedFile;
+use ZipArchive;
 
 interface ImportDataFileServiceInterface
 {
@@ -19,4 +20,6 @@ interface ImportDataFileServiceInterface
     public function importDataPdfRequirementStudent(UploadedFile $file, string $userId, string $requirementStudentId) : void;
 
     public function deleteFile(string $path) : void;
+
+    public function downloadResourcesZip(string $directory) : string;
 }

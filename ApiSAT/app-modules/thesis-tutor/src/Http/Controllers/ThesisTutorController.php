@@ -41,10 +41,10 @@ class ThesisTutorController
 
     public function changeStatusRequirementStudent(Request $request)
     {
-        $allowedStates = State::getAllStates();
+        $allowedStatesforTeacher = State::getStateforTeacher();
 
         $request->validate([
-            'status' => ['required', Rule::in($allowedStates)],
+            'status' => ['required', Rule::in($allowedStatesforTeacher)],
         ]);
         try{
             $statusEnum = State::toEnum($request->input('status'));

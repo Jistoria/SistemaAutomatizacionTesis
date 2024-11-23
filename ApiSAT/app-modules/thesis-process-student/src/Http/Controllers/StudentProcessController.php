@@ -4,6 +4,7 @@ namespace Modules\ThesisProcessStudent\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
+use Modules\ImportDataFile\Contracts\ImportDataFileServiceInterface;
 use Modules\ThesisProcessStudent\Services\RequirementsStudentService;
 use Modules\ThesisProcessStudent\Services\ThesisProcessStudentService;
 
@@ -56,4 +57,21 @@ class StudentProcessController
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    public function downloadStudentResources()
+{
+    try {
+        // Directorio donde están almacenados los recursos
+        $directory = "anexos-system/student-resources";
+
+        // Crea el ZIP
+        $zipPath = app(ImportDataFileServiceInterface::class)->downloadResourcesZip(public_path($directory));
+
+        // Descarga el archivo
+        return response()->download($zipPath, basename($zipPath))->deleteFileAfterSend(true);
+    } catch (\Exception $e) {
+        return ApiResponse::error($e->getMessage());
+    }
+}
+
 }

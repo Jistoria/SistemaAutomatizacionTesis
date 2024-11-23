@@ -2,6 +2,7 @@
 
 namespace Modules\ImportDataFile\Services;
 
+use Composer\Util\Zip;
 use Faker\Core\Uuid;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -9,6 +10,7 @@ use Modules\ImportDataFile\Jobs\ProcessPdfThesisData;
 use \Illuminate\Http\UploadedFile;
 use Modules\ImportDataFile\Contracts\ImportDataFileServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
+use ZipArchive;
 
 class ImportDataFileService implements ImportDataFileServiceInterface
 {
@@ -54,5 +56,42 @@ class ImportDataFileService implements ImportDataFileServiceInterface
             Storage::disk('public')->delete($path);
         }
     }
+
+    public function downloadResourcesZip(string $directory): string
+{
+    // Archivos del estudiante en el directorio
+    $files = File::files($directory);
+
+    // Nombre del archivo ZIP
+    $zipFileName = "recursos_estudiante.zip";
+
+    // Ruta temporal para almacenar el archivo ZIP
+    $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $zipFileName;
+
+    // Elimina el archivo ZIP si ya existe
+    if (file_exists($tempPath)) {
+        unlink($tempPath);
+    }
+
+    // Crear el archivo ZIP
+    $zip = new ZipArchive;
+    if ($zip->open($tempPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+        foreach ($files as $file) {
+            // Verificar si el archivo realmente existe antes de añadirlo al ZIP
+            if (!file_exists($file->getPathname())) {
+                throw new \Exception("El archivo no existe: {$file->getPathname()}");
+            }
+
+            // Añadir el archivo al ZIP
+            $zip->addFile($file->getPathname(), $file->getBasename());
+        }
+        $zip->close();
+    } else {
+        throw new \Exception('No se pudo crear el archivo ZIP');
+    }
+
+    return $tempPath; // Retorna la ruta del archivo ZIP
+}
+
 
 }

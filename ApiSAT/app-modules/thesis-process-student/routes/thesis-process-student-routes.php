@@ -14,4 +14,7 @@ Route::prefix('thesis-process-student')->middleware(['auth:api','role:Estudiante
 
     Route::get('requirements-phase/{phasesProcessPhaseId}', [StudentProcessController::class, 'getRequirementsPhase']);
 
+    Route::get('download-resources', [StudentProcessController::class, 'downloadStudentResources']);
+
+
 });

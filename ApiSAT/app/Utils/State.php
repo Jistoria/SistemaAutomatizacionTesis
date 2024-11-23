@@ -36,5 +36,13 @@ class State
         return $enum->value;
     }
 
+    public static function getStateforTeacher(): array
+    {
+        return [
+            self::APPROVED,
+            self::REJECTED
+        ];
+    }
+
 
 }
