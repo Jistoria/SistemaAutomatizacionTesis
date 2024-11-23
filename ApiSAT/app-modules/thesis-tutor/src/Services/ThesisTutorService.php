@@ -60,7 +60,7 @@ class ThesisTutorService
     public function createObservationsRequirement (string $user, array $data): ObservationRequirement
     {
         return $this->observationRequirement->create([
-            'teacher_id' => $user,
+            'created_by_user' => $user,
             'student_requirements_id' => $data['student_requirements_id'],
             'comment' => $data['observations']
         ]);

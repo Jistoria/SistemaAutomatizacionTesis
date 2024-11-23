@@ -4,10 +4,16 @@ namespace App\Models\Academic\Thesis\Observations;
 
 use App\Models\Academic\Thesis\Requirement\RequirementsStudent;
 use App\Models\Auth\User;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ObservationRequirement extends Model
 {
+
+    use SoftDeletes, HasFactory, HasUuids;
+
     protected $table = 'observations_requirements';
     protected $primaryKey = 'observation_requirement_id';
     protected $fillable = [

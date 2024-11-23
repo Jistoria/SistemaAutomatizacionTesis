@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('observations_requirements', function (Blueprint $table) {
             $table->uuid('observation_requirement_id')->primary();
-            $table->text('comment')->nullable();
+            $table->text('comment');
             $table->uuid('created_by_user');
             $table->uuid('student_requirements_id');
             $table->timestamps();
