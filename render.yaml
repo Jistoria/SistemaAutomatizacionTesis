@@ -62,10 +62,11 @@ services:
     plan: free
     rootDir: FrontSAT
     buildCommand: npm install && npm run build
-    publishPath: .output/public
     envVars:
-      - key: NUXT_PUBLIC_API_URL
+      - key: VITE_API_URL
         value: https://sistemaautomatizaciontesis-backend.onrender.com
+      - key: NUXT_SESSION_PASSWORD
+        value: 25f0e038566b4bff9bcb8a99ab023d5e
 
 databases:
   - name: SistemaAutomatizacionTesis-DB
