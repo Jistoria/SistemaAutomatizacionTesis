@@ -40,7 +40,7 @@ class ImportDataFileService
     public function importDataPdfRequirementStudent(UploadedFile $file, string $userId, string $requirementStudentId) : void
     {
         // Guardar el archivo en el almacenamiento temporal
-        $name_document = $file->getClientOriginalName().'_'.now()->format('Y-m-d_H-i-s').$file->getClientOriginalExtension();
+        $name_document = now()->format('Y-m-d_H-i-s').'_'.$file->getClientOriginalName();
 
         $filePath = $file->storeAs('pdfs-students/'.$userId, $name_document, 'public');
 
