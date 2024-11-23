@@ -63,12 +63,16 @@ services:
     buildCommand: yarn; yarn generate
     staticPublishPath: dist
     envVars:
+      - key: VITE_KEY
+        value: 4c9e0v0wg5rd8kmj62sb
       - key: VITE_API_URL
         value: https://sistemaautomatizaciontesis-backend.onrender.com
       - key: NUXT_SESSION_PASSWORD
         value: 25f0e038566b4bff9bcb8a99ab023d5e
       - key: VITE_BROADCASTER
         value: reverb
+      - key: VITE_WS_HOST
+        value: sistemaautomatizaciontesis-backend.onrender.com
       - key: VITE_WS_PORT
         value: 8080
       - key: VITE_WSS_PORT
