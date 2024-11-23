@@ -50,11 +50,11 @@ services:
           type: redis
           property: port
 
-  - name: SistemaAutomatizacionTesis-Redis
-    type: redis
-    plan: free
-    ipAllowList:
-      - source: 0.0.0.0/0
+    - name: SistemaAutomatizacionTesis-Redis
+      type: redis
+      plan: free
+      ipAllowList:
+        - source: 0.0.0.0/0
 
     - type: static
       name: SistemaAutomatizacionTesis-Frontend
