@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Modules\ImportDataFile\Jobs\ProcessPdfThesisData;
 use \Illuminate\Http\UploadedFile;
+use Modules\ImportDataFile\Contracts\ImportDataFileServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 
-class ImportDataFileService
+class ImportDataFileService implements ImportDataFileServiceInterface
 {
     public function __construct(
         // protected User $user,
@@ -45,6 +46,13 @@ class ImportDataFileService
         $filePath = $file->storeAs('pdfs-students/'.$userId, $name_document, 'public');
 
         app(RequirementsStudentServiceInterface::class)->updateDocumentRequirementStudent($requirementStudentId, $filePath);
+    }
+
+    public function deleteFile(string $path) : void
+    {
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 
 }

@@ -5,6 +5,7 @@ namespace Modules\ThesisProcessStudent\Services;
 use App\Enums\StateEnum;
 use App\Utils\State;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\ImportDataFile\Contracts\ImportDataFileServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\Requirements;
 
@@ -49,6 +50,14 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
             $requirement->approved = true;
             $requirement->approved_date = now();
             $requirement->approved_by_user = $updatedBy;
+        }
+
+        if ($status->value === State::REJECTED) {
+            app(ImportDataFileServiceInterface::class)->deleteFile($requirement->url_file);
+            $requirement->url_file = null;
+            $requirement->approved = false;
+            $requirement->approved_date = null;
+            $requirement->approved_by_user = null;
         }
 
         $requirement->save();
