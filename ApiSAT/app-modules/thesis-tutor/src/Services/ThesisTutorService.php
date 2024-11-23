@@ -3,6 +3,7 @@
 namespace Modules\ThesisTutor\Services;
 
 use App\Enums\StateEnum;
+use App\Models\Academic\Thesis\Observations\ObservationRequirement;
 use App\Utils\State;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,7 +22,8 @@ class ThesisTutorService
      * @param Tutor $teacher Instancia del modelo Tutor asociada.
      */
     public function __construct(
-        protected Tutor $teacher
+        protected Tutor $teacher,
+        protected ObservationRequirement $observationRequirement
     ) {}
 
     /**
@@ -53,5 +55,14 @@ class ThesisTutorService
     {
         // Llama al servicio de requisitos del estudiante para actualizar el estado.
         app(RequirementsStudentServiceInterface::class)->updateStatus($student_requirements_id, $status, $user);
+    }
+
+    public function createObservationsRequirement (string $user, array $data): ObservationRequirement
+    {
+        return $this->observationRequirement->create([
+            'teacher_id' => $user,
+            'student_requirements_id' => $data['student_requirements_id'],
+            'comment' => $data['observations']
+        ]);
     }
 }

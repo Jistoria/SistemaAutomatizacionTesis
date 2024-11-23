@@ -58,4 +58,22 @@ class ThesisTutorController
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    public function storeObservationsRequirement(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|uuid',
+            'student_requirements_id' => 'required|uuid|exists:student_requirements,student_requirements_id',
+            'comment' => 'required|string'
+        ]);
+        try{
+            $observation = $this->thesisTutorService->createObservationsRequirement(
+                $request->user()->id,
+                $request->except('student_id')
+            );
+            return ApiResponse::success(data: $observation, message: 'Observación creada correctamente', status: 201);
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }
