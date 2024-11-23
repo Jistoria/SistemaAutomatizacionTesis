@@ -9,11 +9,11 @@ class RequestService {
         }
         return this.fetchClient;
     }
-    async sendrequest(content:any){
+    async sendrequest(content:any, student_id:any){
         const fetchClient = this.getFetchClient();
         try {
             return console.log(content);
-            const response = await fetchClient('/auth/menus',{
+            const response = await fetchClient(`thesis-tutor/observations-requirements/${student_id}`,{
                 method:'POST',
                 headers: {
                     'Content-Type': 'application/json',

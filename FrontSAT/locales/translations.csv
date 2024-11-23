@@ -4,6 +4,7 @@ examples,"Examples","Ejemplos",Exemples
 pluralization,"Pluralization","Pluralización",Pluralització
 email-address,"Yout email is: {email}","Tu correo electrónico es: {email}",correu electrònic és: {email}
 car,"car | cars","carrito | coches",cotxe | cotxes
+
 html-msg,"This text is rendered with <strong class='text-red-500'>HTML</strong>","Este texto se representa con <strong class='text-red-500'>HTML</strong>",Aquest text es representa amb <strong class='text-red-500'>HTML</strong>
 html-warning,"Dynamically localizing arbitrary HTML on your site can be very dangerous because it can easily lead to XSS vulnerabilities. Only use HTML interpolation on trusted content and never on user-provided content.","Localizar dinámicamente HTML arbitrario en su sitio puede ser muy peligroso porque puede generar fácilmente vulnerabilidades XSS. Utilice la interpolación HTML únicamente en contenido confiable y nunca en contenido proporcionado por el usuario.",Localitzar HTML arbitrari de manera dinàmica al vostre lloc pot ser molt perillós perquè pot provocar fàcilment vulnerabilitats XSS. Utilitzeu només la interpolació HTML en contingut de confiança i mai en contingut proporcionat per l'usuari.
 # COMMENTS TEST

@@ -101,40 +101,40 @@ async function handleFileUpload(event) {
         <section v-if="editor" class="buttons flexs items-center flex-wrap gap-x-4 border border-gray-400">
             <div class="grid grid-cols-2 gap-4">
                 <div >
-                    <button @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'bg-gray-200 rounded': editor.isActive('bold') }" >
+                    <a role="button" @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'bg-gray-200 rounded': editor.isActive('bold') }" >
                         <i class="bi bi-type-bold icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().toggleItalic().run()" :disabled="!editor.can().chain().focus().toggleItalic().run()" :class="{ 'bg-gray-200 rounded': editor.isActive('italic') }" >
+                    </a>
+                    <a role="button" @click="editor.chain().focus().toggleItalic().run()" :disabled="!editor.can().chain().focus().toggleItalic().run()" :class="{ 'bg-gray-200 rounded': editor.isActive('italic') }" >
                         <i class="bi bi-type-italic icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().toggleUnderline().run()" :class="{ 'is-active': editor.isActive('underline') }">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().toggleUnderline().run()" :class="{ 'is-active': editor.isActive('underline') }">
                         <i class="bi bi-type-underline icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }" class="p-1">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }" class="p-1">
                         <i class="bi bi-type-h1 icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }" class="p-1">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }" class="p-1">
                         <i class="bi bi-type-h2 icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }" class="p-1">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }" class="p-1">
                         <i class="bi bi-list-ul icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }" class="p-1">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }" class="p-1">
                         <i class="bi bi-list-ol icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }" class="p-1">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }" class="p-1">
                         <i class="bi bi-quote icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().undo().run()" :disabled="!editor.can().chain().focus().undo().run()" class="p-1">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().undo().run()" :disabled="!editor.can().chain().focus().undo().run()" class="p-1">
                         <i class="bi bi-arrow-counterclockwise icon_size"></i>
-                    </button>
-                    <button @click="editor.chain().focus().redo().run()" :disabled="!editor.can().chain().focus().redo().run()" class="p-1">
+                    </a>
+                    <a role="button" @click="editor.chain().focus().redo().run()" :disabled="!editor.can().chain().focus().redo().run()" class="p-1">
                         <i class="bi bi-arrow-clockwise icon_size"></i>
-                    </button>
-                    <button @click="triggerFileUpload" >
+                    </a>
+                    <a role="button" @click="triggerFileUpload" >
                         <input type="file" @change="handleFileUpload" style="display: none" ref="fileInput" />
                         <i class="bi bi-file-earmark-arrow-up-fill icon_size"></i>
-                    </button>
+                    </a>
                 </div>
                 <div  class="flex justify-end">
                     <button type="submit"class=" pe-2">

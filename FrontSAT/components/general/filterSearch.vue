@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-end gap-2 p-2 bg-white rounded-lg w-full max-w-4xl mx-auto">
+  <div class=" flex justify-start gap-2 p-2 bg-white rounded-lg  mx-auto">
     <!-- Input de Búsqueda -->
     <div class="relative">
       <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
@@ -21,7 +21,6 @@
         <i class="bi bi-x-circle"></i>
       </button>
     </div>
-
     <!-- Select de Orden -->
     <div>
       <select
@@ -33,7 +32,6 @@
         <option value="desc">Descendente</option>
       </select>
     </div>
-
     <!-- Botón de Búsqueda -->
     <button
       class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md focus:ring-2 focus:ring-red-500 focus:outline-none transition-transform transform hover:scale-105"
@@ -43,8 +41,10 @@
       Aplicar
     </button>
   </div>
-</template>
 
+
+
+</template>
 <script setup>
 import { ref } from 'vue';
 import { usePaginationStore } from '~/stores/pagination/pagination';

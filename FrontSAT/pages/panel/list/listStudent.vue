@@ -52,7 +52,9 @@ const details_student = (data)=>{
 <template>
     
     <div class="container mx-auto  mt-10 ">
-        <FilterSearch />
+        <div >
+            <FilterSearch />
+        </div>
         <div v-for="dataList in visibleData" class="bg-gray-300  rounded-lg grid grid-cols-3 gap-4 items-center p-4 mt-2 mb-2">
             <div class=" col-span-2 bg-white ms-2 rounded-lg ">
                 <div class="flex items-center mt-5 space-x-4 text-gray-600 text-xs ps-6 pt-3 ">

@@ -41,6 +41,7 @@ const Login = async () => {
     <button @click="setLocale('en')">ingles </button>
     <p>{{ $t('examples') }}</p>
     <NuxtLink :to="localePath('/')"> hola tuneado</NuxtLink> -->
+    
     <!-- <button @click="loadData('progress-bar')">Cargar con Barra de Progreso</button>
     <button @click="loadData('spinner')">Cargar con Spinner</button>
     <button @click="loadData('dots')">Cargar con Puntos</button> -->

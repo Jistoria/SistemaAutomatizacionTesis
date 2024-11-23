@@ -2,6 +2,7 @@ import { detailsService } from "~/services/details/detailsService";
 export const StudentDetails = defineStore('studentDetails',{
     state: () =>({
         selectedStudent: {
+            id:null,
             name: '',
             email:'',
             phase_state_now:'',

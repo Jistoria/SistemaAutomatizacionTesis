@@ -2,6 +2,8 @@
 import Observation from '~/components/modal/observation.vue';
 import { StudentDetails } from '~/stores/details/studentDetails';
 import { panel } from '~/stores/panel/panel';
+
+const base_url = import.meta.env.VITE_API_STORAGE;
 const studentDetailsStore = StudentDetails();
 const requerimets_details = ref(null);
 const requeriment_selected = ref(null);
@@ -27,9 +29,10 @@ const filteredRequeriments = computed(() =>
     : requerimets_details.value
 );
 const change_status = async (id_student, id_requeriment_student,status)=>{
-
+    console.log(status);
     isLoading.value = true;
     const response = await studentDetailsStore.changeStudentreq(id_student, id_requeriment_student,status);  
+    //necesito logica de cuando que si un 400 no hacer nada y dejarlo en isLoading.value=false
     if(response == true){
         const requerimentIndex = studentDetailsStore.RequerimentsSelected.findIndex((req) => req.student_requirements_id === id_requeriment_student);
         if(requerimentIndex !== -1){
@@ -44,12 +47,22 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
     isLoading.value = false;
 
 }
-
+const download_file = (url)=>{
+    const fileUrl = `${base_url}/${url}`;
+    const link = document.createElement('a');
+    link.href = fileUrl; 
+    link.download = ''; 
+    link.target = '_blank'; 
+    document.body.appendChild(link); 
+    link.click(); 
+    document.body.removeChild(link); 
+}
 
 </script>
 <template>
 <div>
-    <div class="container  mx-auto mt-10">
+
+    <div class="container  mx-auto mt-10 hinde">
         <div class="bg-neutral p-4 rounded" >
             <!-- columna de datos personales -->
             <div class="grid grid-cols-4 p-4">
@@ -119,14 +132,14 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
                                     <div class="col-span-2">
                                         <p>
                                             <a class="bg-slate-300 p-2 rounded-lg">{{ req.requirements_data }}</a>
-                                            <a class="italic ms-3"> <i class="bi bi-file-earmark"></i> {{ req.requirement_name}}</a>
+                                            <a @click="download_file(req.url_file)" class="italic ms-3"> <i class="bi bi-file-earmark"></i> {{ req.requirement_name}}</a>
                                         </p>
                                     </div>
                                     <div class="flex justify-end">
-                                        <button class="btn_error p-2 me-2 rounded" @click="change_status(studentDetailsStore.selectedStudent.id,req.student_requirements_id,'Rechazado')" >
+                                        <button class="btn_error p-2 me-2 rounded" :class="{ 'hidden':selectedStatus === 'Pendiente'  }"  @click="change_status(studentDetailsStore.selectedStudent.id,req.student_requirements_id,'Rechazado')" >
                                             <i class="bi bi-x-circle-fill"></i>
                                         </button>
-                                        <button class="btn_suceess p-2 me-2 rounded" @click="change_status(studentDetailsStore.selectedStudent.id,req.student_requirements_id,'Aprobado')"    >
+                                        <button class="btn_suceess p-2 me-2 rounded" :class="{ 'hidden':selectedStatus === 'Pendiente'  }"  @click="change_status(studentDetailsStore.selectedStudent.id,req.student_requirements_id,'Aprobado')"    >
                                             <i class="bi bi-check-circle-fill"></i>
                                         </button>
                                         <button class="btn_pending p-2 me-2 rounded" :class="{ 'hidden':selectedStatus === 'Pendiente'  }" @click="change_status(studentDetailsStore.selectedStudent.id,req.student_requirements_id,'Pendiente')" >

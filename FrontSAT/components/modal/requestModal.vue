@@ -2,6 +2,7 @@
 
 import TiptapEditor from '../general/tiptap-editor.vue';
 import { request } from '~/stores/request/request';
+
 const requestStore = request();
 const isModalOpen = ref(false);
 
