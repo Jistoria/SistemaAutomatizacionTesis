@@ -31,9 +31,19 @@ class Requirements extends RequirementsStudent
                 'requirements.type as type',
                 'requirements.extension as extension',
             ])
+            ->with(['observations' => function ($query) {
+                $query->select([
+                    'observation_requirement_id',
+                    'student_requirements_id',
+                    'comment',
+                    'created_by_user',
+                    'created_at',
+                ]);
+            }])
             ->orderBy('student_requirements.student_requirements_id')
             ->get();
     }
+
 
     public function checkPhaseApproved(): bool
     {

@@ -2,6 +2,7 @@
 
 namespace App\Models\Academic\Thesis\Requirement;
 
+use App\Models\Academic\Thesis\Observations\ObservationRequirement;
 use App\Models\Academic\Thesis\ThesisProcessPhases;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,5 +45,10 @@ class RequirementsStudent extends Model
     public function requirement()
     {
         return $this->belongsTo(Requirement::class, 'requirements_id', 'requirements_id');
+    }
+
+    public function observations()
+    {
+        return $this->hasMany(ObservationRequirement::class, 'student_requirements_id', 'student_requirements_id');
     }
 }
