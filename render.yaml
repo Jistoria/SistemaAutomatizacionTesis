@@ -57,11 +57,11 @@ services:
       - source: 0.0.0.0/0
 
   - type: web
-    runtime: static
+    env: static
     name: SistemaAutomatizacionTesis-Frontend
     rootDir: FrontSAT
-    buildCommand: npm install && npm run build
-    staticPublishPath: .output/public
+    buildCommand: yarn; yarn generate
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
         value: https://sistemaautomatizaciontesis-backend.onrender.com
