@@ -37,11 +37,15 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
         $requirement = $this->requirements->find($studentRequirementsId);
 
         if ($requirement === null) {
-            throw new \Exception('Requisito no encontrado');
+            throw new \Exception('Requisito no encontrado', 404);
+        }
+
+        if ($requirement->status === State::REJECTED && $status->value === State::APPROVED) {
+            throw new \Exception('No se puede aprobar un requisito que ha sido rechazado', 400);
         }
 
         if ($this->checkPhaseApproved($requirement)) {
-            throw new \Exception('No se puede modificar el estado de un requisito de una fase aprobada');
+            throw new \Exception('No se puede modificar el estado de un requisito de una fase aprobada', 400);
         }
 
         $requirement->status = $status;

@@ -55,7 +55,9 @@ class ThesisTutorController
             );
             return ApiResponse::success('status_changed');
         }catch(\Exception $e){
-            return ApiResponse::error($e->getMessage());
+            return ApiResponse::error($e->getMessage(),
+                $e->getCode()
+            );
         }
     }
 
