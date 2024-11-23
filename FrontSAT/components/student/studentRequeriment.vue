@@ -10,7 +10,7 @@ const authStore = auth();
 const swal = sweetAlert();
 const isStudentModalOpen = ref(false);
 const isInfoModalOpen = ref(false);
-const selectedRequirement = ref({ details: "", comment: "" });
+const selectedRequirement = ref({ details: "", observations: "" });
 const selectedFiles = ref({}); // Almacena archivos temporalmente por índice
 
 // Abre el modal de información y carga datos específicos
@@ -19,7 +19,7 @@ const openInfoModal = (index) => {
   const requirement = studentStore.requeriments[index];
   selectedRequirement.value = {
     details: requirement?.description || "No hay detalles para este requisito.",
-    comment: requirement?.comment || "No hay comentarios para esta tarea.",
+    observations: requirement?.observations || "No hay comentarios para esta tarea.",
   };
   isInfoModalOpen.value = true;
 };
@@ -197,28 +197,52 @@ function getFullFileName(name, extension) {
   </div>
 
   <!-- Modal de Información -->
-  <div v-if="isInfoModalOpen" class="modal modal-open flex items-center justify-center bg-gray-800 bg-opacity-75 fixed inset-0 z-100">
-    <div class="modal-box max-w-2xl p-6 bg-white shadow-lg rounded-lg">
-      <h2 class="font-bold text-lg mb-4 text-gray-800 text-center">Información del Requisito</h2>
-      <div class="grid grid-cols-2 gap-4">
-        <!-- Detalles del Requisito -->
-        <div>
-          <h3 class="font-semibold text-gray-700 mb-2">Detalles del Requisito</h3>
-          <p class="text-gray-600" v-if="selectedRequirement.details">{{ selectedRequirement.details }}</p>
+<div v-if="isInfoModalOpen" class="modal modal-open flex items-center justify-center bg-gray-800 bg-opacity-75 fixed inset-0 z-100">
+  <div class="modal-box max-w-2xl p-6 bg-white shadow-lg rounded-lg">
+    <h2 class="font-bold text-lg mb-4 text-gray-800 text-center">Información del Requisito</h2>
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Detalles del Requisito -->
+      <div class="flex flex-col">
+        <h3 class="font-semibold text-gray-700 mb-2">Detalles del Requisito</h3>
+        <!-- Hacemos scroll en los detalles -->
+        <div class="overflow-y-auto max-h-64">
+          <p class="text-gray-600" v-if="selectedRequirement.details">
+            {{ selectedRequirement.details }}
+          </p>
           <p v-else class="text-gray-500 italic">No hay detalles para este requisito.</p>
         </div>
-        <!-- Comentarios -->
-        <div>
-          <h3 class="font-semibold text-gray-700 mb-2">Comentarios</h3>
-          <p class="text-gray-600" v-if="selectedRequirement.comment">{{ selectedRequirement.comment }}</p>
+      </div>
+      <!-- Comentarios -->
+      <div class="flex flex-col">
+        <h3 class="font-semibold text-gray-700 mb-4">Comentarios</h3>
+        <!-- Contenedor con scroll -->
+        <div class="overflow-y-auto max-h-64 space-y-3">
+          <!-- Lista de comentarios -->
+          <ul v-if="selectedRequirement.observations && selectedRequirement.observations.length" class="space-y-3">
+            <li
+              v-for="(observation, index) in selectedRequirement.observations"
+              :key="observation.observation_requirement_id || index"
+              class="border-b border-gray-200 pb-2 last:border-b-0"
+            >
+              <p class="text-sm text-gray-800">
+                <span v-html="observation.comment"></span>
+              </p>
+              <p class="text-gray-500 text-xs mt-1">
+                Fecha: {{ new Date(observation.created_at).toLocaleDateString() }}
+              </p>
+            </li>
+          </ul>
           <p v-else class="text-gray-500 italic">No hay comentarios para esta tarea.</p>
         </div>
       </div>
-      <div class="modal-action justify-end mt-4">
-        <button @click="closeInfoModal" class="btn btn-outline btn-primary px-4 py-2 rounded-lg text-sm">Cerrar</button>
-      </div>
+      
+    </div>
+    <div class="modal-action justify-end mt-4">
+      <button @click="closeInfoModal" class="btn btn-outline btn-primary px-4 py-2 rounded-lg text-sm">Cerrar</button>
     </div>
   </div>
+</div>
+
 </template>
 
 
