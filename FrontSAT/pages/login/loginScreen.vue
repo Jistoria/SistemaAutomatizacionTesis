@@ -2,6 +2,11 @@
 import { auth } from '~/stores/auth/auth';
 import { useRoute, useRouter } from 'vue-router';
 import { firstLoad } from '~/composables/firs_load';
+import { sweetAlert } from '~/composables/sweetAlert';
+
+const swal = sweetAlert();
+
+
 const { $echoReady } = useNuxtApp();
 
 const authStore = auth()
@@ -26,11 +31,18 @@ onMounted(async () => {
 })
 const Login = async () => {
     openAnimation('spinner');
-    await authStore.login(email.value, password.value)
-    const response = await firstLoad();
-    if(response){
+    const response1 = await authStore.login(email.value, password.value)
+    if(response1.success==true){
+        swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})
+        const response = await firstLoad();
+        if(response){
+            closeAnimation();
+            router.push('/')
+        }
         closeAnimation();
-        router.push('/')
+    }else{
+        swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
+        closeAnimation();
     }
 }
 

@@ -56,11 +56,17 @@ export const auth = defineStore('auth',{
         async login(email, password){
             try {
                 const response = await authService.login(email, password)
+                console.log(response)
                 if(response.success == true){
                     this.setLogin(response.data.user,response.data.token)
+                    return response
+                }
+                else{
+                    return response
                 }
             } catch (error) {
                 console.log(error)
+                return success = false
             }
         },
         async logout(){

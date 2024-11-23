@@ -33,10 +33,10 @@ class AuthService {
             
             if (response.success == true) {
                 await this.saveAuthData(true, response.data.user, response.data.token);
-                swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})
+                
                 return response;
             }else {
-                swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
+                
                 return response;
             }
 

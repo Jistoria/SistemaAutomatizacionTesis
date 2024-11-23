@@ -146,7 +146,7 @@ function getFullFileName(name, extension) {
             <td class="text-center px-4 py-2">
               <div class="flex items-center justify-center gap-2">
                 <label 
-                  v-if="requirement.status !== 'Enviado'"
+                  v-if="requirement.status !== 'Enviado'&&requirement.status !== 'Aprobado'"
                   class="flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-lg cursor-pointer"
                 >
                   <span>Seleccionar Archivo</span>
@@ -159,10 +159,13 @@ function getFullFileName(name, extension) {
                   />
                 </label>
                 <span v-if="requirement.status === 'Enviado'" class="text-gray-500 italic">Archivo enviado para su revision</span>
+                <span v-else-if="requirement.status === 'Aprobado'" class="text-gray-500 italic">Archivo Aprobado</span>
                 <span v-else-if="selectedFiles[index]" class="text-sm text-gray-600 truncate max-w-[120px]">
                   {{ selectedFiles[index].name }}
                 </span>
+                <span v-else-if="requirement.status === 'Rechazado'" class="text-sm text-gray-500 italic">Archivo rechazado, corrija y vuelva a subir</span>
                 <span v-else class="text-sm text-gray-500 italic">Ningún archivo seleccionado</span>
+
                 <button 
                   v-if="selectedFiles[index] && requirement.status !== 'Enviado'" 
                   @click="clearFile(index)" 
