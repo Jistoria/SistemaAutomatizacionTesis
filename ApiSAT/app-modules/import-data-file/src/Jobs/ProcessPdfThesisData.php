@@ -47,7 +47,7 @@ class ProcessPdfThesisData implements ShouldQueue
     {
         try{
             // Ejecutar el script de Python para procesar el archivo PDF
-            $process = new Process(['python3', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
+            $process = new Process(['py', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
             $process->run();
 
             // Si el proceso falla
@@ -103,7 +103,7 @@ class ProcessPdfThesisData implements ShouldQueue
                 $user = app(UserServiceInterface::class)->createUserWithRole([
                     'name' => $studentData['student_name'],
                     'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
-                    'password' => 'EstUleamFCVT',
+                    'password' => $studentData['student_dni'],
                 ], 'Estudiante-tesis', $this->id);
 
 

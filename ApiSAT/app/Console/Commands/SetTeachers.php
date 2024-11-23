@@ -65,7 +65,7 @@ class SetTeachers extends Command
                     'id' => $uuid,
                     'name' => $fullName,
                     'email' => $email,
-                    'password' => 'process_thesis', // Cambia la contraseña en producción
+                    'password' => 'DocUleamFCVT', // Cambia la contraseña en producción
                 ]
             );
 

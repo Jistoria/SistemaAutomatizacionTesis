@@ -62,7 +62,12 @@ class ThesisTutorService
         return $this->observationRequirement->create([
             'created_by_user' => $user,
             'student_requirements_id' => $data['student_requirements_id'],
-            'comment' => $data['observations']
+            'comment' => $data['comment']
         ]);
+    }
+
+    public function getObservationsRequirement (string $student_requirements_id): Collection
+    {
+        return $this->observationRequirement->where('student_requirements_id', $student_requirements_id)->get();
     }
 }
