@@ -59,7 +59,6 @@ services:
   - type: web
     runtime: static
     name: SistemaAutomatizacionTesis-Frontend
-    plan: free
     rootDir: FrontSAT
     buildCommand: npm install && npm run build
     envVars:
