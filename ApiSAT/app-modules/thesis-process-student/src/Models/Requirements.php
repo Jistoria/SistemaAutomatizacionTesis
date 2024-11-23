@@ -34,4 +34,9 @@ class Requirements extends RequirementsStudent
             ->orderBy('student_requirements.student_requirements_id')
             ->get();
     }
+
+    public function checkPhaseApproved(): bool
+    {
+        return $this->thesisProcessPhase()->first()->approval;
+    }
 }

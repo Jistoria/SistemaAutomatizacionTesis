@@ -4,6 +4,7 @@ namespace App\Models\Academic\Thesis\Observations;
 
 use App\Models\Academic\Thesis\Requirement\RequirementsStudent;
 use App\Models\Auth\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,13 @@ class ObservationRequirement extends Model
         'created_by_user',
         'student_requirements_id',
     ];
+
+    protected $appends = ['formatted_created_at'];
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('d-m-Y');
+    }
 
     public function createdByUser()
     {

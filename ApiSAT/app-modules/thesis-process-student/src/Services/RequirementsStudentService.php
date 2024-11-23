@@ -34,6 +34,15 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
     {
 
         $requirement = $this->requirements->find($studentRequirementsId);
+
+        if ($requirement === null) {
+            throw new \Exception('Requisito no encontrado');
+        }
+
+        if ($this->checkPhaseApproved($requirement)) {
+            throw new \Exception('No se puede modificar el estado de un requisito de una fase aprobada');
+        }
+
         $requirement->status = $status;
 
         if ($status->value === State::APPROVED) {
@@ -45,6 +54,11 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
         $requirement->save();
     }
 
+
+    public function checkPhaseApproved(Requirements $requirement): bool
+    {
+        return $requirement->checkPhaseApproved($requirement->thesis_process_phases_id);
+    }
 
 
 }
