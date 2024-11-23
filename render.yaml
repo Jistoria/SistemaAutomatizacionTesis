@@ -61,6 +61,7 @@ services:
     name: SistemaAutomatizacionTesis-Frontend
     rootDir: FrontSAT
     buildCommand: npm install && npm run build
+    staticPublishPath: .output/public
     envVars:
       - key: VITE_API_URL
         value: https://sistemaautomatizaciontesis-backend.onrender.com
