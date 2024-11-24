@@ -50,12 +50,6 @@ services:
           type: redis
           property: port
 
-  - type: redis
-    name: SistemaAutomatizacionTesis-Redis
-    plan: free
-    ipAllowList:
-      - source: 0.0.0.0/0
-
   - type: web
     env: static
     name: SistemaAutomatizacionTesis-Frontend
@@ -80,6 +74,12 @@ services:
         value: 8080
       - key: VITE_WSS_PORT
         value: 8080
+
+  - type: redis
+    name: SistemaAutomatizacionTesis-Redis
+    plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0
 
 databases:
   - name: SistemaAutomatizacionTesis-DB

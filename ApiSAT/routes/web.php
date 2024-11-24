@@ -70,22 +70,7 @@ Route::get('/check-queue', function () {
 });
 
 Route::get('/check-reverb', function () {
-    $host = 'http://127.0.0.1:8080';
-    $curl = curl_init($host);
 
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_TIMEOUT, 3);
-
-    $response = curl_exec($curl);
-    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-    curl_close($curl);
-
-    if ($httpCode == 200) {
-        return 'Reverb service is reachable.';
-    }
-
-    return response()->json(['error' => 'Reverb service is not responding'], $httpCode);
 });
 
 Route::get('/logs/{service}', function ($service) {
