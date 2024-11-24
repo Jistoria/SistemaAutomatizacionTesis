@@ -74,6 +74,7 @@ services:
       - key: VITE_WS_HOST
         fromService:
           name: SistemaAutomatizacionTesis-Backend
+          type: web
           property: host
       - key: VITE_WS_PORT
         value: 8080
