@@ -51,7 +51,13 @@ Route::get('/check-php', function () {
 });
 
 Route::get('/check-nginx', function () {
-    return 'Nginx is serving the application.';
+    $gnixStatus = shell_exec('service nginx status');
+    $gnixT = shell_exec('gnix -t');
+
+    return response()->json([
+        'status' => $gnixStatus,
+        'test' => $gnixT,
+    ]);
 });
 
 Route::get('/check-queue', function () {
@@ -82,3 +88,55 @@ Route::get('/check-reverb', function () {
     return response()->json(['error' => 'Reverb service is not responding'], $httpCode);
 });
 
+Route::get('/logs/{service}', function ($service) {
+    $logs = [
+        'nginx' => '/var/log/nginx.err.log',
+        'php-fpm' => '/var/log/php-fpm.err.log',
+        'queue' => '/dev/fd/1',
+        'reverb' => '/var/www/storage/logs/reverb.err.log',
+    ];
+
+    if (!isset($logs[$service])) {
+        return response()->json(['error' => 'Log file not found for service: ' . $service], 404);
+    }
+
+    $file = $logs[$service];
+    if (file_exists($file)) {
+        return response()->file($file);
+    }
+
+    return response()->json(['error' => 'Log file does not exist: ' . $file], 404);
+});
+
+
+Route::get('/check-ssl', function () {
+    $host = request()->getHost(); // Obtén el host actual (e.g., tu-dominio.com)
+    $port = 443; // Puerto estándar para HTTPS
+    $context = stream_context_create([
+        "ssl" => [
+            "capture_peer_cert" => true,
+        ],
+    ]);
+
+    try {
+        // Abre una conexión al host con SSL
+        $client = stream_socket_client("ssl://{$host}:{$port}", $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $context);
+
+        if (!$client) {
+            return response()->json(['error' => "Failed to connect: $errstr ($errno)"], 500);
+        }
+
+        // Obtén los detalles del certificado
+        $params = stream_context_get_params($client);
+        $cert = openssl_x509_parse($params["options"]["ssl"]["peer_certificate"]);
+
+        return response()->json([
+            'valid_from' => date('Y-m-d H:i:s', $cert['validFrom_time_t']),
+            'valid_to' => date('Y-m-d H:i:s', $cert['validTo_time_t']),
+            'issuer' => $cert['issuer'],
+            'subject' => $cert['subject'],
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
