@@ -70,7 +70,10 @@ Route::get('/check-queue', function () {
 });
 
 Route::get('/check-reverb', function () {
-
+    $logReverb = shell_exec('cat /var/www/storage/logs/reverb.err.log');
+    return response()->json([
+        'log' => $logReverb,
+    ]);
 });
 
 Route::get('/logs/{service}', function ($service) {
