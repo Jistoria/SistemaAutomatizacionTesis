@@ -66,10 +66,7 @@ services:
       - key: VITE_BROADCASTER
         value: reverb
       - key: VITE_WS_HOST
-        fromService:
-          name: SistemaAutomatizacionTesis-Backend
-          type: web
-          property: host
+        value: sistemaautomatizaciontesis-backend.onrender.com
       - key: VITE_WS_PORT
         value: 8080
       - key: VITE_WSS_PORT
