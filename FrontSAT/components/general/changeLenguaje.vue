@@ -2,14 +2,14 @@
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
-const lengaunge_selected = ref('espanol');
+const lengaunge_selected = ref('Español');
 const lenguaje = ref({
   spanish:{
-    name:'espanol',
+    name:'Español',
     value:'es'
   },
   english:{
-    name:'ingles',
+    name:'Ingles',
     value:'en'
   }
 })
@@ -26,11 +26,11 @@ const changeLanguage = async (lang) => {
 <template>  
     <div class="dropdown dropdown-right dropdown-end">
       <div tabindex="0" role="button"  >
-        <div class="bg-primary p-3 rounded-box inline-block">
-          <i class="bi bi-translate" style="font-size: 1.5rem; color: azure;"></i> 
+        <div class="bg-primary p-3 rounded-l-lg inline-block hover:bg-zinc-500">
+          <i class="bi bi-translate" style="font-size: 1.4rem; color: azure;"></i> 
         </div>
-        <div class="inline-block ms-3">
-          <div class="italic text-xl">
+        <div class="inline-block bg-slate-300 pt-4 pb-3 ps-4 pe-4 rounded-r-lg">
+          <div class="italic  edit ">
             <a>{{ lengaunge_selected }}</a>
           </div>
         </div>

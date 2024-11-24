@@ -37,6 +37,7 @@ export const student = defineStore('student',{
                 // Sincronizar el estado con los datos recién guardados en IndexedDB
                 await this.syncFromDB()
 
+                this.isLoaded = true;
                 return
             }
 
@@ -86,6 +87,9 @@ export const student = defineStore('student',{
             this.generalData = [];
             
             console.log('Datos del store y de IndexedDB limpiados.');
-          },
+        },
+        resetDefault(){
+            this.isLoaded = false;
+        },
     },
 })

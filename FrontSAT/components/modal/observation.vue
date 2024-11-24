@@ -12,7 +12,7 @@ const authStore = auth();
 const studentDetailsStore = StudentDetails();
 const rolSelect = ref('');
 const id_studend_ob = ref(null);
-
+const isLoading = ref(true);
 
 const showdatafunction = (data)=>{
     console.log(data)
@@ -59,19 +59,25 @@ const openModal = async(data) => {
 
 };
 const fecth_details = async (data) => {
-    const response = await observationStore.getObservation(id_studend_ob.value,data);
-    observationlist.value = Array.isArray(observationStore.observationdata)
-    ? observationStore.observationdata
-    : [...observationStore.observationdata];
-    console.log(observationStore.observationdata);
+    isLoading.value = true;  // Inicia la carga
+    try {
+        const response = await observationStore.getObservation(id_studend_ob.value,data);
+        observationlist.value = Array.isArray(observationStore.observationdata)
+        ? observationStore.observationdata
+        : [...observationStore.observationdata];
+        console.log(observationStore.observationdata);
 
-    observationlist.value.forEach((observation) => {
-        if (observation && observation.observation_requirement_id) {
-            showFullText.value[observation.observation_requirement_id] = false;
-        }
-    });
-    console.log('hola');
-    console.log(observationlist.value);
+        observationlist.value.forEach((observation) => {
+            if (observation && observation.observation_requirement_id) {
+                showFullText.value[observation.observation_requirement_id] = false;
+            }
+        });
+    } catch (error) {
+        
+    } finally{
+        isLoading.value = false;  // Finaliza la carga
+    }
+
 };
 const closeModal = (data) => {
   const modal = document.getElementById(`modal_observation_${data}`);
@@ -92,47 +98,58 @@ const delete_observation = async (data,requirementId)=>{
     <dialog :id="`modal_observation_${requirementId}`" class="modal">
         <!-- w-11/12 max-w-5xl -->
     <div class="modal-box w-11/12 max-w-5xl bg-neutral ">
+        <!-- header -->
         <div class="flex justify-between">
             <h3 class="text-lg font-bold">Observaciones</h3>
             <button  v-if="rolSelect == roles.rol4">
-                <TitapObservation :requirement_p="requirementId" ></TitapObservation>
+                <TitapObservation :requirement_p="requirementId" @observation-sent="fecth_details" ></TitapObservation>
             </button>
         </div>
-        <div v-for="(lista,index) in observationlist">
-            <div class="flex">
-                <div class="btn btn-ghost font-bold  hover:bg-transparent "  @click="toggleText(lista.observation_requirement_id)" >
-                    <i class="bi bi-caret-down-fill "  style="font-size: 1.2rem;" ></i>
-                    Observacion # {{ index }}
-                    
+        <!-- contenido -->
+            <div class="overflow-y-auto grow p-4" style="max-height: calc(80vh - 120px);">
+                <div v-if="isLoading" class="mt-5" >
+                    <span class="loading loading-bars loading-lg mt-4"></span>
                 </div>
-                <div class="bg-error rounded" @click="delete_observation(lista.observation_requirement_id,requirementId)">
-                    <div class="p-3">
-                        <i class="bi bi-trash-fill"></i>
+                <div v-else-if="observationStore.observationdata.length === 0">
+                    No hay observaciones para este requerimiento
+                </div>
+                <div  v-else v-for="(lista,index) in observationlist">
+                    <div class="flex">
+                        <div class="btn btn-ghost font-bold  hover:bg-transparent "  @click="toggleText(lista.observation_requirement_id)" >
+                            <i class="bi bi-caret-down-fill "  style="font-size: 1.2rem;" ></i>
+                            Observacion # {{ index }}
+                            
+                        </div>
+                        <div class="bg-error rounded" @click="delete_observation(lista.observation_requirement_id,requirementId)">
+                            <div class="p-3">
+                                <i class="bi bi-trash-fill"></i>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="container rounded bg-white  m-3 p-3 " >
-                <div>
-                    <div class="inline-block">
-                        <i class="bi bi-person-fill icon_size bg-neutral rounded-2xl p-1"></i>
-                    </div>
-                </div>
-                <div class="inline-block" >
-                    <a class="sm:p-5 italic"  >
-                        {{ lista.formatted_created_at }}
-                    </a>
-                </div>
-                <div class="sm:p-3 " :class="{'inline-block italic': !showdata, 'block ': showdata}"  >
-                    <div class="ms-3" v-html="lista.comment">
+                    <div class="container rounded bg-white  m-3 p-3 " >
+                        <div>
+                            <div class="inline-block">
+                                <i class="bi bi-person-fill icon_size bg-neutral rounded-2xl p-1"></i>
+                            </div>
+                        </div>
+                        <div class="inline-block" >
+                            <a class="sm:p-5 italic"  >
+                                {{ lista.formatted_created_at }}
+                            </a>
+                        </div>
+                        <div class="sm:p-3 " :class="{'inline-block italic': !showdata, 'block ': showdata}"  >
+                            <div class="ms-3" v-html="lista.comment">
 
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <!-- footer -->
         <div class="modal-action">
         <form method="dialog">
             <!-- if there is a button, it will close the modal -->
-            <button  class="btn" @click="closeModal(requirementId)">Close</button>
+            <button  class="btn" @click="closeModal(requirementId)">Cerrar</button>
         </form>
         </div>
     </div>

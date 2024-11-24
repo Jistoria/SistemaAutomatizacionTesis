@@ -33,17 +33,18 @@ const Login = async () => {
     openAnimation('spinner');
     const response1 = await authStore.login(email.value, password.value)
     if(response1.success==true){
-        swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})
         const response = await firstLoad();
         if(response){
             closeAnimation();
-            router.push('/')
+            router.push('/');
+            swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})
         }
         closeAnimation();
     }else{
         swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
         closeAnimation();
     }
+
 }
 
 </script>
@@ -57,7 +58,7 @@ const Login = async () => {
     <!-- <button @click="loadData('progress-bar')">Cargar con Barra de Progreso</button>
     <button @click="loadData('spinner')">Cargar con Spinner</button>
     <button @click="loadData('dots')">Cargar con Puntos</button> -->
-        <div class="layoutLogin justify-center">
+        <div class="layoutLogin justify-center general_text">
             <div class="container bg-white mx-auto w-96 border_z rounded-md shadow-2xl ">
             <div class="grid grid-rows-1 gap-0 justify-items-center">
                 <div class="mt-4 mb-4">
@@ -67,7 +68,7 @@ const Login = async () => {
                     <form @submit.prevent="Login">
                         <!-- correo electronico -->
                         <label class="block p-2 m-2"> 
-                            <span class="block text-sm font-medium text-slate-700 mb-2">Correo electronico</span>
+                            <span class="block text-sm font-medium text-slate-700 mb-2">Correo electrónico</span>
                             <div class="flex items-stretch shadow-lg">
                                 <div class="grow-0 self-center icon_deco p-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
@@ -99,14 +100,14 @@ const Login = async () => {
                             </div>
                         </label>
                         <div class="flex justify-center mb-3 m-1 ">
-                            <button type="submit" class="m-3 w-full bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                iniciar sesion
+                            <button type="submit" class="m-3 w-full bg-red-500 hover:bg-green-700 text-white py-2 px-4 rounded">
+                                Iniciar sesión
                             </button>                        
                         </div>
                         <div>
                             <div class="grid grid-cols-2 mt-2 mb-2 p-2 m-2">
                                 <div>
-                                    <a class="text-sm cursor-pointer">Inciar Sesion con cuenta Microsoft</a>
+                                    <a class="text-sm cursor-pointer">Inciar Sesión con cuenta Microsoft</a>
                                 </div>
                                 <div class="text-end">
                                     <a class="text-sm cursor-pointer">¿Olvido su Contraseña?</a>
@@ -132,10 +133,6 @@ const Login = async () => {
   flex-grow: 1; 
   overflow-y: auto; 
 }
-
-
-
-
 
 
 .border_r{
