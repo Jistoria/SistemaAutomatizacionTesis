@@ -92,7 +92,7 @@ const translatedMenus = computed(() =>
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
       <ul class="menu bg-info text-base-content min-h-full w-80 p-4 ">
         <div class="grow ">
-          <a class="flex w-full items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-lime-800"
+          <a class="flex w-full items-center space-x-1  cursor-pointer rounded-md px-2 py-3 hover:bg-gray-100 hover:text-lime-800"
             :class="{'bg-gray-200 text-lime-800': route.path === menus.url,}" 
             v-for="menus in panelStore.menus_data">
             <div >

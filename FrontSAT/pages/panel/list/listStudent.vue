@@ -85,7 +85,7 @@ const details_student = (data)=>{
                     <div class="grid grid-cols-2">
                         <div>
                             <div class="text-center italic">Documentos:</div>
-                            <div class="grid grid-cols-4 text-center p-3">
+                            <div class="grid grid-cols-3 text-center p-3">
                                 <div class="me-2">
                                     <i class="bi bi-hourglass-bottom"></i>
                                     <a >{{ dataList.total_requirements_in_process }}</a>     
@@ -94,11 +94,7 @@ const details_student = (data)=>{
                                     <i class="bi bi-check-circle-fill"></i>
                                     <a>{{dataList.total_requirements_approved}}</a>     
                                 </div>
-                                <div >
-                                    <i class="bi bi-x-circle-fill"></i>
-                                    <a >{{ dataList.total_requirements_rejected }}</a>     
-                                </div>
-                                <div >
+                                <div class="me-2">
                                     <i class="bi bi-envelope-fill"></i>
                                     <a >{{ dataList.total_requirements_sent }}</a>
                                 </div>
@@ -107,7 +103,7 @@ const details_student = (data)=>{
                         <div class="d-flex  ">
                             <div class="justify-self-center p-4">
                                 <button @click="details_student(dataList)" class="btn btn-neutro">
-                                    <i class="bi bi-info"></i>Ver mas
+                                    <i class="bi bi-info icon_size_2"></i>Ver mas
                                 </button>
                             </div>
                         </div>

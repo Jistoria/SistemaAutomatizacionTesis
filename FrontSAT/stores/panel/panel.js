@@ -40,8 +40,6 @@ export const panel = defineStore('panel',{
               try {
                   this.isLoaded = true;
                   const response = await menusService.getListStudents(page,filter,search);
-                  console.log('respuesta obtenida', response.data);
-                  
                   this.stuendent_data = response.data;
                   this.current_page = response.data.current_page;
                   this.last_page = response.data.last_page;
@@ -62,7 +60,9 @@ export const panel = defineStore('panel',{
         async detailStudent(id){
           const response = await menusService.detailStudent(id);
           console.log('id', id);
-          
+        },
+        resetDefault(){
+          this.isLoaded = false;
         }
     }
 

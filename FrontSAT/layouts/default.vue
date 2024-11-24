@@ -24,7 +24,7 @@ const showHeaderFooter = computed(() => {
 </script>
 <template>
 
- <div class="layout "  :data-theme="themeStore.currentTheme" >
+ <div class="layout general_text"  :data-theme="themeStore.currentTheme" >
     <ClientOnly>
       <!-- Header con alertas -->
       <div v-if="showHeaderFooter" class="header">

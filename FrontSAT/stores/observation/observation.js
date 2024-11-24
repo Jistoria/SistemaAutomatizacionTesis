@@ -6,7 +6,9 @@ export const observation = defineStore('observation',{
     actions:{
         async sendObservation(id,id_requeriment,content){
             try {
-                await observationService.sendObservation(id,id_requeriment,content)
+                const response = await observationService.sendObservation(id,id_requeriment,content)
+                console.log(response);
+                return response.success;
             } catch (error) {
                 
             }

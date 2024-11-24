@@ -1,5 +1,6 @@
 import { authService } from '~/services/authModel/authService';
-
+import { panel } from '../panel/panel';
+import { student } from '../dashboards/student';
 /**
  * Define una tienda de autenticación utilizando Pinia.
  * 
@@ -39,7 +40,6 @@ export const auth = defineStore('auth',{
                 console.error('Error en login en el store:', error);
                 throw error;
             }
-            
         },
         async setLogout(){
             try {
@@ -47,6 +47,12 @@ export const auth = defineStore('auth',{
                 this.token = null
                 this.session = false
                 this.role = null
+                //close Is Loaded
+                const studentStore = student();
+                const panelStore = panel();
+                studentStore.resetDefault();
+                panelStore.resetDefault();
+
             } catch (error) {
                 console.error('Error en logout en el store:', error);
                 throw error;
