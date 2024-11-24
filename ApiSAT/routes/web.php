@@ -116,6 +116,7 @@ Route::get('/check-ssl', function () {
         $cert = openssl_x509_parse($params["options"]["ssl"]["peer_certificate"]);
 
         return response()->json([
+            'host' => $host,
             'valid_from' => date('Y-m-d H:i:s', $cert['validFrom_time_t']),
             'valid_to' => date('Y-m-d H:i:s', $cert['validTo_time_t']),
             'issuer' => $cert['issuer'],
