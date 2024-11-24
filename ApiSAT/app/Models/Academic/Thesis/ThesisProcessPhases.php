@@ -5,6 +5,7 @@ namespace App\Models\Academic\Thesis;
 use App\Models\Academic\PeriodAcademic;
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
+use App\Models\Academic\Thesis\Requirement\RequirementsStudent;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -65,6 +66,21 @@ class ThesisProcessPhases extends Model
     {
         return $this->belongsTo(ThesisPhase::class, 'thesis_phases_id');
     }
+
+    public function requirements()
+    {
+        return $this->hasMany(RequirementsStudent::class, 'thesis_process_phases_id');
+    }
+
+
+    public static function getPhasesAprovedRequirements()
+    {
+        return self::join('student_requirements', 'student_requirements.thesis_process_phases_id', '=', 'thesis_process_phases.thesis_process_phases_id')
+            ->groupBy('thesis_process_phases.thesis_process_phases_id')
+            ->havingRaw('AVG(student_requirements.approved::int) = 1')
+            ->pluck('thesis_process_phases.thesis_process_phases_id');
+    }
+
 
 
 }

@@ -25,9 +25,9 @@ services:
       - REVERB_APP_ID=322986
       - REVERB_APP_KEY=4c9e0v0wg5rd8kmj62sb
       - REVERB_APP_SECRET=s83vcw925vaq5td8hxx0
-      - REVERB_HOST="localhost"
+      - REVERB_HOST=0.0.0.0
       - REVERB_PORT=8080
-      - REVERB_SCHEME=http
+      - REVERB_SCHEME=https
     depends_on:
       - redis
 

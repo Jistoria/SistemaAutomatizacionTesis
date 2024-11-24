@@ -48,7 +48,7 @@ class SetModules extends Command
             ],
             ['name' => 'Evaluación', 'order' => 3],
         ];
-
+        $previousPhaseOrder = null;
         foreach ($modulesAndPhases as $moduleData) {
             $module = new \App\Models\Academic\Thesis\Module([
                 'name' => $moduleData['name'],
@@ -62,6 +62,8 @@ class SetModules extends Command
             if (isset($moduleData['phases'])) {
                 $this->info('Creando fases para el módulo ' . $moduleData['name']);
 
+
+
                 foreach ($moduleData['phases'] as $phaseData) {
                     $this->info('Creando fase ' . $phaseData['name']);
 
@@ -74,12 +76,24 @@ class SetModules extends Command
 
                     $phase->save();
 
-                    $order = $phase->order()->create([
+                    $currentPhaseOrder = $phase->order()->create([
                         'order' => $phaseData['order'],
+                        'previous_phases_id' => $previousPhaseOrder ? $previousPhaseOrder->thesis_phases_id : null,
                         'thesis_phases_id' => $phase->thesis_phases_id
                     ]);
 
-                    $order->save();
+                    $currentPhaseOrder->save();
+
+
+
+                    if ($previousPhaseOrder) {
+                        $this->info($previousPhaseOrder);
+                        $previousPhaseOrder->next_phases_id = $phase->thesis_phases_id;
+                        $previousPhaseOrder->save();
+                    }
+
+                    // Actualiza la fase previa a la actual
+                    $previousPhaseOrder = $currentPhaseOrder;
 
                     if (isset($phaseData['requirements'])) {
                         $this->info('Creando requisitos para la fase ' . $phaseData['name']);
@@ -88,7 +102,7 @@ class SetModules extends Command
                             $requirement = new Requirement([
                                 'name' => $requirementData['name'],
                                 'type' => $requirementData['type'],
-                                'extension' => json_encode($requirementData['extension']), // Guardar como JSON
+                                'extension' =>  $requirementData['extension'],
                                 'description' => 'Documento que se debe entregar a lo largo de la fase',
                                 'thesis_phases_id' => $phase->thesis_phases_id,
                                 'approval_role' => 'Docente-tesis',

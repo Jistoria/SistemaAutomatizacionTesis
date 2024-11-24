@@ -237,6 +237,23 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
     }
 
 
+    public function nextPhaseStudent(string $idStudent)
+    {
+
+
+
+        $thesisProcess = $this->thesisProcess->where('student_id', $idStudent)->first();
+
+        $nextPhase = $thesisProcess->nextPhaseStudent();
+
+        if (!$nextPhase) {
+            throw new \Exception('No se encontró la siguiente fase del estudiante', 404);
+        }
+
+        return $nextPhase;
+    }
+
+
 
 
 }

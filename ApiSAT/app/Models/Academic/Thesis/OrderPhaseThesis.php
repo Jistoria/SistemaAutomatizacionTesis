@@ -19,6 +19,8 @@ class OrderPhaseThesis extends Model
     protected $fillable = [
         'order_phase_thesis_id',
         'thesis_phases_id',
+        'next_phases_id',
+        'previous_phases_id',
         'order',
     ];
 

@@ -59,19 +59,29 @@ class StudentProcessController
     }
 
     public function downloadStudentResources()
-{
-    try {
-        // Directorio donde están almacenados los recursos
-        $directory = "anexos-system/student-resources";
+    {
+        try {
+            // Directorio donde están almacenados los recursos
+            $directory = "anexos-system/student-resources";
 
-        // Crea el ZIP
-        $zipPath = app(ImportDataFileServiceInterface::class)->downloadResourcesZip(public_path($directory));
+            // Crea el ZIP
+            $zipPath = app(ImportDataFileServiceInterface::class)->downloadResourcesZip(public_path($directory));
 
-        // Descarga el archivo
-        return response()->download($zipPath, basename($zipPath))->deleteFileAfterSend(true);
-    } catch (\Exception $e) {
-        return ApiResponse::error($e->getMessage());
+            // Descarga el archivo
+            return response()->download($zipPath, basename($zipPath))->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
-}
+
+    public function nextPhaseStudent(Request $request)
+    {
+        try{
+            $processPhase = $this->studentPhaseService->nextPhaseStudent($request->user()->id);
+            return ApiResponse::success($processPhase);
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage(), $e->getCode());
+        }
+    }
 
 }
