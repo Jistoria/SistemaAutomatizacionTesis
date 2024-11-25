@@ -53,6 +53,10 @@ export const auth = defineStore('auth',{
                 studentStore.resetDefault();
                 panelStore.resetDefault();
 
+
+
+
+
             } catch (error) {
                 console.error('Error en logout en el store:', error);
                 throw error;
@@ -77,9 +81,16 @@ export const auth = defineStore('auth',{
         },
         async logout(){
             try {
+                const studentStore = student();
+                console.log(this.role)
+                if(this.role == 'Estudiante-tesis'){
+                    
+                    studentStore.clearStore();
+                }
                 const response = await authService.logout()
                 console.log(response)
                 if(response == true){
+
                     console.log('cerrando sesion')
                     this.setLogout()
                     

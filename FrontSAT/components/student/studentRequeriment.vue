@@ -182,7 +182,7 @@ function getFullFileName(name, extension) {
               <button 
                 @click="submitRequirement(index)" 
                 class="btn btn-sm btn-primary flex items-center justify-center px-3 py-1"
-                :disabled="requirement.status === 'Enviado'"
+                :disabled="requirement.status === 'Enviado' || requirement.status === 'Aprobado'"
               >
                 <i class="bi bi-send-fill"></i>
               </button>
@@ -214,7 +214,7 @@ function getFullFileName(name, extension) {
       </div>
       <!-- Comentarios -->
       <div class="flex flex-col">
-        <h3 class="font-semibold text-gray-700 mb-4">Comentarios</h3>
+        <h3 class="font-semibold text-gray-700 mb-4">Observaciones</h3>
         <!-- Contenedor con scroll -->
         <div class="overflow-y-auto max-h-64 space-y-3">
           <!-- Lista de comentarios -->

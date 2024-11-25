@@ -2,6 +2,9 @@ import { defineStore } from 'pinia'
 import { studentService } from '~/services/studentModel/studentService'
 import { docService } from '~/services/docModel/docService'
 import { useIdb } from '~/composables/idb'
+import { useRouter } from 'vue-router'
+
+
 
 export const student = defineStore('student',{
     state: () =>({
@@ -9,7 +12,7 @@ export const student = defineStore('student',{
         faseActual: [],
         requeriments: [],
         generalData: [],
-        //dato de carga 
+
         isLoaded: false,
     }),
     actions:{
@@ -21,23 +24,28 @@ export const student = defineStore('student',{
       
                 // Llamadas al servicio para obtener los datos del estudiante
                 const response = await studentService.getDataStatus(token)
-                
+
                 await setData('student_data', 'dashboard_status', response.response.data);
-        
-                await setData('student_data', 'faseActual', response.faseActual);
-              
-                const response2 = await studentService.getRequeriments(token, response.faseActual.thesis_process_phases_id)
-        
-                await setData('student_data', 'requeriments', response2.data);
 
-                const response3 = await studentService.getGeneralData(token)
-
-                await setData('student_data', 'generalData', response3.data);
+                if(response.faseActual){
+                    await setData('student_data', 'faseActual', response.faseActual);
               
-                // Sincronizar el estado con los datos recién guardados en IndexedDB
+                    const response3 = await studentService.getRequeriments(token, response.faseActual.thesis_process_phases_id)
+            
+                    await setData('student_data', 'requeriments', response3.data);
+
+
+                }
+
+                const response2 = await studentService.getGeneralData(token)
+    
+                await setData('student_data', 'generalData', response2.data);
+
+
                 await this.syncFromDB()
 
                 this.isLoaded = true;
+
                 return
             }
 
@@ -48,12 +56,12 @@ export const student = defineStore('student',{
             return response
         },
         async syncFromDB() {
+            
             const { consults } = useIdb();
           
             // Consultar y asignar cada dato individualmente
             const dashboardStatus = await consults('student_data', 'dashboard_status');
-    
-          
+
             const faseActual = await consults('student_data', 'faseActual');
     
           
@@ -75,6 +83,7 @@ export const student = defineStore('student',{
             await this.syncFromDB()
           },
           async clearStore() {
+
             const { clearData } = useIdb();
       
             // Limpiar los datos en IndexedDB
@@ -87,6 +96,9 @@ export const student = defineStore('student',{
             this.generalData = [];
             
             console.log('Datos del store y de IndexedDB limpiados.');
+
+            
+            
         },
         resetDefault(){
             this.isLoaded = false;

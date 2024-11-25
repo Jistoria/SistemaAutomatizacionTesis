@@ -27,7 +27,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     wsHost: wsHost,
     wsPort: wsPort,
     wssPort: wssPort,
-    forceTLS: true,
+    forceTLS: false,
     enabledTransports: ['ws'],
     disableStats: true,
   });

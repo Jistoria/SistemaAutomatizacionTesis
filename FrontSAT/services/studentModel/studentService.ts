@@ -41,14 +41,43 @@ class StudentService {
                 },
             });
             console.log('Respuesta:', response);
+
             const faseActual = await this.getPhaseInProcess(response.data);
+
+            if (faseActual != null) {
+                return {response, faseActual};
+            }else{
+                const nextFase = await this.getNextPhase(token);
+                console.log('Respuesta:', nextFase);
+                return {response, faseActual: null};
+            }
             
-            return {response, faseActual};
+            
 
         } catch (error) {
             return error;
         }
     }
+
+    async getNextPhase(token: string) {
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient('/thesis-process-student/next-phase/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+            });
+
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
+
+
+
     async getGeneralData(token: string) {
         const fetchClient = this.getFetchClient();
         try {
