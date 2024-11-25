@@ -36,6 +36,8 @@ class ThesisProcessPhases extends Model
         'observations',
     ];
 
+
+
     public function thesisProcess()
     {
         return $this->belongsTo(ThesisProcess::class, 'thesis_process_id');

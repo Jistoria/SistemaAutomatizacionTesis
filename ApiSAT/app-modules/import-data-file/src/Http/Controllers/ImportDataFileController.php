@@ -33,11 +33,14 @@ class ImportDataFileController
     public function importDataFileRequirementStudent(Request $request) : \Illuminate\Http\JsonResponse
     {
 
+        $request->validate([
+            'file' => 'required|file|mimes:docx',
+            'requirementStudentId' => 'required|exists:student_requirements,student_requirements_id',
+        ]);
+
+
         try {
-            $request->validate([
-                'file' => 'required|file|mimes:doc,docx,pdf',
-                'requirementStudentId' => 'required|exists:student_requirements,student_requirements_id'
-                ]);
+
             $file = $request->file('file');
             $this->importDataFileService->importDataPdfRequirementStudent($file, $request->user()->id, $request->requirementStudentId);
             return ApiResponse::success(null, 'Archivo procesado para su revisión', 201 );

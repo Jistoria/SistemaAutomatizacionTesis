@@ -2,6 +2,7 @@
 
 namespace Modules\ThesisProcessStudent\Models;
 
+use App\Models\Academic\Thesis\ThesisPhase;
 use App\Models\Academic\Thesis\ThesisProcess;
 use App\Utils\State;
 use Illuminate\Database\Eloquent\Model;
@@ -47,17 +48,15 @@ class ThesisProcessStudent extends ThesisProcess
         $lastesAproved = $this->phasesStudent()
             ->join('thesis_phases', 'thesis_process_phases.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
             ->join('order_phases_thesis', 'order_phases_thesis.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
-            ->select('order_phases_thesis.next_phases_id')
+            ->select('thesis_phases.name', 'order_phases_thesis.next_phases_id')
             ->where('approval', true)
             ->orderBy('date_end', 'desc')
             ->first();
 
-        $nextPhase = $this->phasesStudent()
-        ->join('thesis_phases', 'thesis_process_phases.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
-        ->join('thesis_modules', 'thesis_phases.thesis_module_id', '=', 'thesis_modules.thesis_module_id')
+
+        $nextPhase = ThesisPhase::join('thesis_modules', 'thesis_phases.thesis_module_id', '=', 'thesis_modules.thesis_module_id')
         ->join('order_phases_thesis', 'order_phases_thesis.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
-        ->select('thesis_modules.name as module_name','thesis_phases.name as phase_name')
-        ->where('thesis_process_phases.state_now', State::NOT_ENABLED)
+        ->select('thesis_phases.thesis_phases_id','thesis_modules.name as module_name','thesis_phases.name as phase_name')
         ->where('thesis_phases.thesis_phases_id', $lastesAproved->next_phases_id)->first();
 
         return $nextPhase;

@@ -22,8 +22,8 @@ return new class extends Migration
 
             $table->boolean('approval')->default(false);
             $table->string('state_now')->nullable();
-            $table->date('date_start')->nullable();
-            $table->date('date_end')->nullable();
+            $table->timestamp('date_start')->nullable();
+            $table->timestamp('date_end')->nullable();
             $table->text('observations')->nullable();
 
             // Foreign key constraints
