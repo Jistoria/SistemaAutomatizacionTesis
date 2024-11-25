@@ -24,15 +24,8 @@ public function rules(): array
 {
     return [
         'thesis_process_id' => 'required|exists:thesis_processes,thesis_process_id',
-        'thesis_process_phase_id' => 'required|exists:thesis_process_phases,thesis_process_phase_id',
         'student_id' => 'required|exists:students,id',
-        'requested_phase_id' => 'required|exists:phases,id',
-        'request_date' => 'required|date',
-        'state' => 'required|string|max:255',
-        'review_date' => 'nullable|date',
-        'approved_date' => 'nullable|date',
-        'reviewed_by' => 'nullable|exists:users,id',
-        'comments' => 'nullable|string',
+        'requested_phase_id' => 'required|exists:thesis_phases,thesis_phases_id',
     ];
 }
 }

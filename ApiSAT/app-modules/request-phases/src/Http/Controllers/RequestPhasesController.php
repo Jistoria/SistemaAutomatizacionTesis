@@ -2,13 +2,18 @@
 
 namespace Modules\RequestPhases\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
+use Modules\RequestPhases\Http\Requests\RequestPhases;
+use Modules\RequestPhases\Services\RequestPhasesService;
 
 class RequestPhasesController
 {
 
 
-    public function __construct()
+    public function __construct(
+        protected RequestPhasesService $requestPhasesService
+    )
     {
 
     }
@@ -23,8 +28,13 @@ class RequestPhasesController
         //
     }
 
-    public function store(Request $request)
+    public function store(RequestPhases $request)
     {
-        //
+        try{
+            $phaseRequest = $this->requestPhasesService->create($request->user()->id ,$request->all());
+            return ApiResponse::success($phaseRequest, 'Fase solicitada correctamente', 201);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), $e->getCode());
+        }
     }
 }

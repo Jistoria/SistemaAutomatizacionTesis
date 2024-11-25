@@ -2,6 +2,7 @@
 
 namespace App\Models\Academic\Thesis\Requests;
 
+use App\Models\Academic\Thesis\ThesisPhase;
 use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Academic\Thesis\ThesisProcessPhases;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -19,7 +20,6 @@ class PhaseRequest extends Model
 
     protected $fillable = [
         'thesis_process_id',
-        'thesis_process_phase_id',
         'student_id',
         'requested_phase_id',
         'request_date',
@@ -41,10 +41,7 @@ class PhaseRequest extends Model
         return $this->belongsTo(ThesisProcess::class, 'thesis_process_id', 'thesis_process_id');
     }
 
-    public function thesisProcessPhase()
-    {
-        return $this->belongsTo(ThesisProcessPhases::class, 'thesis_process_phase_id', 'thesis_process_phase_id');
-    }
+
 
 
 }

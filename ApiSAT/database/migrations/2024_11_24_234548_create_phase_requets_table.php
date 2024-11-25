@@ -14,20 +14,19 @@ return new class extends Migration
         Schema::create('phase_requests', function (Blueprint $table) {
             $table->uuid('request_id')->primary(); // Primary Key (UUID)
             $table->uuid('thesis_process_id'); // UUID Foreign Key
-            $table->uuid('thesis_process_phase_id'); // UUID Foreign Key
             $table->uuid('student_id'); // UUID Foreign Key
             $table->uuid('requested_phase_id'); // UUID Foreign Key
             $table->timestamp('request_date')->nullable();
-            $table->enum('state', ['Pendiente', 'Aprobado', 'Rechazado'])->default('Pendiente');
+            $table->enum('state', ['Enviado', 'Aprobado', 'Rechazado'])->default('Enviado');
             $table->timestamp('review_date')->nullable();
             $table->timestamp('approved_date')->nullable(); // Fecha de aprobación
             $table->uuid('reviewed_by')->nullable(); // UUID Foreign Key (revisor)
             $table->text('comments')->nullable();
             $table->timestamps(); // created_at y updated_at
+            $table->softDeletes(); // deleted_at
 
             // Relación con otras tablas
             $table->foreign('thesis_process_id')->references('thesis_process_id')->on('thesis_process')->onDelete('cascade');
-            $table->foreign('thesis_process_phase_id')->references('thesis_process_phases_id')->on('thesis_process_phases')->onDelete('cascade');
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
             $table->foreign('requested_phase_id')->references('thesis_phases_id')->on('thesis_phases')->onDelete('cascade');
             $table->foreign('reviewed_by')->references('id')->on('users')->onDelete('set null'); // Relación con usuarios
