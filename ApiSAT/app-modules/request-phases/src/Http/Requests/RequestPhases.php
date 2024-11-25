@@ -23,9 +23,9 @@ class RequestPhases extends FormRequest
 public function rules(): array
 {
     return [
-        'thesis_process_id' => 'required|exists:thesis_processes,thesis_process_id',
-        'student_id' => 'required|exists:students,id',
+        'thesis_process_id' => 'required|exists:thesis_process,thesis_process_id',
         'requested_phase_id' => 'required|exists:thesis_phases,thesis_phases_id',
+        'phase_name' => 'required|string|exists:thesis_phases,name',
     ];
 }
 }

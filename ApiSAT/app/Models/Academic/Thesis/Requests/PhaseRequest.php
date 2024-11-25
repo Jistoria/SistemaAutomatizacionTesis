@@ -16,7 +16,10 @@ class PhaseRequest extends Model
 
     protected $table = 'phase_requests';
 
-    protected $primaryKey = 'phase_request_id';
+    protected $primaryKey = 'request_id';
+
+    public $incrementing = false;
+
 
     protected $fillable = [
         'thesis_process_id',

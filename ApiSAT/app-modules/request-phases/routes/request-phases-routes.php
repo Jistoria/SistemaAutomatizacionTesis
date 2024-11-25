@@ -13,4 +13,4 @@
 use Illuminate\Support\Facades\Route;
 use Modules\RequestPhases\Http\Controllers\RequestPhasesController;
 
-Route::post('/request-phases', [RequestPhasesController::class, 'store'])->name('request-phases.store')->middleware(['auth:api', 'role:Estudiante-tesis']);
+Route::post('/request-phases/student', [RequestPhasesController::class, 'store'])->name('request-phases.store')->middleware(['auth:api', 'role:Estudiante-tesis']);

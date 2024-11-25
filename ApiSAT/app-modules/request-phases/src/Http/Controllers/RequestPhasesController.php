@@ -31,10 +31,10 @@ class RequestPhasesController
     public function store(RequestPhases $request)
     {
         try{
-            $phaseRequest = $this->requestPhasesService->create($request->user()->id ,$request->all());
+            $phaseRequest = $this->requestPhasesService->create($request->user(),$request->all());
             return ApiResponse::success($phaseRequest, 'Fase solicitada correctamente', 201);
         } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage(), $e->getCode());
+            return ApiResponse::error($e->getMessage(), 500);
         }
     }
 }

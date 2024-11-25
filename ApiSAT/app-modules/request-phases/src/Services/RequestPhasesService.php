@@ -3,6 +3,7 @@
 namespace Modules\RequestPhases\Services;
 
 use App\Models\Academic\Thesis\Requests\PhaseRequest;
+use App\Models\Auth\User;
 use App\Utils\State;
 
 class RequestPhasesService
@@ -12,14 +13,17 @@ class RequestPhasesService
     )
     {}
 
-    public function create(array $dataStudent, array $data): PhaseRequest
+    public function create(User $dataStudent, array $data): PhaseRequest
     {
+        $message = $this->messageRequest($dataStudent->name, $data['phase_name']);
 
-        // $message = $this->messageRequest();
+
 
         $phaseRequest = $this->phaseRequest->create([
-            'student_id' => $dataStudent['id'],
-            'requested_phase_id' => $data,
+            'thesis_process_id' => $data['thesis_process_id'],
+            'student_id' => $dataStudent->id,
+            'requested_phase_id' => $data['requested_phase_id'],
+            'comments' => $message,
             'request_date' => now(),
             'state' => State::SENT,
         ]);
@@ -28,11 +32,9 @@ class RequestPhasesService
     }
 
 
-    protected function messageRequest(string $name, string $phase): string
+    protected function messageRequest(string $name, string $phase) : string
     {
-
-
-        return '';
+        return "El estudiante $name ha solicitado la fase $phase";
     }
 
 
