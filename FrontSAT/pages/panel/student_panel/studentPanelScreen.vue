@@ -6,6 +6,7 @@ import studentRequeriment from '~/components/student/studentRequeriment.vue';
 import { documents } from '~/stores/doc/document';
 import studentObservation from '~/components/student/studentObservation.vue';
 import { student } from '~/stores/dashboards/student';
+const { openAnimation, closeAnimation } = inject('requestAnimation');
 
 
 const authStore = auth();
@@ -32,6 +33,7 @@ const formatUserName = (name) => {
 };
 
 const getPlantillas = async () => {
+  openAnimation('spinner');
   const url = import.meta.env.VITE_API_URL;
 
   try {
@@ -82,6 +84,7 @@ const getPlantillas = async () => {
       console.error('No se pudo leer el texto de la respuesta:', debugError);
     }
   }
+  closeAnimation();
 };
 
 
@@ -101,7 +104,14 @@ onMounted(async () => {
   console.log(studentStore.faseActual);
   console.log(studentStore.requeriments);
   console.log(studentStore.generalData);
+  console.log(studentStore.nextFase);
 });
+
+const mandarSolicitud = async () => {
+  openAnimation('spinner');
+  await studentStore.mandarSolicitud(authStore.token);
+  closeAnimation();
+};
 
 </script>
 
@@ -225,9 +235,35 @@ onMounted(async () => {
           </div>
         </section>
     </div>
-    <div v-else>
-      <h2 class="text-2xl font-bold text-center sm:text-left">No hay información disponible</h2>
-    </div>
+    <div
+    v-if="studentStore.prerequsito === false"
+    class="flex flex-col items-center justify-center gap-6 p-6 bg-white rounded-lg shadow-md"
+  >
+    <!-- Mensaje -->
+    <p class="text-lg font-semibold text-gray-700 text-center">
+      <span v-if="studentStore.nextFase?.data?.requeriment">
+        ¡Ya ha enviado la solicitud para matricularse en 
+        <span class="text-primary">
+          {{ studentStore.nextFase?.data?.phase_name || 'la siguiente fase' }}
+        </span>!
+      </span>
+      <span v-else>
+        ¡Haz completado la fase anterior! Si desea continuar el proceso, haga una solicitud para matricularse en 
+        <span class="text-primary">
+          {{ studentStore.nextFase?.data?.phase_name || 'la siguiente fase' }}
+        </span>.
+      </span>
+    </p>
+    <!-- Botón -->
+    <button
+      @click="mandarSolicitud()"
+      :disabled="studentStore.nextFase?.data?.phase_requests === true"
+      class="btn w-full sm:w-auto px-6 py-3"
+      :class="studentStore.nextFase?.data?.phase_requests ? 'btn-disabled' : 'btn-primary'"
+    >
+      {{ studentStore.nextFase?.data?.phase_requests ? 'Solicitud Enviada' : 'Enviar Solicitud' }}
+    </button>
+  </div>
 
 
   </div>

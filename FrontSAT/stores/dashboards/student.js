@@ -13,6 +13,11 @@ export const student = defineStore('student',{
         requeriments: [],
         generalData: [],
 
+        //Variables Extras
+        nextFase:[],
+        prerequisitos: [],
+        prerequsito: false,
+
         isLoaded: false,
     }),
     actions:{
@@ -26,6 +31,7 @@ export const student = defineStore('student',{
                 const response = await studentService.getDataStatus(token)
 
                 await setData('student_data', 'dashboard_status', response.response.data);
+                console.log('response', response)
 
                 if(response.faseActual){
                     await setData('student_data', 'faseActual', response.faseActual);
@@ -35,6 +41,16 @@ export const student = defineStore('student',{
                     await setData('student_data', 'requeriments', response3.data);
 
 
+                }else if(response.nextFase && response.requeriment == false){ 
+                    console.log('nextFase', response.nextFase)
+                    console.log('no requisitos')
+                    await setData('student_data', 'nextFase', response.nextFase);
+                    
+                }else if(response.nextFase && response.requeriment == true){
+                    console.log('requisitos')
+                    await setData('student_data', 'nextFase', response.nextFase);
+                    await setData('student_data', 'prerequisitos', response.prerequisitos);
+                    this.prerequsito = true
                 }
 
                 const response2 = await studentService.getGeneralData(token)
@@ -68,6 +84,10 @@ export const student = defineStore('student',{
             const requeriments = await consults('student_data', 'requeriments');
 
             const generalData = await consults('student_data', 'generalData');
+
+            const nextFase = await consults('student_data', 'nextFase');
+
+            const prerequisitos = await consults('student_data', 'prerequisitos');
     
           
             // Asignar al estado del store
@@ -75,6 +95,8 @@ export const student = defineStore('student',{
             this.faseActual = faseActual || {};
             this.requeriments = requeriments || [];
             this.generalData = generalData || [];
+            this.nextFase = nextFase || [];
+            this.prerequisitos = prerequisitos || [];
           },
           async updateRequeriments(token){
             const { setData } = useIdb();
@@ -94,6 +116,8 @@ export const student = defineStore('student',{
             this.faseActual = {};
             this.requeriments = [];
             this.generalData = [];
+            this.nextFase = [];
+            this.prerequisitos = [];
             
             console.log('Datos del store y de IndexedDB limpiados.');
 
@@ -103,5 +127,15 @@ export const student = defineStore('student',{
         resetDefault(){
             this.isLoaded = false;
         },
+        async mandarSolicitud(token){
+            const thesis_process_id = this.generalData.thesis_process_id
+            const phase_name = this.nextFase.data.phase_name
+            const requested_phase_id = this.nextFase.data.thesis_phases_id
+            const response = await studentService.mandarSolicitud(token, thesis_process_id, phase_name, requested_phase_id)
+            if (response.success === true){
+                console.log('Solicitud Enviada')
+                await this.getDataStatus(token)
+            }
+        }
     },
 })

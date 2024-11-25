@@ -1,3 +1,4 @@
+import { sweetAlert } from "~/composables/sweetAlert";
 interface Phase {
     approval: boolean;
     date_end: string | null;
@@ -49,11 +50,42 @@ class StudentService {
             }else{
                 const nextFase = await this.getNextPhase(token);
                 console.log('Respuesta:', nextFase);
-                return {response, faseActual: null};
+                if (nextFase.pre_requeriments ) {
+                    return {response, nextFase, requeriments: nextFase.pre_requeriments, requeriment: true};
+                }else{
+                    return {response, nextFase, requeriment: false};
+                }
+                
             }
             
             
 
+        } catch (error) {
+            return error;
+        }
+    }
+    async mandarSolicitud(token: string, thesis_process_phases_id: string, phase_name: string, requested_phase_id: string) {
+        const swal = sweetAlert();
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient('/request-phases/student', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                },
+                body: JSON.stringify({
+                    thesis_process_id: thesis_process_phases_id,
+                    phase_name: phase_name,
+                    requested_phase_id: requested_phase_id
+                })
+            });
+            if(response.success == true){
+                swal.showAlert('success','right',{title: 'Solicitud enviada', text: '',confirmType: 'timer'})
+            }else{
+                swal.showAlert('error','right',{title: 'Algo salio mal', text: '',confirmType: 'timer'})
+            }
+            return response;
         } catch (error) {
             return error;
         }

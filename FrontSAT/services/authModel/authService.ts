@@ -59,7 +59,7 @@ class AuthService {
                 swal.showAlert('success','right',{title: 'Sesión cerrada', text: '',confirmType: 'timer'})
                 return true;
             } else if(response.status == 401) {
-                swal.showAlert('success','right',{title: 'Algo salio mal', text: '',confirmType: 'timer'})
+                swal.showAlert('error','right',{title: 'Algo salio mal', text: '',confirmType: 'timer'})
                 return false;
             }
             
