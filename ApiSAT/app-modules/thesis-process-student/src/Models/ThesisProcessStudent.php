@@ -56,8 +56,11 @@ class ThesisProcessStudent extends ThesisProcess
 
         $nextPhase = ThesisPhase::join('thesis_modules', 'thesis_phases.thesis_module_id', '=', 'thesis_modules.thesis_module_id')
         ->join('order_phases_thesis', 'order_phases_thesis.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
+        ->leftJoin('pre_requirements', 'pre_requirements.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
         ->select('thesis_phases.thesis_phases_id','thesis_modules.name as module_name','thesis_phases.name as phase_name')
-        ->where('thesis_phases.thesis_phases_id', $lastesAproved->next_phases_id)->first();
+        ->where('thesis_phases.thesis_phases_id', $lastesAproved->next_phases_id)
+        ->groupBy('thesis_phases.thesis_phases_id','thesis_modules.name','thesis_phases.name')
+        ->first();
 
         return $nextPhase;
 
