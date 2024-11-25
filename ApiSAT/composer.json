@@ -19,6 +19,7 @@
         "modules/import-data-file": "*",
         "modules/menu": "*",
         "modules/period-academic": "*",
+        "modules/request-phases": "*",
         "modules/thesis": "*",
         "modules/thesis-phases": "*",
         "modules/thesis-process-student": "*",

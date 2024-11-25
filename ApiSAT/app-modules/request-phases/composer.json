@@ -1,0 +1,24 @@
+{
+	"name": "modules/request-phases",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\RequestPhases\\": "src/",
+			"Modules\\RequestPhases\\Tests\\": "tests/",
+			"Modules\\RequestPhases\\Database\\Factories\\": "database/factories/",
+			"Modules\\RequestPhases\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\RequestPhases\\Providers\\RequestPhasesServiceProvider"
+			]
+		}
+	}
+}

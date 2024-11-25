@@ -19,5 +19,7 @@ Route::prefix('thesis-process-student')->middleware(['auth:api','role:Estudiante
 
     Route::get('next-phase', [StudentProcessController::class, 'nextPhaseStudent']);
 
+    Route::post('request-next-phase', [StudentProcessController::class, 'requestNextPhase']);
+
 
 });

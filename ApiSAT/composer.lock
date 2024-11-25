@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2672e118e7bf8f26d9fdf6555c1d0078",
+    "content-hash": "8701823d0ecae866f3c9bef117e09758",
     "packages": [
         {
             "name": "brick/math",
@@ -3666,6 +3666,38 @@
                     "Modules\\PeriodAcademic\\Tests\\": "tests/",
                     "Modules\\PeriodAcademic\\Database\\Factories\\": "database/factories/",
                     "Modules\\PeriodAcademic\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "modules/request-phases",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/request-phases",
+                "reference": "5c7535e3bf20ea7b223c750b4ffa181f6ae72a84"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\RequestPhases\\Providers\\RequestPhasesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\RequestPhases\\": "src/",
+                    "Modules\\RequestPhases\\Tests\\": "tests/",
+                    "Modules\\RequestPhases\\Database\\Factories\\": "database/factories/",
+                    "Modules\\RequestPhases\\Database\\Seeders\\": "database/seeders/"
                 }
             },
             "license": [

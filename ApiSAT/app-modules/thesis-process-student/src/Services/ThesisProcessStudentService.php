@@ -240,8 +240,6 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
     public function nextPhaseStudent(string $idStudent)
     {
 
-
-
         $thesisProcess = $this->thesisProcess->where('student_id', $idStudent)->first();
 
         $nextPhase = $thesisProcess->nextPhaseStudent();
@@ -252,9 +250,6 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
 
         return $nextPhase;
     }
-
-
-
 
 }
 
