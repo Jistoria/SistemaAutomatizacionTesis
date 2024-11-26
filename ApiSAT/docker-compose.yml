@@ -11,28 +11,30 @@ services:
       - "8000:80"
       - "8080:8080"
     environment:
-      - APP_ENV=local
+      - APP_ENV=production
       - APP_DEBUG=true
       - APP_KEY=base64:FI7IdFnIW4rMX4onyyrh61IQ8x8DBiY+QfMC23mdTCM=
       - QUEUE_CONNECTION=redis
       - DB_CONNECTION=pgsql
       - DB_HOST=postgres
+      - DB_HOST=ep-noisy-rain-a49f3pdh.us-east-1.aws.neon.tech
       - DB_PORT=5432
-      - DB_DATABASE=my_database
-      - DB_USERNAME=my_user
-      - DB_PASSWORD=my_password
+      - DB_DATABASE=system_thesis_db
+      - DB_USERNAME=system_thesis_db_owner
+      - DB_PASSWORD=Rt5Wq9dUGaEe
+      - DB_SSLMODE=require
       - REDIS_CLIENT=phpredis
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - BROADCAST_CONNECTION=reverb
       - REVERB_APP_ID=322986
       - REVERB_APP_KEY=4c9e0v0wg5rd8kmj62sb
       - REVERB_APP_SECRET=s83vcw925vaq5td8hxx0
       - REVERB_HOST=0.0.0.0
       - REVERB_PORT=8080
-      - REVERB_SCHEME=https
+      - REVERB_SCHEME=http
     depends_on:
       - redis
-      - postgres
 
   redis:
     image: redis:6-alpine
@@ -42,18 +44,6 @@ services:
     volumes:
       - redis-data:/data
 
-  postgres:
-    image: postgres:15
-    container_name: postgres
-    environment:
-      POSTGRES_DB: my_database
-      POSTGRES_USER: my_user
-      POSTGRES_PASSWORD: my_password
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
 
 volumes:
   redis-data:
-  postgres-data:

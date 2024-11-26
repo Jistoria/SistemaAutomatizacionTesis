@@ -422,3 +422,310 @@
 2024-11-26 04:26:26,741 INFO stopped: php-fpm (exit status 0)
 2024-11-26 04:26:26,745 INFO stopped: nginx (exit status 0)
 2024-11-26 04:26:28,113 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 13:00:05,033 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 13:00:05,038 INFO supervisord started with pid 1
+2024-11-26 13:00:06,045 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 13:00:06,051 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 13:00:06,053 INFO spawned: 'laravel-worker' with pid 9
+2024-11-26 13:00:06,056 INFO spawned: 'nginx' with pid 10
+2024-11-26 13:00:06,058 INFO spawned: 'php-fpm' with pid 11
+2024-11-26 13:00:07,176 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:07,176 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:07,177 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:08,050 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:08,055 INFO spawned: 'laravel-reverb' with pid 26
+2024-11-26 13:00:08,056 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:09,058 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:09,060 INFO spawned: 'laravel-worker' with pid 27
+2024-11-26 13:00:09,298 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 13:00:10,301 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:11,017 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:12,023 INFO spawned: 'laravel-reverb' with pid 32
+2024-11-26 13:00:12,235 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:13,236 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:13,238 INFO spawned: 'laravel-worker' with pid 35
+2024-11-26 13:00:14,240 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:15,481 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:16,488 INFO spawned: 'laravel-reverb' with pid 38
+2024-11-26 13:00:16,489 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 13:00:16,489 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 13:00:16,715 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:17,718 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:17,720 INFO spawned: 'laravel-worker' with pid 41
+2024-11-26 13:00:18,723 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:19,774 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:20,779 INFO spawned: 'laravel-reverb' with pid 44
+2024-11-26 13:00:20,949 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:21,950 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:21,952 INFO spawned: 'laravel-worker' with pid 47
+2024-11-26 13:00:22,955 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:24,050 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:25,056 INFO spawned: 'laravel-reverb' with pid 50
+2024-11-26 13:00:25,220 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:26,220 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:26,221 INFO spawned: 'laravel-worker' with pid 53
+2024-11-26 13:00:27,222 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:28,341 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:29,347 INFO spawned: 'laravel-reverb' with pid 56
+2024-11-26 13:00:29,575 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:30,576 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:30,578 INFO spawned: 'laravel-worker' with pid 59
+2024-11-26 13:00:31,579 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:32,706 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:33,711 INFO spawned: 'laravel-reverb' with pid 62
+2024-11-26 13:00:33,915 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:34,917 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:34,918 INFO spawned: 'laravel-worker' with pid 65
+2024-11-26 13:00:35,920 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:37,131 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:38,136 INFO spawned: 'laravel-reverb' with pid 68
+2024-11-26 13:00:38,414 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:39,416 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:39,417 INFO spawned: 'laravel-worker' with pid 71
+2024-11-26 13:00:40,419 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:41,340 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:42,353 INFO spawned: 'laravel-reverb' with pid 74
+2024-11-26 13:00:42,982 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:43,984 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:43,985 INFO spawned: 'laravel-worker' with pid 77
+2024-11-26 13:00:44,987 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:45,890 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:46,896 INFO spawned: 'laravel-reverb' with pid 80
+2024-11-26 13:00:47,358 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:48,359 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:48,361 INFO spawned: 'laravel-worker' with pid 83
+2024-11-26 13:00:49,365 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:50,351 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:51,358 INFO spawned: 'laravel-reverb' with pid 86
+2024-11-26 13:00:51,758 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:52,760 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:52,761 INFO spawned: 'laravel-worker' with pid 89
+2024-11-26 13:00:53,763 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:54,770 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:00:55,775 INFO spawned: 'laravel-reverb' with pid 92
+2024-11-26 13:00:56,289 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:00:57,291 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:57,292 INFO spawned: 'laravel-worker' with pid 95
+2024-11-26 13:00:58,294 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:00:59,228 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:01:00,233 INFO spawned: 'laravel-reverb' with pid 98
+2024-11-26 13:01:00,673 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:01,675 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:01,677 INFO spawned: 'laravel-worker' with pid 101
+2024-11-26 13:01:02,679 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:03,812 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:01:04,817 INFO spawned: 'laravel-reverb' with pid 104
+2024-11-26 13:01:04,985 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:05,986 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:05,988 INFO spawned: 'laravel-worker' with pid 113
+2024-11-26 13:01:06,990 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:08,115 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:01:09,075 INFO spawned: 'laravel-reverb' with pid 118
+2024-11-26 13:01:09,195 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:10,197 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:10,198 INFO spawned: 'laravel-worker' with pid 119
+2024-11-26 13:01:11,200 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:12,441 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:01:13,377 INFO spawned: 'laravel-reverb' with pid 124
+2024-11-26 13:01:13,489 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:14,491 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:14,492 INFO spawned: 'laravel-worker' with pid 125
+2024-11-26 13:01:15,494 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:16,748 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:01:17,724 INFO spawned: 'laravel-reverb' with pid 130
+2024-11-26 13:01:17,843 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:18,844 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:18,846 INFO spawned: 'laravel-worker' with pid 143
+2024-11-26 13:01:19,848 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:20,978 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:01:21,983 INFO spawned: 'laravel-reverb' with pid 148
+2024-11-26 13:01:22,204 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:23,206 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:23,207 INFO spawned: 'laravel-worker' with pid 151
+2024-11-26 13:01:24,209 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:25,280 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 13:01:26,284 INFO spawned: 'laravel-reverb' with pid 154
+2024-11-26 13:01:26,636 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:27,638 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:27,639 INFO spawned: 'laravel-worker' with pid 158
+2024-11-26 13:01:28,641 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:35,567 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:36,570 INFO spawned: 'laravel-worker' with pid 167
+2024-11-26 13:01:37,572 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:45,311 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:46,314 INFO spawned: 'laravel-worker' with pid 172
+2024-11-26 13:01:47,316 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:01:52,787 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:01:53,789 INFO spawned: 'laravel-worker' with pid 177
+2024-11-26 13:01:54,791 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:02:01,801 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:02:02,804 INFO spawned: 'laravel-worker' with pid 182
+2024-11-26 13:02:03,806 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:02:10,388 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:02:11,390 INFO spawned: 'laravel-worker' with pid 190
+2024-11-26 13:02:12,391 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:02:19,215 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:02:20,218 INFO spawned: 'laravel-worker' with pid 198
+2024-11-26 13:02:21,237 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:02:26,242 INFO reaped unknown pid 183 (exit status 0)
+2024-11-26 13:02:28,641 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:02:29,643 INFO spawned: 'laravel-worker' with pid 205
+2024-11-26 13:02:30,645 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:02:38,649 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:02:39,651 INFO spawned: 'laravel-worker' with pid 210
+2024-11-26 13:02:40,653 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:02:49,073 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:02:50,075 INFO spawned: 'laravel-worker' with pid 215
+2024-11-26 13:02:51,077 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 13:02:58,024 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 13:02:59,026 INFO spawned: 'laravel-worker' with pid 221
+2024-11-26 13:03:00,028 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:10:32,045 WARN received SIGQUIT indicating exit request
+2024-11-26 14:10:32,046 INFO waiting for laravel-reverb, laravel-worker, nginx, php-fpm to die
+2024-11-26 14:10:32,055 INFO stopped: php-fpm (exit status 0)
+2024-11-26 14:10:32,059 INFO stopped: nginx (exit status 0)
+2024-11-26 14:10:32,169 INFO stopped: laravel-worker (exit status 0)
+2024-11-26 14:10:32,472 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 14:18:07,487 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 14:18:07,492 INFO supervisord started with pid 1
+2024-11-26 14:18:08,497 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 14:18:08,501 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 14:18:08,503 INFO spawned: 'laravel-worker' with pid 9
+2024-11-26 14:18:08,506 INFO spawned: 'nginx' with pid 10
+2024-11-26 14:18:08,508 INFO spawned: 'php-fpm' with pid 11
+2024-11-26 14:18:09,572 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:18:09,573 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:18:09,573 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:18:18,513 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:18:18,514 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:18:19,185 WARN exited: laravel-worker (exit status 1; not expected)
+2024-11-26 14:18:19,907 INFO spawned: 'laravel-worker' with pid 32
+2024-11-26 14:18:20,544 WARN exited: laravel-reverb (exit status 1; not expected)
+2024-11-26 14:18:21,550 INFO spawned: 'laravel-reverb' with pid 33
+2024-11-26 14:18:21,550 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:18:22,633 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:19:59,679 INFO exited: init-service-api (exit status 0; expected)
+2024-11-26 14:32:33,452 WARN received SIGQUIT indicating exit request
+2024-11-26 14:32:33,452 INFO waiting for laravel-reverb, laravel-worker, nginx, php-fpm to die
+2024-11-26 14:32:33,466 INFO stopped: php-fpm (exit status 0)
+2024-11-26 14:32:33,469 INFO stopped: nginx (exit status 0)
+2024-11-26 14:32:33,554 INFO stopped: laravel-worker (exit status 0)
+2024-11-26 14:32:33,653 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 14:33:30,531 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 14:33:30,536 INFO supervisord started with pid 1
+2024-11-26 14:33:31,542 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 14:33:31,547 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 14:33:31,554 INFO spawned: 'laravel-schedule' with pid 9
+2024-11-26 14:33:31,557 INFO spawned: 'laravel-worker' with pid 10
+2024-11-26 14:33:31,563 INFO spawned: 'nginx' with pid 11
+2024-11-26 14:33:31,565 INFO spawned: 'php-fpm' with pid 12
+2024-11-26 14:33:32,646 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:33:32,646 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:33:32,646 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:33:36,227 INFO exited: init-service-api (exit status 0; expected)
+2024-11-26 14:33:42,299 INFO success: laravel-schedule entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:33:42,299 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:33:42,300 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:34:00,347 INFO exited: laravel-schedule (exit status 0; expected)
+2024-11-26 14:34:01,354 INFO spawned: 'laravel-schedule' with pid 35
+2024-11-26 14:34:11,479 INFO success: laravel-schedule entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:35:00,217 INFO exited: laravel-schedule (exit status 0; expected)
+2024-11-26 14:35:00,788 INFO spawned: 'laravel-schedule' with pid 39
+2024-11-26 14:35:10,851 INFO success: laravel-schedule entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:36:00,132 INFO exited: laravel-schedule (exit status 0; expected)
+2024-11-26 14:36:01,138 INFO spawned: 'laravel-schedule' with pid 42
+2024-11-26 14:36:06,145 WARN received SIGQUIT indicating exit request
+2024-11-26 14:36:06,145 INFO waiting for laravel-reverb, laravel-schedule, laravel-worker, nginx, php-fpm to die
+2024-11-26 14:36:06,151 INFO stopped: php-fpm (exit status 0)
+2024-11-26 14:36:06,154 INFO stopped: nginx (exit status 0)
+2024-11-26 14:36:06,211 INFO stopped: laravel-worker (exit status 0)
+2024-11-26 14:36:06,214 WARN stopped: laravel-schedule (terminated by SIGTERM)
+2024-11-26 14:36:06,282 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 14:37:11,358 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 14:37:11,363 INFO supervisord started with pid 1
+2024-11-26 14:37:12,369 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 14:37:12,373 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 14:37:12,380 INFO spawned: 'laravel-schedule' with pid 9
+2024-11-26 14:37:12,382 INFO spawned: 'laravel-worker' with pid 10
+2024-11-26 14:37:12,386 INFO spawned: 'nginx' with pid 11
+2024-11-26 14:37:12,388 INFO spawned: 'php-fpm' with pid 12
+2024-11-26 14:37:13,453 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:37:13,454 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:37:13,454 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:37:18,026 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:37:18,556 INFO exited: init-service-api (exit status 0; expected)
+2024-11-26 14:37:19,563 INFO spawned: 'laravel-schedule' with pid 35
+2024-11-26 14:37:22,567 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:37:22,568 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:37:29,434 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:37:31,441 INFO spawned: 'laravel-schedule' with pid 38
+2024-11-26 14:37:41,562 INFO success: laravel-schedule entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:37:41,616 INFO exited: laravel-schedule (exit status 0; expected)
+2024-11-26 14:37:42,622 INFO spawned: 'laravel-schedule' with pid 41
+2024-11-26 14:37:52,639 INFO success: laravel-schedule entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:37:52,688 INFO exited: laravel-schedule (exit status 0; expected)
+2024-11-26 14:37:53,693 INFO spawned: 'laravel-schedule' with pid 44
+2024-11-26 14:38:02,535 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:38:03,541 INFO spawned: 'laravel-schedule' with pid 47
+2024-11-26 14:38:13,234 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:38:15,242 INFO spawned: 'laravel-schedule' with pid 50
+2024-11-26 14:38:25,024 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:38:28,031 INFO spawned: 'laravel-schedule' with pid 53
+2024-11-26 14:38:36,964 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:38:37,966 INFO gave up: laravel-schedule entered FATAL state, too many start retries too quickly
+2024-11-26 14:40:05,765 WARN received SIGQUIT indicating exit request
+2024-11-26 14:40:05,766 INFO waiting for laravel-reverb, laravel-worker, nginx, php-fpm to die
+2024-11-26 14:40:05,771 INFO stopped: php-fpm (exit status 0)
+2024-11-26 14:40:05,773 INFO stopped: nginx (exit status 0)
+2024-11-26 14:40:05,863 INFO stopped: laravel-worker (exit status 0)
+2024-11-26 14:40:06,961 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 14:40:54,550 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 14:40:54,555 INFO supervisord started with pid 1
+2024-11-26 14:40:55,560 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 14:40:55,565 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 14:40:55,572 INFO spawned: 'laravel-schedule' with pid 9
+2024-11-26 14:40:55,575 INFO spawned: 'laravel-worker' with pid 10
+2024-11-26 14:40:55,578 INFO spawned: 'nginx' with pid 11
+2024-11-26 14:40:55,580 INFO spawned: 'php-fpm' with pid 12
+2024-11-26 14:40:56,656 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:40:56,657 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:40:56,657 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:40:59,773 INFO exited: init-service-api (exit status 0; expected)
+2024-11-26 14:41:01,206 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:41:02,771 INFO spawned: 'laravel-schedule' with pid 35
+2024-11-26 14:41:05,775 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:41:05,775 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:41:12,380 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:41:14,388 INFO spawned: 'laravel-schedule' with pid 38
+2024-11-26 14:41:23,366 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:41:26,815 INFO spawned: 'laravel-schedule' with pid 41
+2024-11-26 14:41:36,027 WARN exited: laravel-schedule (exit status 0; not expected)
+2024-11-26 14:41:37,030 INFO gave up: laravel-schedule entered FATAL state, too many start retries too quickly
+2024-11-26 14:48:37,074 WARN received SIGQUIT indicating exit request
+2024-11-26 14:48:37,075 INFO waiting for laravel-reverb, laravel-worker, nginx, php-fpm to die
+2024-11-26 14:48:37,086 INFO stopped: php-fpm (exit status 0)
+2024-11-26 14:48:37,090 INFO stopped: nginx (exit status 0)
+2024-11-26 14:48:37,188 INFO stopped: laravel-worker (exit status 0)
+2024-11-26 14:48:38,271 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 14:49:33,088 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 14:49:33,093 INFO supervisord started with pid 1
+2024-11-26 14:49:34,098 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 14:49:34,102 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 14:49:34,108 INFO spawned: 'laravel-schedule' with pid 9
+2024-11-26 14:49:34,111 INFO spawned: 'laravel-worker' with pid 10
+2024-11-26 14:49:34,115 INFO spawned: 'nginx' with pid 11
+2024-11-26 14:49:34,117 INFO spawned: 'php-fpm' with pid 12
+2024-11-26 14:49:35,179 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:49:35,179 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:49:35,180 INFO success: laravel-schedule entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:49:35,180 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 14:49:39,774 INFO exited: init-service-api (exit status 0; expected)
+2024-11-26 14:49:44,962 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 14:49:44,963 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 15:12:41,107 WARN received SIGQUIT indicating exit request
+2024-11-26 15:12:41,108 INFO waiting for laravel-reverb, laravel-schedule, laravel-worker, nginx, php-fpm to die
+2024-11-26 15:12:41,113 INFO stopped: php-fpm (exit status 0)
+2024-11-26 15:12:41,117 INFO stopped: nginx (exit status 0)
+2024-11-26 15:12:41,243 INFO stopped: laravel-worker (exit status 0)
+2024-11-26 15:12:41,245 WARN stopped: laravel-schedule (terminated by SIGTERM)
+2024-11-26 15:12:41,340 INFO stopped: laravel-reverb (exit status 0)

@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.4-fpm
 
 # Instalar dependencias del sistema, incluyendo las necesarias para Python y pdfplumber
 RUN apt-get update && apt-get install -y \
@@ -27,11 +27,6 @@ RUN apt-get update && apt-get install -y \
 # Instalar extensiones de PHP necesarias para Laravel
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
-RUN apt-get update && apt-get install -y \
-    libsqlite3-dev \
-    pkg-config \
-    && docker-php-ext-install pdo_sqlite
-
 # Instalar la extensión de Redis
 RUN pecl install redis \
     && docker-php-ext-enable redis
@@ -43,8 +38,6 @@ RUN docker-php-ext-configure pcntl --enable-pcntl \
 
 # Instalar supervisor
 RUN apt-get update && apt-get install -y supervisor
-
-
 
 
 # Instalar pdfplumber con pip3 usando --break-system-packages
@@ -63,16 +56,6 @@ WORKDIR /var/www
 RUN truncate -s 0 /var/www/storage/logs/laravel.log
 
 
-RUN chmod -R 775 storage/logs
-RUN chown -R www-data:www-data storage/logs
-
-
-# Configurar permisos
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
-    && chmod -R 777 /var/www/storage /var/www/bootstrap/cache
-
-RUN chmod 777 /var/www/storage -R
-
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
@@ -83,10 +66,28 @@ RUN rm /etc/nginx/sites-enabled/default
 
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN chmod -R 775 storage/logs
+RUN chown -R www-data:www-data storage/logs
+
+
+# Configurar permisos
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 777 /var/www/storage /var/www/bootstrap/cache
+
+RUN chmod 777 /var/www/storage -R
+
+RUN chmod 600 /var/www/storage/oauth-private.key
+RUN chmod 600 /var/www/storage/oauth-public.key
+
+
+RUN chown www-data:www-data /var/www/storage/oauth-private.key
+RUN chown www-data:www-data /var/www/storage/oauth-public.key
+
 
 # Exponer los puertos necesarios
 EXPOSE 80
-EXPOSE 8080
 
 
 # Comando de inicio

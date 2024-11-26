@@ -26,6 +26,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(
         function (Schedule $schedule) {
-            $schedule->job(\App\Jobs\ChangeApprovedPhaseStudent::class)->everyFiveSeconds();
+            $schedule->job(\App\Jobs\ChangeApprovedPhaseStudent::class)->everyTenMinutes();
         }
     )->create();
