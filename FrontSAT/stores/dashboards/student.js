@@ -134,6 +134,7 @@ export const student = defineStore('student',{
             const response = await studentService.mandarSolicitud(token, thesis_process_id, phase_name, requested_phase_id)
             if (response.success === true){
                 console.log('Solicitud Enviada')
+                this.isLoaded = false
                 await this.getDataStatus(token)
             }
         }

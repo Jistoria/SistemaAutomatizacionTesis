@@ -14,6 +14,8 @@ interface SweetAlertComposable {
     position?: 'normal' | 'right' | 'left',
     options?: AlertOptions
   ) => Promise<boolean | void>;
+  showLoadingToast: (title: string, text?: string) => void;
+  closeLoadingToast: () => void;
 }
 
 declare module '#imports' {

@@ -59,11 +59,7 @@ class DocService {
                 body: formData,
             });
             if (response.success == true) {
-                swal.showAlert('warning', 'right', {
-                    title: 'El pdf se esta procesando...',
-                    text: '',
-                    confirmType: 'timer'
-                });
+                swal.showLoadingToast('El documento esta siendo procesado...');
                 return;
             }
         }catch (error) {
@@ -86,6 +82,7 @@ class DocService {
         try {
             channel.listen('.NotificationDataProcess', (data: any) => {
                 if (data.status == 'success') {
+                    swal.closeLoadingToast();
                     swal.showAlert('success', 'right', {
                         title: 'El pdf se proceso correctamente',
                         text: '',
@@ -93,6 +90,7 @@ class DocService {
                     });
                     
                 }else{
+                    swal.closeLoadingToast();
                     swal.showAlert('error', 'right', {
                         title: 'El pdf no se proceso correctamente',
                         text: '',

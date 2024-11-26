@@ -9,6 +9,7 @@ import { student } from '~/stores/dashboards/student';
 const { openAnimation, closeAnimation } = inject('requestAnimation');
 
 
+
 const authStore = auth();
 const studentStore = student();
 const docStore = documents();
@@ -234,11 +235,9 @@ const mandarSolicitud = async () => {
             </ClientOnly>
           </div>
         </section>
-    </div>
-    <div
-    v-if="studentStore.prerequsito === false"
-    class="flex flex-col items-center justify-center gap-6 p-6 bg-white rounded-lg shadow-md"
-  >
+        </div>
+    <div v-else-if="studentStore.prerequsito === false"
+    class="flex flex-col items-center justify-center gap-6 p-6 bg-white rounded-lg shadow-md">
     <!-- Mensaje -->
     <p class="text-lg font-semibold text-gray-700 text-center">
       <span v-if="studentStore.nextFase?.data?.requeriment">
