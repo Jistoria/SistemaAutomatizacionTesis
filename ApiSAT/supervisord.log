@@ -187,3 +187,238 @@
 2024-11-26 00:32:10,468 INFO stopped: php-fpm (exit status 0)
 2024-11-26 00:32:10,471 INFO stopped: nginx (exit status 0)
 2024-11-26 00:32:11,758 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 01:47:27,010 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 01:47:27,015 INFO supervisord started with pid 1
+2024-11-26 01:47:28,020 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 01:47:28,028 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 01:47:28,032 INFO spawned: 'nginx' with pid 9
+2024-11-26 01:47:28,035 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 01:47:29,136 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 01:47:29,137 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 01:47:32,878 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 01:47:38,340 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 01:47:38,341 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 01:57:32,042 WARN received SIGQUIT indicating exit request
+2024-11-26 01:57:32,043 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 01:57:32,059 INFO stopped: php-fpm (exit status 0)
+2024-11-26 01:57:32,062 INFO stopped: nginx (exit status 0)
+2024-11-26 01:57:33,371 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:04:48,399 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:04:48,404 INFO supervisord started with pid 1
+2024-11-26 02:04:49,408 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:04:49,414 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:04:49,417 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:04:49,419 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:04:50,488 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:04:50,489 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:04:54,338 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:04:59,819 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:04:59,820 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:06:46,697 WARN received SIGQUIT indicating exit request
+2024-11-26 02:06:46,697 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:06:46,701 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:06:46,703 INFO stopped: nginx (exit status 0)
+2024-11-26 02:06:47,914 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:07:08,616 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:07:08,621 INFO supervisord started with pid 1
+2024-11-26 02:07:09,626 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:07:09,633 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:07:09,636 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:07:09,639 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:07:10,698 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:07:10,698 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:07:14,394 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:07:19,819 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:07:19,819 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:10:28,473 WARN received SIGQUIT indicating exit request
+2024-11-26 02:10:28,473 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:10:28,477 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:10:28,479 INFO stopped: nginx (exit status 0)
+2024-11-26 02:10:29,760 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:10:49,907 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:10:49,911 INFO supervisord started with pid 1
+2024-11-26 02:10:50,917 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:10:50,922 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:10:50,925 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:10:50,927 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:10:51,978 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:10:51,978 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:10:55,701 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:11:01,174 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:11:01,174 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:11:36,760 WARN received SIGQUIT indicating exit request
+2024-11-26 02:11:36,760 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:11:36,764 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:11:36,766 INFO stopped: nginx (exit status 0)
+2024-11-26 02:11:38,077 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:11:58,968 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:11:58,972 INFO supervisord started with pid 1
+2024-11-26 02:11:59,978 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:11:59,983 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:11:59,989 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:11:59,991 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:12:01,060 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:12:01,060 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:12:04,933 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:12:10,421 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:12:10,421 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:13:21,916 WARN received SIGQUIT indicating exit request
+2024-11-26 02:13:21,916 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:13:21,921 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:13:21,923 INFO stopped: nginx (exit status 0)
+2024-11-26 02:13:23,183 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:13:44,108 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:13:44,112 INFO supervisord started with pid 1
+2024-11-26 02:13:45,118 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:13:45,123 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:13:45,126 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:13:45,128 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:13:46,184 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:13:46,185 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:13:50,295 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:13:55,876 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:13:55,877 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:17:11,877 WARN received SIGQUIT indicating exit request
+2024-11-26 02:17:11,878 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:17:11,882 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:17:11,885 INFO stopped: nginx (exit status 0)
+2024-11-26 02:17:13,166 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:17:34,874 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:17:34,878 INFO supervisord started with pid 1
+2024-11-26 02:17:35,884 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:17:35,889 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:17:35,892 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:17:35,894 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:17:36,952 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:17:36,952 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:17:40,711 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:17:46,164 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:17:46,165 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:21:02,111 WARN received SIGQUIT indicating exit request
+2024-11-26 02:21:02,111 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:21:02,116 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:21:02,118 INFO stopped: nginx (exit status 0)
+2024-11-26 02:21:03,427 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:24:42,968 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:24:42,973 INFO supervisord started with pid 1
+2024-11-26 02:24:43,994 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:24:43,998 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:24:44,009 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:24:44,011 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:24:45,062 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:24:45,063 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:24:49,129 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:24:54,553 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:24:54,553 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:28:28,690 WARN received SIGQUIT indicating exit request
+2024-11-26 02:28:28,691 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:28:28,695 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:28:28,698 INFO stopped: nginx (exit status 0)
+2024-11-26 02:28:29,995 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:35:48,002 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:35:48,006 INFO supervisord started with pid 1
+2024-11-26 02:35:49,011 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:35:49,015 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:35:49,017 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:35:49,019 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:35:50,078 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:35:50,079 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:35:53,609 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:36:00,009 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:36:00,009 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:37:03,712 WARN received SIGQUIT indicating exit request
+2024-11-26 02:37:03,713 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 02:37:03,717 INFO stopped: php-fpm (exit status 0)
+2024-11-26 02:37:03,719 INFO stopped: nginx (exit status 0)
+2024-11-26 02:37:04,985 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 02:38:18,560 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:38:18,565 INFO supervisord started with pid 1
+2024-11-26 02:38:19,570 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:38:19,575 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:38:19,579 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:38:19,582 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:38:20,634 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:38:20,634 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:38:24,677 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:38:30,206 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:38:30,206 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:52:43,513 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 02:52:43,517 INFO supervisord started with pid 1
+2024-11-26 02:52:44,522 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 02:52:44,527 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 02:52:44,528 INFO spawned: 'nginx' with pid 9
+2024-11-26 02:52:44,530 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 02:52:45,578 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:52:45,578 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 02:52:49,338 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 02:52:54,750 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 02:52:54,750 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 03:02:50,380 WARN received SIGQUIT indicating exit request
+2024-11-26 03:02:50,381 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 03:02:50,386 INFO stopped: php-fpm (exit status 0)
+2024-11-26 03:02:50,389 INFO stopped: nginx (exit status 0)
+2024-11-26 03:02:51,699 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 03:02:55,402 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 03:02:55,406 INFO supervisord started with pid 1
+2024-11-26 03:02:56,412 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 03:02:56,419 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 03:02:56,421 INFO spawned: 'nginx' with pid 9
+2024-11-26 03:02:56,423 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 03:02:57,476 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 03:02:57,476 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 03:03:06,487 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 03:03:06,487 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 03:03:16,479 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 03:08:10,196 WARN received SIGQUIT indicating exit request
+2024-11-26 03:08:10,197 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 03:08:10,201 INFO stopped: php-fpm (exit status 0)
+2024-11-26 03:08:10,203 INFO stopped: nginx (exit status 0)
+2024-11-26 03:08:11,518 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 03:08:13,512 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 03:08:13,517 INFO supervisord started with pid 1
+2024-11-26 03:08:14,522 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 03:08:14,528 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 03:08:14,537 INFO spawned: 'nginx' with pid 9
+2024-11-26 03:08:14,540 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 03:08:15,604 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 03:08:15,604 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 03:08:24,614 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 03:08:24,614 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 03:08:35,483 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 04:01:03,614 WARN received SIGQUIT indicating exit request
+2024-11-26 04:01:03,615 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 04:01:03,625 INFO stopped: php-fpm (exit status 0)
+2024-11-26 04:01:03,628 INFO stopped: nginx (exit status 0)
+2024-11-26 04:01:04,914 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 04:04:38,430 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 04:04:38,434 INFO supervisord started with pid 1
+2024-11-26 04:04:39,440 INFO spawned: 'init-service-api' with pid 7
+2024-11-26 04:04:39,445 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-26 04:04:39,448 INFO spawned: 'nginx' with pid 9
+2024-11-26 04:04:39,452 INFO spawned: 'php-fpm' with pid 10
+2024-11-26 04:04:40,506 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 04:04:40,506 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 04:04:44,553 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 04:04:49,940 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 04:04:49,940 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 04:11:58,602 WARN received SIGQUIT indicating exit request
+2024-11-26 04:11:58,603 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 04:11:58,607 INFO stopped: php-fpm (exit status 0)
+2024-11-26 04:11:58,609 INFO stopped: nginx (exit status 0)
+2024-11-26 04:11:59,942 INFO stopped: laravel-reverb (exit status 0)
+2024-11-26 04:15:55,356 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-26 04:15:55,361 INFO supervisord started with pid 1
+2024-11-26 04:15:56,366 INFO spawned: 'init-service-api' with pid 8
+2024-11-26 04:15:56,371 INFO spawned: 'laravel-reverb' with pid 9
+2024-11-26 04:15:56,373 INFO spawned: 'nginx' with pid 10
+2024-11-26 04:15:56,376 INFO spawned: 'php-fpm' with pid 11
+2024-11-26 04:15:57,422 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 04:15:57,423 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-26 04:16:01,364 WARN exited: init-service-api (exit status 1; not expected)
+2024-11-26 04:16:06,835 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 04:16:06,835 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-26 04:26:26,728 WARN received SIGQUIT indicating exit request
+2024-11-26 04:26:26,729 INFO waiting for laravel-reverb, nginx, php-fpm to die
+2024-11-26 04:26:26,741 INFO stopped: php-fpm (exit status 0)
+2024-11-26 04:26:26,745 INFO stopped: nginx (exit status 0)
+2024-11-26 04:26:28,113 INFO stopped: laravel-reverb (exit status 0)

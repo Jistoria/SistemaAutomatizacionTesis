@@ -27,6 +27,11 @@ RUN apt-get update && apt-get install -y \
 # Instalar extensiones de PHP necesarias para Laravel
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
+RUN apt-get update && apt-get install -y \
+    libsqlite3-dev \
+    pkg-config \
+    && docker-php-ext-install pdo_sqlite
+
 # Instalar la extensión de Redis
 RUN pecl install redis \
     && docker-php-ext-enable redis
@@ -58,10 +63,15 @@ WORKDIR /var/www
 RUN truncate -s 0 /var/www/storage/logs/laravel.log
 
 
+RUN chmod -R 775 storage/logs
+RUN chown -R www-data:www-data storage/logs
+
+
 # Configurar permisos
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
-    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+    && chmod -R 777 /var/www/storage /var/www/bootstrap/cache
 
+RUN chmod 777 /var/www/storage -R
 
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
