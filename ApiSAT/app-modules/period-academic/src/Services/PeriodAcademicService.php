@@ -32,6 +32,13 @@ class PeriodAcademicService implements PeriodAcademicServiceInterface
         return $periodAcademic;
     }
 
+    public function getNowPeriodAcademic(): PeriodAcademic
+    {
+        return $this->periodAcademic->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->first();
+    }
+
 
 
 }

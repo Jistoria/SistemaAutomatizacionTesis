@@ -2,6 +2,7 @@
 
 namespace Modules\ThesisProcessStudent\Services;
 
+use App\Models\Academic\Teacher\Teacher;
 use App\Models\Academic\Thesis\ThesisPhase;
 use App\Utils\State;
 use Illuminate\Database\Eloquent\Collection;
@@ -249,6 +250,16 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         }
 
         return $nextPhase;
+    }
+
+    public function getTutorThesisProcessPhase(string $idProcess) : Teacher
+    {
+        $thesisProcess = $this->thesisProcess->where('thesis_process_id','=',$idProcess)->first();
+        if (!$thesisProcess) {
+            Log::info('No se encontró el proceso de tesis del estudiante');
+            throw new \Exception('No se encontró el proceso de tesis del estudiante', 404);
+        }
+        return $thesisProcess->tutor;
     }
 
 }

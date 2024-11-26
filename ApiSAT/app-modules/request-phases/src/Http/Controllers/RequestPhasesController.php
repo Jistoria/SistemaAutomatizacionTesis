@@ -37,4 +37,14 @@ class RequestPhasesController
             return ApiResponse::error($e->getMessage(), 500);
         }
     }
+
+    public function approveAll(Request $request)
+    {
+        try{
+            $this->requestPhasesService->approveAll($request->user());
+            return ApiResponse::success(null, 'Fases aprobadas correctamente', 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 500);
+        }
+    }
 }

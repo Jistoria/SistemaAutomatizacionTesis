@@ -14,3 +14,6 @@ use Illuminate\Support\Facades\Route;
 use Modules\RequestPhases\Http\Controllers\RequestPhasesController;
 
 Route::post('/request-phases/student', [RequestPhasesController::class, 'store'])->name('request-phases.store')->middleware(['auth:api', 'role:Estudiante-tesis']);
+
+
+Route::put('request-phases/approve-all', [RequestPhasesController::class, 'approveAll'])->name('request-phases.approve-all')->middleware(['auth:api', 'role:Administrador-tesis']);
