@@ -729,3 +729,25 @@
 2024-11-26 15:12:41,243 INFO stopped: laravel-worker (exit status 0)
 2024-11-26 15:12:41,245 WARN stopped: laravel-schedule (terminated by SIGTERM)
 2024-11-26 15:12:41,340 INFO stopped: laravel-reverb (exit status 0)
+2024-11-27 01:30:24,808 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-11-27 01:30:24,813 INFO supervisord started with pid 1
+2024-11-27 01:30:25,819 INFO spawned: 'init-service-api' with pid 7
+2024-11-27 01:30:25,823 INFO spawned: 'laravel-reverb' with pid 8
+2024-11-27 01:30:25,831 INFO spawned: 'laravel-schedule' with pid 9
+2024-11-27 01:30:25,833 INFO spawned: 'laravel-worker' with pid 10
+2024-11-27 01:30:25,837 INFO spawned: 'nginx' with pid 11
+2024-11-27 01:30:25,841 INFO spawned: 'php-fpm' with pid 12
+2024-11-27 01:30:26,893 INFO success: init-service-api entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-27 01:30:26,893 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-27 01:30:26,894 INFO success: laravel-schedule entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-27 01:30:26,894 INFO success: laravel-worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-27 01:30:35,903 INFO success: nginx entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-27 01:30:35,903 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-27 01:30:51,283 INFO exited: init-service-api (exit status 0; expected)
+2024-11-27 01:33:34,272 WARN received SIGQUIT indicating exit request
+2024-11-27 01:33:34,273 INFO waiting for laravel-reverb, laravel-schedule, laravel-worker, nginx, php-fpm to die
+2024-11-27 01:33:34,278 INFO stopped: php-fpm (exit status 0)
+2024-11-27 01:33:34,280 INFO stopped: nginx (exit status 0)
+2024-11-27 01:33:34,383 INFO stopped: laravel-worker (exit status 0)
+2024-11-27 01:33:34,385 WARN stopped: laravel-schedule (terminated by SIGTERM)
+2024-11-27 01:33:34,451 INFO stopped: laravel-reverb (exit status 0)

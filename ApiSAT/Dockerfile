@@ -1,4 +1,4 @@
-FROM php:8.4-fpm
+FROM php:8.3-fpm
 
 # Instalar dependencias del sistema, incluyendo las necesarias para Python y pdfplumber
 RUN apt-get update && apt-get install -y \
@@ -92,3 +92,4 @@ EXPOSE 80
 
 # Comando de inicio
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
