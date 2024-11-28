@@ -47,7 +47,10 @@ class ProcessPdfThesisData implements ShouldQueue
     {
         try{
             // Ejecutar el script de Python para procesar el archivo PDF
-            $process = new Process(['py', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
+            $exePy  = env('APP_ENV') === 'production' ? 'python3' : 'py';
+
+
+            $process = new Process([$exePy, base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
             $process->run();
 
             // Si el proceso falla
