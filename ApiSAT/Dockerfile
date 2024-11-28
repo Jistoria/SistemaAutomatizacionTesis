@@ -82,8 +82,8 @@ RUN chmod 777 /var/www/storage -R
 # RUN chmod 600 /var/www/storage/oauth-public.key
 
 
-RUN chown www-data:www-data /var/www/storage/oauth-private.key
-RUN chown www-data:www-data /var/www/storage/oauth-public.key
+# RUN chown www-data:www-data /var/www/storage/oauth-private.key
+# RUN chown www-data:www-data /var/www/storage/oauth-public.key
 
 
 # Exponer los puertos necesarios
