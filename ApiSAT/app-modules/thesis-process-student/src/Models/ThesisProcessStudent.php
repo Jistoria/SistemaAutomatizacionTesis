@@ -66,23 +66,29 @@ class ThesisProcessStudent extends ThesisProcess
             'thesis_phases.thesis_phases_id',
             'thesis_modules.name as module_name',
             'thesis_phases.name as phase_name',
-            DB::raw('JSON_AGG(
-                JSON_BUILD_OBJECT(
-                    \'pre_requirements_id\', pre_requirements.pre_requirements_id,
-                    \'name\', COALESCE(pre_requirements.name, \'Sin nombre\'),
-                    \'description\', COALESCE(pre_requirements.description, \'Sin descripción\'),
-                    \'type\', COALESCE(pre_requirements.type, \'General\'),
-                    \'extension\', COALESCE(pre_requirements.extension, \'Sin extensión\'),
-                    \'url_resource\', COALESCE(pre_requirements.url_resource, \'Sin recurso\'),
-                    \'approval_role\', COALESCE(pre_requirements.approval_role, \'Sin rol de aprobación\'),
-                    \'status\', COALESCE(student_prerequirements.status, \''.State::PENDING.'\'),
-                    \'observation\', COALESCE(student_prerequirements.observation, \'Sin observación\'),
-                    \'approved\', COALESCE(student_prerequirements.approved, false),
-                    \'approved_date\', COALESCE(student_prerequirements.approved_date, null),
-                    \'approved_by_user\', COALESCE(student_prerequirements.approved_by_user, null),
-                    \'url_file\', COALESCE(student_prerequirements.url_file, null)
-                )
-            ) as pre_requirements'),
+            DB::raw('
+            CASE
+                WHEN COUNT(pre_requirements.pre_requirements_id) > 0 THEN
+                    JSON_AGG(
+                        JSON_BUILD_OBJECT(
+                            \'pre_requirements_id\', pre_requirements.pre_requirements_id,
+                            \'name\', COALESCE(pre_requirements.name, \'Sin nombre\'),
+                            \'description\', COALESCE(pre_requirements.description, \'Sin descripción\'),
+                            \'type\', COALESCE(pre_requirements.type, \'General\'),
+                            \'extension\', COALESCE(pre_requirements.extension, \'Sin extensión\'),
+                            \'url_resource\', COALESCE(pre_requirements.url_resource, \'Sin recurso\'),
+                            \'approval_role\', COALESCE(pre_requirements.approval_role, \'Sin rol de aprobación\'),
+                            \'status\', COALESCE(student_prerequirements.status, \''.State::PENDING.'\'),
+                            \'observation\', COALESCE(student_prerequirements.observation, \'Sin observación\'),
+                            \'approved\', COALESCE(student_prerequirements.approved, false),
+                            \'approved_date\', COALESCE(student_prerequirements.approved_date, null),
+                            \'approved_by_user\', COALESCE(student_prerequirements.approved_by_user, null),
+                            \'url_file\', COALESCE(student_prerequirements.url_file, null)
+                        )
+                    )
+                ELSE NULL
+            END as pre_requirements
+        '),
             DB::raw('(COUNT(pre_requirements.pre_requirements_id) = SUM(CASE WHEN student_prerequirements.approved = true THEN 1 ELSE 0 END)) AS all_requirements_met'),
             DB::raw('EXISTS (SELECT 1 FROM phase_requests WHERE phase_requests.requested_phase_id = ? AND phase_requests.student_id = ?) as phase_requests')
         )
