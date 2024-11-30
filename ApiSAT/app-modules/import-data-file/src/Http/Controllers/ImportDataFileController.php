@@ -54,7 +54,7 @@ class ImportDataFileController
 
         $request->validate([
             'file' => 'required|file|mimes:pdf',
-            'requirementStudentId' => 'required|exists:student_requirements,student_requirements_id',
+            'requirementStudentId' => 'required|exists:student_prerequirements,student_prerequirements_id',
         ]);
         try {
 

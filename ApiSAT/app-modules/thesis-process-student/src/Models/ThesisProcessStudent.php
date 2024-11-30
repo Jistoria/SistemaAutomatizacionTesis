@@ -72,6 +72,7 @@ class ThesisProcessStudent extends ThesisProcess
                     JSON_AGG(
                         JSON_BUILD_OBJECT(
                             \'pre_requirements_id\', pre_requirements.pre_requirements_id,
+                            \'student_prerequirements_id\', student_prerequirements.student_prerequirements_id,
                             \'name\', COALESCE(pre_requirements.name, \'Sin nombre\'),
                             \'description\', COALESCE(pre_requirements.description, \'Sin descripción\'),
                             \'type\', COALESCE(pre_requirements.type, \'General\'),
