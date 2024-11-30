@@ -8,6 +8,7 @@ use App\Utils\State;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
+use Modules\ThesisProcessStudent\Contracts\PreRequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\ThesisProcessPhaseStudent;
@@ -30,6 +31,13 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         protected RequirementsStudentService $requirementsStudentService
     )
     {}
+
+    /**
+     * Obtiene el proceso de tesis de un estudiante por su ID.
+     *
+     * @param string $id ID del estudiante.
+     * @return ThesisProcessStudent El proceso de tesis del estudiante.
+     */
 
     public function findThesisProcessById(string $id)
     {
@@ -260,6 +268,35 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
             throw new \Exception('No se encontró el proceso de tesis del estudiante', 404);
         }
         return $thesisProcess->tutor;
+    }
+
+    public function asyncPreRequirements(string $idPhase, string $idStudent): void
+    {
+           // Obtener los requisitos de la fase
+           $phase = $this->thesisPhasesService->getThesisPhase($idPhase);
+           $preRequirements = $phase->preRequirements;
+
+              // Verificar que existan requisitos para esta fase
+              if ($preRequirements->isEmpty()) {
+                  return;
+              }
+
+                foreach ($preRequirements as $preRequirement) {
+                    $data = [
+                        'student_id' => $idStudent,
+                        'thesis_process_phases_id' => $idStudent,
+                        'pre_requirements_id' => $preRequirement->pre_requirements_id,
+                        'approved' => false,
+                        'state_now' => State::PENDING,
+                        'approved_by_user' => null,
+                        'url_file' => null,
+                        'send_date' => null,
+                        'approved_date' => null,
+                        'approved_role' => $preRequirement->approval_role,
+                    ];
+                    app(PreRequirementsStudentServiceInterface::class)->asyncPreRequirementsStudent($data);
+                }
+
     }
 
 }

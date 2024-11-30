@@ -83,6 +83,7 @@ class ThesisProcessStudent extends ThesisProcess
                     \'url_file\', COALESCE(student_prerequirements.url_file, null)
                 )
             ) as pre_requirements'),
+            DB::raw('(COUNT(pre_requirements.pre_requirements_id) = SUM(CASE WHEN student_prerequirements.approved = true THEN 1 ELSE 0 END)) AS all_requirements_met'),
             DB::raw('EXISTS (SELECT 1 FROM phase_requests WHERE phase_requests.requested_phase_id = ? AND phase_requests.student_id = ?) as phase_requests')
         )
         ->where('thesis_phases.thesis_phases_id', $lastesAproved->next_phases_id)

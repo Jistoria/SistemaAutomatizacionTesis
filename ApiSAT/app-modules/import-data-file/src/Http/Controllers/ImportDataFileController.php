@@ -48,4 +48,21 @@ class ImportDataFileController
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    public function importDataFilePreRequirementStudent(Request $request) : \Illuminate\Http\JsonResponse
+    {
+
+        $request->validate([
+            'file' => 'required|file|mimes:pdf',
+            'requirementStudentId' => 'required|exists:student_requirements,student_requirements_id',
+        ]);
+        try {
+
+            $file = $request->file('file');
+            $this->importDataFileService->importDataPdfPreRequirementStudent($file, $request->user()->id, $request->requirementStudentId);
+            return ApiResponse::success(null, 'Archivo procesado para su revisión', 201 );
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }

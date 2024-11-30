@@ -20,6 +20,11 @@ class ThesisProcessStudentServiceProvider extends ServiceProvider
             RequirementsStudentServiceInterface::class,
             RequirementsStudentService::class
         );
+
+        $this->app->bind(
+            \Modules\ThesisProcessStudent\Contracts\PreRequirementsStudentServiceInterface::class,
+            \Modules\ThesisProcessStudent\Services\PreRequirementsStudentService::class
+        );
 	}
 
 	public function boot(): void
