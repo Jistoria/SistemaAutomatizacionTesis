@@ -80,7 +80,7 @@ class StudentProcessController
             $processPhase = $this->studentPhaseService->nextPhaseStudent($request->user()->id);
             return ApiResponse::success($processPhase);
         }catch(\Exception $e){
-            return ApiResponse::error($e->getMessage(), $e->getCode());
+            return ApiResponse::error($e->getMessage());
         }
     }
 

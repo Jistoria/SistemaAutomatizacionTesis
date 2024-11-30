@@ -39,6 +39,7 @@ return new class extends Migration
             $table->boolean('approved')->default(false);
             $table->date('approved_date')->nullable();
             $table->uuid('approved_by_user')->nullable();
+            $table->string('url_file')->nullable();
             $table->timestamps();
             $table->uuid('created_by_user')->nullable();
             $table->uuid('updated_by_user')->nullable();
