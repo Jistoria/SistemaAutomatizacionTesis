@@ -6,6 +6,7 @@ use App\Models\Academic\PeriodAcademic;
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
 use App\Models\Academic\Thesis\Requirement\RequirementsStudent;
+use App\Utils\State;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -78,6 +79,7 @@ class ThesisProcessPhases extends Model
     public static function getPhasesAprovedRequirements()
     {
         return self::join('student_requirements', 'student_requirements.thesis_process_phases_id', '=', 'thesis_process_phases.thesis_process_phases_id')
+            ->whereNotLike('thesis_process_phases.state_now', State::APPROVED)
             ->groupBy('thesis_process_phases.thesis_process_phases_id')
             ->havingRaw('AVG(student_requirements.approved::int) = 1')
             ->pluck('thesis_process_phases.thesis_process_phases_id');

@@ -27,6 +27,7 @@ class SetRoles extends Command
     {
         $roles = [
             'Administrador-tesis',
+            'Analista-Carrera',
             'Estudiante-tesis',
             'Docente-tesis',
             'Jurado-tesis',

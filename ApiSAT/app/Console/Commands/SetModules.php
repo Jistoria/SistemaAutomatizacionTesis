@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Academic\Thesis\Requirement\PreRequirements;
 use App\Models\Academic\Thesis\Requirement\Requirement;
 use App\Models\Auth\User;
 use Illuminate\Console\Command;
@@ -46,7 +47,15 @@ class SetModules extends Command
                     ]
                     ]
             ],
-            ['name' => 'Evaluación', 'order' => 3],
+            ['name' => 'Evaluación', 'order' => 3, 'phases' => [
+                    ['name' => 'Fase Evaluación', 'order' => 1,
+                    'pre_requirements' => [
+                        ['name' => 'Documento Libreria', 'type' => 'document', 'extension' => 'pdf'],
+                        ['name' => 'Certificado Ingles B1', 'type' => 'document', 'extension' => 'pdf']
+                        ]
+                    ]
+                ]
+            ],
         ];
         $previousPhaseOrder = null;
         foreach ($modulesAndPhases as $moduleData) {
@@ -106,6 +115,24 @@ class SetModules extends Command
                                 'description' => 'Documento que se debe entregar a lo largo de la fase',
                                 'thesis_phases_id' => $phase->thesis_phases_id,
                                 'approval_role' => 'Docente-tesis',
+                                'created_by_user' => $adminId->id,
+                                'updated_by_user' => $adminId->id
+                            ]);
+                            $requirement->save();
+                        }
+                    }
+
+                    if(isset($phaseData['pre_requirements'])) {
+                        $this->info('Creando requisitos previos para la fase ' . $phaseData['name']);
+
+                        foreach ($phaseData['pre_requirements'] as $requirementData) {
+                            $requirement = new PreRequirements([
+                                'name' => $requirementData['name'],
+                                'type' => $requirementData['type'],
+                                'extension' =>  $requirementData['extension'],
+                                'description' => 'Documento que se debe entregar antes de la fase',
+                                'thesis_phases_id' => $phase->thesis_phases_id,
+                                'approval_role' => 'Analista-Carrera',
                                 'created_by_user' => $adminId->id,
                                 'updated_by_user' => $adminId->id
                             ]);

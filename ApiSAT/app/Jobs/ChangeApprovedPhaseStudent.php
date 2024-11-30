@@ -27,6 +27,7 @@ class ChangeApprovedPhaseStudent implements ShouldQueue
         $approvedPhases = \App\Models\Academic\Thesis\ThesisProcessPhases::getPhasesAprovedRequirements();
 
         foreach ($approvedPhases as $phase) {
+            Log::info('Aprobando fase de estudiante', ['phase' => $phase, 'date' => now()]);
             \App\Models\Academic\Thesis\ThesisProcessPhases::find($phase)->update([
                 'state_now' => State::APPROVED,
                 'approval' => true,

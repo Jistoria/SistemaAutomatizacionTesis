@@ -47,11 +47,12 @@ class ThesisProcessStudent extends ThesisProcess
 {
     $lastesAproved = $this->phasesStudent()
         ->join('thesis_phases', 'thesis_process_phases.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
-        ->join('order_phases_thesis', 'order_phases_thesis.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
-        ->select('thesis_phases.name', 'order_phases_thesis.next_phases_id', 'thesis_process_phases.student_id')
+        ->join('order_phases_thesis', 'order_phases_thesis.thesis_phases_id', '=','thesis_process_phases.thesis_phases_id')
+        ->select('thesis_phases.name', 'order_phases_thesis.next_phases_id', 'thesis_process_phases.student_id', 'thesis_process_phases.date_end')
         ->where('approval', true)
         ->orderBy('date_end', 'desc')
-        ->first();
+        ->get();
+    dd($lastesAproved);
 
     if (!$lastesAproved) {
         return null; // Manejar el caso donde no hay fases aprobadas
@@ -64,11 +65,11 @@ class ThesisProcessStudent extends ThesisProcess
             'thesis_phases.thesis_phases_id',
             'thesis_modules.name as module_name',
             'thesis_phases.name as phase_name',
-            DB::raw('EXISTS (SELECT 1 FROM phase_requests WHERE phase_requests.requested_phase_id = thesis_phases.thesis_phases_id AND phase_requests.student_id = ?) as phase_requests')
+            DB::raw('EXISTS (SELECT 1 FROM phase_requests WHERE phase_requests.requested_phase_id = ? AND phase_requests.student_id = ?) as phase_requests')
         )
         ->where('thesis_phases.thesis_phases_id', $lastesAproved->next_phases_id)
         ->groupBy('thesis_phases.thesis_phases_id', 'thesis_modules.name', 'thesis_phases.name')
-        ->setBindings([$lastesAproved->student_id], 'select') // Asignar el valor escapado a la consulta
+        ->setBindings([$lastesAproved->next_phases_id, $lastesAproved->student_id], 'select') // Asignar el valor escapado a la consulta
         ->first();
 
     return $nextPhase;
