@@ -1,47 +1,34 @@
-# Usa una imagen base de Node.js para instalar dependencias y construir el proyecto
-FROM node:18-alpine AS builder
+# Usa una imagen base con Node.js y Debian como base para instalar Nginx
+FROM node:18-bullseye
 
-# Instalar dependencias del sistema
-RUN apk add --no-cache python3 make g++ bash
+# Actualizar e instalar Nginx y dependencias necesarias
+RUN apt-get update && apt-get install -y nginx && apt-get clean
 
 # Establecer directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos necesarios para instalar las dependencias
+# Copiar los archivos necesarios para construir la aplicación
 COPY package*.json ./
 
-# Instalar dependencias
+# Instalar dependencias de Node.js
 RUN npm install
 
-# Copiar el resto del proyecto
+# Copiar el resto de los archivos del proyecto
 COPY . .
 
-# Construir el proyecto Nuxt para producción
+# Construir la aplicación Nuxt para producción
 RUN npm run build
 
-# -------------------
-# Crear la imagen final con Nginx
-# -------------------
-FROM nginx:alpine
+# Configurar Nginx
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copiar la configuración personalizada de Nginx
-COPY ./nginx.conf /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
 
-# Eliminar configuración por defecto
-RUN rm /etc/nginx/conf.d/default.conf
+# Permisos para la carpeta de la aplicación
+RUN chmod -R 775 /app && chown -R www-data:www-data /app
 
-# Copiar los archivos generados por Nuxt al directorio que Nginx sirve
-COPY --from=builder /app/.output/public /usr/share/nginx/html
-
-# Copiar los archivos necesarios para SSR si aplica
-COPY --from=builder /app/.output /usr/share/nginx/nuxt
-
-# Configurar permisos
-RUN chmod -R 775 /usr/share/nginx/html \
-    && chown -R nginx:nginx /usr/share/nginx/html
-
-# Exponer el puerto 80
+# Exponer los puertos
 EXPOSE 80
 
-# Comando de inicio para Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Iniciar el servidor Nuxt en segundo plano y Nginx como principal
+CMD ["sh", "-c", "node .output/server/index.mjs & nginx -g 'daemon off;'"]
