@@ -77,7 +77,11 @@ class AuthService {
             } else {
                 const response = await this.checkSession(data.token);
                 if (!response) {
-                    await this.deleteSession();
+                    if(auth().online == true){
+                        await this.deleteSession();
+                    }else {
+                        console.log('Sesión cerrada');
+                    }
                     return 'Sesión cerrada';
                 } else {
                     auth().setLogin(data.user, data.token);

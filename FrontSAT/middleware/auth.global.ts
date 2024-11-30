@@ -8,7 +8,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const authStore = auth();
     const session = authStore.session;
     console.log(authStore.session);
-    if(authStore.session === true){
+    if(authStore.session === true && authStore.online === true){
+        console.log('Sesión activa');
         await firstLoad();
     }
     // Si no hay sesión y no está en la página de login, redirigir al login
