@@ -25,16 +25,26 @@ class ChangeApprovedPhaseStudent implements ShouldQueue
      */
     public function handle(): void
     {
-        $approvedPhases = \App\Models\Academic\Thesis\ThesisProcessPhases::getPhasesAprovedRequirements();
+        try{
+            $approvedPhases = \App\Models\Academic\Thesis\ThesisProcessPhases::getPhasesAprovedRequirements();
 
-        foreach ($approvedPhases as $phase) {
-            \App\Models\Academic\Thesis\ThesisProcessPhases::find($phase)->update([
-                'state_now' => State::APPROVED,
-                'approval' => true,
-                'date_end' => now(),
-            ]);
+            foreach ($approvedPhases as $phase) {
 
-            app(ThesisProcessStudentServiceInterface::class)->asyncPreRequirements($phase->thesis_phases_id, $phase->student_id);
+                $model = \App\Models\Academic\Thesis\ThesisProcessPhases::find($phase);
+
+                $nextPhase = $model->phase->order->next_phases_id;
+
+                app(ThesisProcessStudentServiceInterface::class)->asyncPreRequirements($nextPhase, $model->student_id, $model->thesis_process_phases_id);
+
+                $model->update([
+                    'state_now' => State::APPROVED,
+                    'approval' => true,
+                    'date_end' => now(),
+                ]);
+
+            }
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar de fase aprobada del estudiante: ' . $e->getMessage());
         }
     }
 }

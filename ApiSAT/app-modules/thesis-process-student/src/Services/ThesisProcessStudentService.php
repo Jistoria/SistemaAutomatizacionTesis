@@ -270,10 +270,10 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         return $thesisProcess->tutor;
     }
 
-    public function asyncPreRequirements(string $idPhase, string $idStudent): void
+    public function asyncPreRequirements(string $phaseId, string $studentId, string $thesisProcessId): void
     {
            // Obtener los requisitos de la fase
-           $phase = $this->thesisPhasesService->getThesisPhase($idPhase);
+           $phase = $this->thesisPhasesService->getThesisPhase($phaseId);
            $preRequirements = $phase->preRequirements;
 
               // Verificar que existan requisitos para esta fase
@@ -283,8 +283,8 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
 
                 foreach ($preRequirements as $preRequirement) {
                     $data = [
-                        'student_id' => $idStudent,
-                        'thesis_process_phases_id' => $idStudent,
+                        'student_id' => $studentId,
+                        'thesis_process_phases_id' => $thesisProcessId,
                         'pre_requirements_id' => $preRequirement->pre_requirements_id,
                         'approved' => false,
                         'state_now' => State::PENDING,

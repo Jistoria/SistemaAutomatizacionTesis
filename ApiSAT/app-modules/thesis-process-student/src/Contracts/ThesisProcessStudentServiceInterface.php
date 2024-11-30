@@ -43,5 +43,5 @@ interface ThesisProcessStudentServiceInterface
      * @param string $idStudent ID del estudiante.
      * @return void
      */
-    public function asyncPreRequirements(string $idPhase, string $idStudent): void;
+    public function asyncPreRequirements(string $phaseId, string $studentId, string $thesisProcessId): void;
 }
