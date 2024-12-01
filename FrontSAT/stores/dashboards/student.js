@@ -34,6 +34,7 @@ export const student = defineStore('student',{
                 console.log('response', response)
 
                 if(response.faseActual){
+                    console.log('hola')
                     await setData('student_data', 'faseActual', response.faseActual);
               
                     const response3 = await studentService.getRequeriments(token, response.faseActual.thesis_process_phases_id)
@@ -42,14 +43,19 @@ export const student = defineStore('student',{
 
 
                 }else if(response.nextFase && response.requeriment == false){ 
+                    const { deleteField } = useIdb()
+                    await deleteField('student_data', 'faseActual')
                     console.log('nextFase', response.nextFase)
                     console.log('no requisitos')
                     await setData('student_data', 'nextFase', response.nextFase);
                     
                 }else if(response.nextFase && response.requeriment == true){
+                    const { deleteField } = useIdb()
+                    await deleteField('student_data', 'faseActual')
                     console.log('requisitos')
                     await setData('student_data', 'nextFase', response.nextFase);
-                    await setData('student_data', 'prerequisitos', response.prerequisitos);
+                    console.log('response', response)
+                    await setData('student_data', 'prerequisitos', response.requeriments);
                     this.prerequsito = true
                 }
 
@@ -70,6 +76,14 @@ export const student = defineStore('student',{
             const response = await docService.sendRequeriment(token, requeriments)
             await this.updateRequeriments(token)
             return response
+        },
+        async sendPreRequeriments(token, requeriments){
+            const response = await docService.sendPreRequeriment(token, requeriments)
+            if(response.success === true){
+                console.log('Requisitos enviados')
+                await this.getDataStatus(token)
+            }
+            return 
         },
         async syncFromDB() {
             

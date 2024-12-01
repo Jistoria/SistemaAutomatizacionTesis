@@ -38,6 +38,36 @@ export function useIdb() {
       return { error: 'Error al acceder a IndexedDB.' };
     }
   };
+  const deleteField = async (tableName, key) => {
+    try {
+      const db = await getDatabase();
+
+      if (!db) {
+        console.error('No se pudo acceder a la base de datos.');
+        return { error: 'No se pudo acceder a la base de datos.' };
+      }
+
+      if (!db.objectStoreNames.contains(tableName)) {
+        console.error(`La tabla '${tableName}' no existe.`);
+        return { error: `La tabla '${tableName}' no existe.` };
+      }
+
+      // Inicia una transacción en modo "readwrite" para modificar datos
+      const tx = db.transaction(tableName, 'readwrite');
+      const store = tx.objectStore(tableName);
+
+      // Elimina el elemento con la clave especificada
+      await store.delete(key);
+
+      await tx.done;
+
+      console.log(`Campo con clave '${key}' eliminado de la tabla '${tableName}'.`);
+      return { success: true };
+    } catch (error) {
+      console.error('Error al eliminar campo en IndexedDB:', error);
+      return { error: 'Error al eliminar campo en IndexedDB.' };
+    }
+  };
   const consults = async (tableName, key) => {
     try {
       const db = await getDatabase();
@@ -126,6 +156,7 @@ export function useIdb() {
     consults,
     setData,
     clearData,
+    deleteField,
   };
 }
 

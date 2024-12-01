@@ -44,14 +44,16 @@ class StudentService {
             console.log('Respuesta:', response);
 
             const faseActual = await this.getPhaseInProcess(response.data);
+            console.log('Fase actual:', faseActual);
 
             if (faseActual != null) {
                 return {response, faseActual};
             }else{
                 const nextFase = await this.getNextPhase(token);
                 console.log('Respuesta:', nextFase);
-                if (nextFase.pre_requeriments ) {
-                    return {response, nextFase, requeriments: nextFase.pre_requeriments, requeriment: true};
+                if (nextFase.data.pre_requirements) {
+                    console.log('Requerimientos:', nextFase.data.pre_requirements);
+                    return {response, nextFase, requeriments: nextFase.data.pre_requirements, requeriment: true};
                 }else{
                     return {response, nextFase, requeriment: false};
                 }

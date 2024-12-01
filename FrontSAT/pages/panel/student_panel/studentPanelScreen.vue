@@ -263,6 +263,22 @@ const mandarSolicitud = async () => {
       {{ studentStore.nextFase?.data?.phase_requests ? 'Solicitud Enviada' : 'Enviar Solicitud' }}
     </button>
   </div>
+  <div v-else-if="studentStore.prerequsito === true">
+            <!-- Requirements Section -->
+            <section class="mb-8">
+              <h2 class="text-lg sm:text-xl font-semibold mb-4">Pre-Requisitos</h2>
+              <div class="bg-gray-100 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <p class="text-gray-700 text-sm sm:text-base flex items-center">
+                  ⚠️ Para solicitar matricularse en la siguiente fase, debe completar los pre-requisitos.
+                </p>
+                <ClientOnly>
+                  <div class="w-full sm:w-auto">
+                    <StudentPreRquisits />
+                  </div>
+                </ClientOnly>
+              </div>
+            </section>
+  </div>
 
 
   </div>

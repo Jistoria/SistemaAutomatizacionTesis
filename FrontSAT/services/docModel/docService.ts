@@ -13,6 +13,36 @@ class DocService {
         }
         return this.fetchClient;
     }
+    async sendPreRequeriment(token: string, formData: FormData) {
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient('/import-data-file/document-pre-requirement-student', {
+                method: 'POST',
+                headers: {
+                    Auhorization: 'Bearer '+ token
+                },
+                credentials: 'include',
+                body: formData,
+            });
+            console.log(response);
+            if (response.success == true) {
+                swal.showAlert('success', 'right', {
+                    title: response.message,
+                    text: '',
+                    confirmType: 'timer'
+                });
+                return response;
+            }
+            
+        } catch (error) {
+            swal.showAlert('error', 'right', {
+                title: 'El requerimiento no se subio correctamente',
+                text: '',
+                confirmType: 'timer'
+            });
+            return error;
+        }
+    }
     async sendRequeriment(token: string, formData: FormData) {
         const fetchClient = this.getFetchClient();
         try {
