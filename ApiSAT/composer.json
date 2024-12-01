@@ -14,6 +14,7 @@
         "laravel/passport": "^12.0",
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
+        "modules/analyst-degree": "*",
         "modules/auth": "*",
         "modules/degree": "*",
         "modules/import-data-file": "*",

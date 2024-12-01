@@ -33,5 +33,14 @@ class SetAdminTesis extends Command
             'password' => 'admin_tesis',
         ]);
         $user->assignRole('Administrador-tesis');
+
+        $this->info('Creando usuario analista de tesis...');
+        $user = \App\Models\Auth\User::create([
+            'id' => \Ramsey\Uuid\Uuid::uuid4(),
+            'name' => 'Analista Tesis',
+            'email' => 'analys_tesis@uleam.edu.ec',
+            'password' => 'analys_tesis',
+        ]);
+        $user->assignRole('Analista-Carrera');
     }
 }

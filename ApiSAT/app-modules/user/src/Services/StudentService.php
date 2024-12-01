@@ -3,6 +3,8 @@
 namespace Modules\User\Services;
 
 use App\Models\Academic\Student\Student;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\User\Contracts\StudentServiceInterface;
 
 class StudentService implements StudentServiceInterface
@@ -28,5 +30,45 @@ class StudentService implements StudentServiceInterface
         ]);
 
         return $student;
+    }
+
+    public function getStudentWithRelations(array|string $relations, string $studentId): Student
+    {
+        return $this->student->with((array) $relations)
+            ->where('student_id', $studentId)
+            ->first();
+    }
+
+    public function getPaginatedStudentsWithRelations(array|string $relations, int $pagination): LengthAwarePaginator
+    {
+        return $this->student->with((array) $relations)
+            ->paginate($pagination);
+    }
+
+
+
+    public function getStudentByDni(string $dni): Student
+    {
+        return $this->student->where('dni', $dni)->first();
+    }
+
+    public function getStudentById(string $studentId): Student
+    {
+        return $this->student->where('student_id', $studentId)->first();
+    }
+
+    public function getStudentByDegreeId(string $degreeId): Student
+    {
+        return $this->student->where('degree_id', $degreeId)->first();
+    }
+
+    public function getStudentByThesisId(string $thesisId): Student
+    {
+        return $this->student->where('thesis_id', $thesisId)->first();
+    }
+
+    public function getStudentByEnrollmentDate(string $enrollmentDate): Student
+    {
+        return $this->student->where('enrollment_date', $enrollmentDate)->first();
     }
 }

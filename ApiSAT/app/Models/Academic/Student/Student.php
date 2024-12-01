@@ -3,6 +3,7 @@
 namespace App\Models\Academic\Student;
 
 use App\Models\Academic\Degree;
+use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Academic\Thesis\ThesisTitle as ThesisThesisTitle;
 use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -26,10 +27,17 @@ class Student extends Model
         'enrollment_date',
     ];
 
+
     // Relación uno a uno con el usuario (user)
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'student_id');
+    }
+
+    // Relación con el modelo ThesisProcess
+    public function thesisProcess()
+    {
+        return $this->hasOne(ThesisProcess::class, 'student_id');
     }
 
     // Relación con el modelo ThesisTitle
@@ -62,7 +70,7 @@ class Student extends Model
         return $this->belongsTo(User::class, 'deleted_by_user');
     }
 
-    //Relacion a Tutor
+    //
 
 
 }

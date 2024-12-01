@@ -119,6 +119,41 @@ class SetMenus extends Command
             $model->roles()->attach($uuidRoleTeacher);
         }
 
+        $uuidRoleAnalyst = \Spatie\Permission\Models\Role::where('name', 'Analista-Carrera')->first()->uuid;
+
+        $menusAnalyst = [
+            [
+            'name' => 'Dashboard',
+            'url' => '/',
+            'icon' => 'bi bi-clipboard2-data-fill',
+            'orden' => 0,
+            ],
+            [
+            'name' => 'Estudiantes',
+            'url' => '/panel/list/listStudent',
+            'icon' => 'bi bi-person-vcard-fill',
+            'orden' => 1,
+            ],
+            [
+            'name' => 'Tribunales',
+            'url' => '/panel/list/listCourt',
+            'icon' => 'bi bi-calendar-week-fill',
+            'orden' => 2,
+            ],
+        ];
+
+        $this->info('Creando menu Analista...');
+        foreach ($menusAnalyst as $menu) {
+            $model = \App\Models\General\Menu::create([
+                'name' => $menu['name'],
+                'url' => $menu['url'],
+                'icon' => $menu['icon'],
+                'order' => $menu['orden'],
+            ]);
+
+            $model->roles()->attach($uuidRoleAnalyst);
+        }
+
         $this->info('Menus creados correctamente');
     }
 }

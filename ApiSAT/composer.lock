@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8701823d0ecae866f3c9bef117e09758",
+    "content-hash": "b248616bf3253964548445f3189e4665",
     "packages": [
         {
             "name": "brick/math",
@@ -3515,6 +3515,38 @@
                 }
             ],
             "time": "2024-03-23T07:42:40+00:00"
+        },
+        {
+            "name": "modules/analyst-degree",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/analyst-degree",
+                "reference": "72fed2812e1183cf33bb185da9fe99d122be870a"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\AnalystDegree\\Providers\\AnalystDegreeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\AnalystDegree\\": "src/",
+                    "Modules\\AnalystDegree\\Tests\\": "tests/",
+                    "Modules\\AnalystDegree\\Database\\Factories\\": "database/factories/",
+                    "Modules\\AnalystDegree\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "modules/auth",
