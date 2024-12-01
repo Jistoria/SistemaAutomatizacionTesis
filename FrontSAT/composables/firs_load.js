@@ -2,11 +2,15 @@ import { student } from "~/stores/dashboards/student";
 import { auth } from "~/stores/auth/auth";
 import { panel } from "~/stores/panel/panel";
 import { roles } from "#imports";
+import { notifyService } from "~/services/Notify/notify";
 
 export const firstLoad = async () => {
     const studentStore = student();
     const authStore = auth();
     const panelStore = panel();
+
+    await notifyService.listenChannel(authStore.user.id);
+
     console.log("Rol actual:", authStore.role[0]);
 
     const roleActions  = {
