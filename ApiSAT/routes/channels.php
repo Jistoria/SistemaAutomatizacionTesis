@@ -9,3 +9,8 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('pdf-process.{id}', function ($user, $id) {
     return (string)$user->id === (string) $id;
 },['guards' => ['api']]);
+
+
+Broadcast::channel('notification.{id}', function ($user, $id) {
+    return (string)$user->id === (string) $id;
+},['guards' => ['api']]);

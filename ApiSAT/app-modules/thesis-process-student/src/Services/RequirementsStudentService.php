@@ -7,6 +7,7 @@ use App\Utils\State;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\ImportDataFile\Contracts\ImportDataFileServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
+use Modules\ThesisProcessStudent\Events\RequirementStatusChanged;
 use Modules\ThesisProcessStudent\Models\Requirements;
 
 class RequirementsStudentService implements RequirementsStudentServiceInterface
@@ -63,6 +64,8 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
             $requirement->approved_date = null;
             $requirement->approved_by_user = null;
         }
+
+        event(new RequirementStatusChanged($requirement->student_id, $requirement->id, $status, $requirement->name));
 
         $requirement->save();
     }
