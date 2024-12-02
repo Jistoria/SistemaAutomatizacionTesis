@@ -4,22 +4,32 @@ import Observation from '~/components/modal/observation.vue';
 import { StudentDetails } from '~/stores/details/studentDetails';
 import { panel } from '~/stores/panel/panel';
 import { sweetAlert } from '~/composables/sweetAlert';
+
+const select_phase = ref('');
 const phase_default = ref(Fase[0].Phases_select);
+const show_phase = ref(false);
 const setActivePhase = async(phase) => {
     isLoading.value = true;
-    console.log(phase);
     const data = await studentDetailsStore.get_pluck_phases();
-    const entries = Object.entries(data);
-    console.log(entries);
-    const result = entries.find(([key, value]) => value === phase);
-    console.log(result[0]);
-    phase_default.value = result[1];
-    const data_1 = await studentDetailsStore.get_requeriments(studentDetailsStore.selectedStudent.id, result[0]);
-    
+    select_phase.value = findUIDByPhaseName(phase,data);
+    const data_1 = await studentDetailsStore.get_requeriments(studentDetailsStore.selectedStudent.id, select_phase.value[0]);
+    console.log(data_1)
+    if(data_1 === null){
+        show_phase.value = true;
+        phase_default.value = phase;
+        isLoading.value = false;
+        return
+    }
+    show_phase.value = false;
+    phase_default.value = phase;
     requerimets_details.value = data_1.requirements;
-    isLoading.value = true;
-
+    isLoading.value = false;
 }
+const findUIDByPhaseName = (phaseName,data) => {
+  const entries = Object.entries(data);
+  const result = entries.find(([key, value]) => value === phaseName);
+  return result ? result : null;
+};
 
 
 definePageMeta({
@@ -53,9 +63,9 @@ const filterRequerimentsByStatus = (status) => {
 };
 
 const filteredRequeriments = computed(() =>
-  selectedStatus.value
-    ? requerimets_details.value.filter((req) => req.status === selectedStatus.value)
-    : requerimets_details.value
+    Array.isArray(requerimets_details.value) && requerimets_details.value.length > 0
+        ? requerimets_details.value.filter((req) => req.status === selectedStatus.value)
+        : []
 );
 
 const change_status = async (id_student, id_requeriment_student,status)=>{
@@ -95,10 +105,6 @@ const download_file = (url)=>{
     document.body.appendChild(link); 
     link.click(); 
     document.body.removeChild(link); 
-}
-const change_phase = async()=>{
-    const data = studentDetailsStore.get_pluck_phases();
-    console.log(data);
 }
 
 </script>
@@ -196,15 +202,27 @@ const change_phase = async()=>{
                 <!-- aqui debo hacer el v-if -->
                 <div class="grid grid-cols-1 ps-4 pe-4 ">
                     <h1 class="text-2xl pt-0 ps-1 pb-2">Requerimientos:</h1>
-                    <div class="bg-white p-4 border-2 border-stone-300">
-                        <div  v-for="req in Requerimientos" class="inline p-2 ms-2  rounded-full" :class="req.bg">
+                    <div v-if="show_phase" class="bg-white p-4 border-2 border-stone-300">
+                        <div v-if="!isLoading">
+                            <p class="text-center">Este Estudiante aun no esta en esta Fase</p>
+                        </div>
+                        <div v-if="isLoading" class="p-4">
+                                <div class="flex justify-center">
+                                    <div>
+                                        <span class="loading loading-bars loading-lg"></span>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div v-else class="bg-white p-4 border-2 border-stone-300">
+                        <div v-if="!isLoading"  v-for="req in Requerimientos" class="inline p-2 ms-2  rounded-full" :class="req.bg">
                             <div class="inline" @click="filterRequerimentsByStatus(req.state)">
                                 {{req.name}} <i :class="req.icon" class="ms-1 me-2"></i>
                             </div>
                         </div>
                         <!-- aqui debe ir el filtered de los datos -->
                         <div>
-                            <div v-if="isLoading" class="bg-neutral p-4">
+                            <div v-if="isLoading" class="p-4">
                                 <div class="flex justify-center">
                                     <div>
                                         <span class="loading loading-bars loading-lg"></span>
@@ -217,7 +235,12 @@ const change_phase = async()=>{
                                         <div class="rounded-full bg-neutral ps-3 pt-3 pb-3 mt-2 grow">
                                             <div class="flex grow">
                                                 <i class="bi bi-file-earmark me-3"></i>
-                                                <a class="italic">{{ files.name }}</a>
+                                                <a @click="files.url_file ? download_file(files.url_file) : null"  :class="{
+                                                        'text-blue-500 underline cursor-pointer ms-2': files.url_file,
+                                                        'text-gray-500': !files.url_file,
+                                                    }">
+                                                    {{ files.name }}
+                                                </a>
                                             </div>
                                         </div>
                                         <div >
