@@ -3,6 +3,7 @@ import { studentService } from '~/services/studentModel/studentService'
 import { docService } from '~/services/docModel/docService'
 import { useIdb } from '~/composables/idb'
 import { useRouter } from 'vue-router'
+import auth from '~/plugins/auth'
 
 
 
@@ -151,6 +152,10 @@ export const student = defineStore('student',{
                 this.isLoaded = false
                 await this.getDataStatus(token)
             }
+        },
+        async updateStudent(token){
+            this.isLoaded = false
+            await this.getDataStatus(token);
         }
     },
 })

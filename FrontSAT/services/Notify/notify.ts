@@ -1,6 +1,6 @@
 import { sweetAlert } from "#imports";
 import { useNuxtApp } from '#app';
-
+import { notify } from "~/stores/notify/notify";
 
 const swal = sweetAlert() as ReturnType<typeof sweetAlert>;
 class NotifyService {
@@ -16,6 +16,7 @@ class NotifyService {
     
     async listenChannel(id: string) {
         const { $echo } = useNuxtApp();
+        const notifyStore = notify();
         console.log('Escuchando canal de notificaciones:', id);
 
         // Configuración del canal público
@@ -25,8 +26,12 @@ class NotifyService {
         try {
             channel.listen('.NotificationUser', (data: any) => {
                 console.log('Evento NotificationUser:', data);
+                swal.showAlert(data.sweet_alert.icon,'right',{title: data.sweet_alert.title, text: '',confirmType: 'timer'})
+                if(data.update == true){
+                    notifyStore.actionNotify(data.role);
+                }
                 channel.stopListening('.NotificationUser');
-            });
+            });0
         } catch (error) {
             console.error('Error al escuchar el evento NotificationUser', error);
         }

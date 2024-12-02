@@ -44,7 +44,7 @@ class RequirementStatusChanged implements ShouldBroadcast
     public function broadcastOn()
     {
         // Canal específico del estudiante
-        return new PrivateChannel('notification.' . $this->studentId);
+        return new Channel('notification.' . $this->studentId);
     }
 
     /**
@@ -57,8 +57,10 @@ class RequirementStatusChanged implements ShouldBroadcast
         return [
             'requirement_id' => $this->requirementId,
             'new_status' => $this->newStatus,
-            'sweet-alert' => [
-                'type' => 'success',
+            'role' => 'Estudiante-tesis',
+            'update' => true,
+            'sweet_alert' => [
+                'icon' => 'success',
                 'title' => 'Requerimiento '.$this->nameRequirement.' '. $this->newStatus->value,
             ],
         ];

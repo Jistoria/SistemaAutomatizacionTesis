@@ -45,6 +45,12 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
             throw new \Exception('No se puede aprobar un requisito que ha sido rechazado', 400);
         }
 
+
+        if ($requirement->url_file === null) {
+            throw new \Exception('No se cambiar de estado a un requisito que no ha proporcionado documento', 400);
+        }
+
+
         if ($this->checkPhaseApproved($requirement)) {
             throw new \Exception('No se puede modificar el estado de un requisito de una fase aprobada', 400);
         }
