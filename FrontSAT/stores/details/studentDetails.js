@@ -9,6 +9,7 @@ export const StudentDetails = defineStore('studentDetails',{
             phase_name:'',
             period_academic_name:'',
             title:'',
+            thesis_phases_id:''
         },
         RequerimentsSelected: [],
         isLoaded:false
@@ -23,11 +24,21 @@ export const StudentDetails = defineStore('studentDetails',{
                 phase_name:studentData.phase_name,
                 period_academic_name:studentData.period_academic_name,
                 title:studentData.title,
+                thesis_phases_id:studentData.thesis_phases_id
             };
-            this.RequerimentsSelected = typeof studentData.requirements === 'string'
-            ? JSON.parse(studentData.requirements)
-            : studentData.requirements;
-            //this.RequerimentsSelected = studentData.requirements
+
+            if(import.meta.client){
+                localStorage.setItem('studentDetails', JSON.stringify({
+                    selectedStudent: this.selectedStudent,
+                }));
+            }
+        },
+        async get_requeriments(id_student,id_process_phases){
+            const response = await detailsService.getrequerimentsStudent(id_student,id_process_phases);
+            console.log(response.success)
+            const data = response.data
+            this.RequerimentsSelected = data
+            return data
         },
         async changeStudentreq(id_student,id_req_student, status){
             const response = await detailsService.updatedRequeriemnts(id_student,id_req_student, status);
@@ -35,8 +46,21 @@ export const StudentDetails = defineStore('studentDetails',{
             const data = response.success
             return data
         },
+        async get_pluck_phases(){
+            const response = await detailsService.get_pluck();
+            console.log(response.success);
+            const data = response.data;
+            return data;
+        },
+        hydrate(){
+            const storage_data = localStorage.getItem('studentDetails');
+            if(storage_data){
+                const { selectedStudent, requirementSelected } = JSON.parse(storage_data);
+                this.selectedStudent = selectedStudent;
+            }
+        }
+    },
 
-    }
 
 })
 // response.map((data) => ({

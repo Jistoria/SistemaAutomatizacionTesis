@@ -11,6 +11,9 @@ class DetailsService {
     }
 
     async updatedRequeriemnts(id_student:any, id_requirement:any, status:any){
+        console.log(id_student);
+        console.log(id_requirement);
+        console.log(status);
         const fetchClient = this.getFetchClient();
         const body ={
             status: status
@@ -27,6 +30,27 @@ class DetailsService {
             return response
         } catch (error) {
             console.log(error);
+        }
+    }
+    async getrequerimentsStudent(id_student:any, id_process_phases:any){
+        console.log(id_student);
+        console.log(id_process_phases);
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient(`/thesis-tutor/details-student/${id_student}/${id_process_phases}`)
+            console.log(response.data)
+            return response
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async get_pluck(){
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient(`/thesis-phases-pluck`)
+            return response
+        } catch (error) {
+            
         }
     }
 

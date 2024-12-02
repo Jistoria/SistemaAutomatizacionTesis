@@ -26,7 +26,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     key: key,// Usa la clave de la variable de entorno
     wsHost: wsHost,
     wsPort: wsPort,
-    wssPort: wssPort,
+    //wssPort: wssPort,
     forceTLS: false,
     enabledTransports: ['ws'],
     disableStats: true,

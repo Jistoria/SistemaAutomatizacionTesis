@@ -1,6 +1,7 @@
-import { nextTheme,getCurrentTheme,setTheme } from "~/services/themeModel/themeService"
+import { nextTheme,getCurrentTheme,setTheme,initializeTheme, isThemeReady } from "~/services/themeModel/themeService"
 export const useThemeStore = defineStore('theme',()=>{
     const currentTheme = getCurrentTheme();
+    const isReady = isThemeReady(); // Obtén el estado de inicialización
 
     function toggle(){
         nextTheme();
@@ -8,6 +9,8 @@ export const useThemeStore = defineStore('theme',()=>{
     function updateTheme(theme) {
         setTheme(theme);
     }
-
-    return { currentTheme, toggle,updateTheme };
+    function initTheme() {
+        initializeTheme();
+    }
+    return { currentTheme, toggle,updateTheme,initTheme, isReady };
 })

@@ -59,7 +59,7 @@ class RequirementStatusChanged implements ShouldBroadcast
             'new_status' => $this->newStatus,
             'sweet-alert' => [
                 'type' => 'success',
-                'title' => 'Requerimiento '.$this->nameRequirement.' '. $this->newStatus,
+                'title' => 'Requerimiento '.$this->nameRequirement.' '. $this->newStatus->value,
             ],
         ];
     }

@@ -1,7 +1,6 @@
 import { useNuxtApp } from '#app';
-
-class CourtService {
-    private fetchClient: any | null = null; 
+class TutorService{
+    private fetchClient: any | null = null;
     private getFetchClient() {
         if (!this.fetchClient) {
             const { $fetchClient } = useNuxtApp();
@@ -9,20 +8,19 @@ class CourtService {
         }
         return this.fetchClient;
     }
-    async getCourt(){
+    async getAllTutors(){
         const fetchClient = this.getFetchClient();
         try {
-            return console.log('getCourt');
-            const response = await fetchClient('/auth/menus',{
+            const response = await fetchClient('',{
                 method:'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             })
+            return response
         } catch (error) {
             console.log(error);
         }
     }
-    //aqui tiene que venir el get todos los juzgados
 }
-export const courtService = new CourtService();
+export const tutorService = new TutorService();

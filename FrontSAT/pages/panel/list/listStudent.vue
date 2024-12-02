@@ -3,9 +3,10 @@ import { panel } from '~/stores/panel/panel';
 import { useRouter } from 'vue-router';
 import { StudentDetails } from '~/stores/details/studentDetails';
 import { usePaginationStore } from '~/stores/pagination/pagination';
-
+import { auth } from '~/stores/auth/auth';
 const studentDetailsStore = StudentDetails();
 const panelStore = panel();
+const authStore = auth();
 
 const paginationStore = usePaginationStore();
 
@@ -13,12 +14,16 @@ const paginationStore = usePaginationStore();
 const visibleData = computed(() => paginationStore.visible_data);
 
 onMounted(async () => {
-  await panelStore.getlistStudents(1) 
-  paginationStore.setupPagination({
-    dataStore: panelStore.stuendent_data,
-    pageSize: 2,
-    listName: 'estudiante',
-  });
+   if(authStore.role =='Administrador-tesis'){
+        console.log('es admin');
+    }else{
+        await panelStore.getlistStudents(1) 
+        paginationStore.setupPagination({
+            dataStore: panelStore.stuendent_data,
+            pageSize: 2,
+            listName: 'estudiante',
+        });
+    }
   console.log(visibleData.value);
 });
 
@@ -50,7 +55,6 @@ const details_student = (data)=>{
 
 </script>
 <template>
-    
     <div class="container mx-auto  mt-10 ">
         <div >
             <FilterSearch />
@@ -68,16 +72,19 @@ const details_student = (data)=>{
                     <div class="flex items-center space-x-1">
                         <i class="bi bi-calendar-fill icon_size pe-2"></i>
                         <!-- phase -->
-                        <span>{{dataList.state_now}}</span>
+                        <span>{{dataList.phase_name}}</span>
                     </div>
                     <div class="flex items-center space-x-1">
                         <!-- estado del usuario -->
                         <span :class="chageDatacolor('habilitado')" >{{dataList.state_now}}</span>
                     </div>
                 </div>
-                <div class="p-6 italic">
+                <div class="p-6">
                     <!-- descripcion -->
-                    {{ dataList.title }}
+                    <a>Tema:</a>
+                    <p class=" italic">
+                        {{ dataList.title }}
+                    </p>
                 </div>
             </div>
             <div class=" justify-center p-1 ">
@@ -88,7 +95,7 @@ const details_student = (data)=>{
                             <div class="grid grid-cols-3 text-center p-3">
                                 <div class="me-2">
                                     <i class="bi bi-hourglass-bottom"></i>
-                                    <a >{{ dataList.total_requirements_in_process }}</a>     
+                                    <a >{{ dataList.total_requirements_pending }}</a>     
                                 </div>
                                 <div class="me-2">
                                     <i class="bi bi-check-circle-fill"></i>

@@ -1,17 +1,36 @@
 <script setup>
-definePageMeta({
-    middleware: 'details'
-})
-
+import { Fase,Requerimientos,Requerimientos_use } from '~/composables/studentDetails';
 import Observation from '~/components/modal/observation.vue';
 import { StudentDetails } from '~/stores/details/studentDetails';
 import { panel } from '~/stores/panel/panel';
 import { sweetAlert } from '~/composables/sweetAlert';
+const phase_default = ref(Fase[0].Phases_select);
+const setActivePhase = async(phase) => {
+    isLoading.value = true;
+    console.log(phase);
+    const data = await studentDetailsStore.get_pluck_phases();
+    const entries = Object.entries(data);
+    console.log(entries);
+    const result = entries.find(([key, value]) => value === phase);
+    console.log(result[0]);
+    phase_default.value = result[1];
+    const data_1 = await studentDetailsStore.get_requeriments(studentDetailsStore.selectedStudent.id, result[0]);
+    
+    requerimets_details.value = data_1.requirements;
+    isLoading.value = true;
+
+}
+
+
+definePageMeta({
+    middleware: 'details'
+})
+
 
 const swal = sweetAlert();
 const base_url = import.meta.env.VITE_API_STORAGE;
 const studentDetailsStore = StudentDetails();
-const requerimets_details = ref(null);
+const requerimets_details = ref([]);
 const requeriment_selected = ref(null);
 const panelStore = panel();
 
@@ -20,22 +39,26 @@ const isLoading = ref(false);
 
 
 onMounted(async () => {
+    studentDetailsStore.hydrate();
     requerimets_details.value = studentDetailsStore.RequerimentsSelected;
-    
+    const data = await studentDetailsStore.get_requeriments(studentDetailsStore.selectedStudent.id, studentDetailsStore.selectedStudent.thesis_phases_id);
+    requerimets_details.value = data.requirements;
 });
 
 
-const selectedStatus = ref(null);
+const selectedStatus = ref('Pendiente');
 const filterRequerimentsByStatus = (status) => {
+    console.log(status)
   selectedStatus.value = status;
 };
+
 const filteredRequeriments = computed(() =>
   selectedStatus.value
     ? requerimets_details.value.filter((req) => req.status === selectedStatus.value)
     : requerimets_details.value
 );
-const change_status = async (id_student, id_requeriment_student,status)=>{
 
+const change_status = async (id_student, id_requeriment_student,status)=>{
     if(status === 'Rechazado'){
         const response = await swal.showAlert('info', 'normal',{
             title: 'Aviso',
@@ -50,9 +73,9 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
     isLoading.value = true;
     const response = await studentDetailsStore.changeStudentreq(id_student, id_requeriment_student,status);  
     if(response == true){
-        const requerimentIndex = studentDetailsStore.RequerimentsSelected.findIndex((req) => req.student_requirements_id === id_requeriment_student);
+        const requerimentIndex = requerimets_details.value.findIndex((req) => req.student_requirements_id === id_requeriment_student);
         if(requerimentIndex !== -1){
-            studentDetailsStore.RequerimentsSelected[requerimentIndex].status = status;
+            requerimets_details.value[requerimentIndex].status = status;
             panelStore.isLoaded = false;
             panelStore.getlistStudents(); 
         }
@@ -73,119 +96,150 @@ const download_file = (url)=>{
     link.click(); 
     document.body.removeChild(link); 
 }
+const change_phase = async()=>{
+    const data = studentDetailsStore.get_pluck_phases();
+    console.log(data);
+}
 
 </script>
 <template>
 <div>
-    <div class="container  mx-auto mt-10 ">
-        <h1 class="text-2xl p-3">Detalles Del estudiante: </h1>
-        <div class="bg-neutral p-4 rounded" >
-            <!-- columna de datos personales -->
-            <div class="grid grid-cols-4 p-4">
-                <div class="col-span-3">
-
-                    <div class="mt-2 mb-4">
-                        <a class="bg-error p-2 rounded-l-lg ">
-                            {{ studentDetailsStore.selectedStudent.name }}
-                        </a>
-                        <a class="p-2  bg-white rounded-r-lg italic">
-                                {{ studentDetailsStore.selectedStudent.phase_state_now}}
-                        </a>
-                    </div>
-
-                    <div class="ps-3">
-                        <div >
-                            <a >{{ studentDetailsStore.selectedStudent.email }}</a>
+    <div class="container mx-auto p-4">
+        <div class="p-4 ">
+            <h1 class="text-2xl p-3">Detalles del estudiante:</h1>
+            <div class="bg-neutral p-4 rounded">
+                <div class="grid grid-cols-4 p-4 gap-3">
+                    <div class="col-span-3 ">
+                        <div  role="tablist" class="tabs tabs-lifted">
+                            <a  class="tab" v-for="phase in Fase" :class="{ 'tab-active text-primary bg-yellow-500': phase.Phases_select === phase_default, 'text-gray-500': phase !== phase_default}" @click="setActivePhase(phase.Phases_select)" >
+                                    {{phase.phase_name}}
+                            </a>
                         </div>
-                    </div>
-                </div>
-                <div>
-                </div>
-            </div>
-            <!-- columna de los datos de la tesis -->
-             <div class="grid grid-cols-1 p-2">
-                <div class="ps-4" >
-                    <div >
-                        <a >{{ studentDetailsStore.selectedStudent.title }}</a>
-                    </div>
-                </div> 
-             </div>
-            <!-- columana para todos los requerimientos -->
-             <div class="pb-4 ps-4 ">
-                <p class="p-3">Requerimientos:</p>
-                <div class=" flex p-3 ">
-                    <div class="me-2"  @click="filterRequerimentsByStatus('Aprobado')" >
-                            <a class="bg-success p-2 rounded cursor-pointer" :class="{ 'opacity-70':selectedStatus !== 'Aprobado'  }">
-                                Aceptados <i class="bi bi-check-circle-fill"></i>
-                            </a>
-                    </div>
-                    <div class="me-2" @click="filterRequerimentsByStatus('Pendiente')">
-                            <a class="bg-neutral p-2 rounded cursor-pointer" :class="{ 'opacity-70':selectedStatus !== 'Pendiente'  }">
-                                Pendientes <i class="bi bi-hourglass-bottom"></i>
-                            </a>
-                    </div>
-                    <div class="me-2" @click="filterRequerimentsByStatus('Enviado')"> 
-                            <a class="bg-accent p-2 rounded cursor-pointer" :class="{ 'opacity-70':selectedStatus !== 'Enviado'  }" >
-                                Enviados <i class="bi bi-envelope-fill"></i>
-                            </a>
-                    </div>
-                </div>
-                <div class="p-2 rounded-lg">
-                    <div v-if="isLoading" class="bg-neutral p-4">
-                        <div class="flex justify-center">
+                        <div class="bg-white p-4 border-b-2 border-l-2 border-r-2  border-b-stone-300 border-l-stone-300 border-r-stone-300  ">
+                            <div class="mt-2 mb-4">
+                                <div class="flex justify-between">
+                                    <div>
+                                        <a class="bg-neutral pt-2 pb-2 ps-3 pe-3 rounded-full me-4 ">
+                                        Estudiante:
+                                        </a>
+                                        <a>
+                                            {{ studentDetailsStore.selectedStudent.name }}
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="p-2  bg-neutral italic rounded">
+                                            {{ studentDetailsStore.selectedStudent.phase_state_now}}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mt-5">
+                                    <a class="bg-neutral pt-2 pb-2 ps-3 pe-3 rounded-full me-2" >
+                                        Correo:
+                                    </a>
+                                    <a>
+                                        {{ studentDetailsStore.selectedStudent.email }}
+                                    </a>
+                                </div>
+                            </div>
                             <div>
-                                <span class="loading loading-bars loading-lg"></span>
+                                <a class="bg-neutral pt-2 pb-2 ps-3 pe-3 rounded-full" >Tema:</a>
+                                <p class="p-4 ps-2 mb-2">
+                                    <a>{{ studentDetailsStore.selectedStudent.title }}</a>
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <div v-else-if="selectedStatus">
-                        <div class="bg-neutral">
-                            <div v-for="req in filteredRequeriments" class="p-5">
-                                <div class="grid grid-cols-3">
-                                    <div class="col-span-2">
-                                        <p>
-                                            <i class="bi bi-circle-fill me-2"></i>
-                                            <a class="bg-slate-300 p-2 rounded-lg">{{ req.requirements_data }}</a>
-                                            <a 
-                                                @click="req.url_file ? download_file(req.url_file) : null" 
-                                                class="italic ms-3"> <i class="bi bi-file-earmark"></i> 
-                                                <a  :class="{
-                                                        'text-blue-500 underline cursor-pointer ms-2': req.url_file,
-                                                        'text-gray-500': !req.url_file,
-                                                    }"> 
-                                                    {{ req.requirement_name}}
-                                                </a>
-                                            </a>
-                                        </p>
+                    <div class="col-span-1  h-full flex flex-col">
+                        <div class="grid grid-cols-1 b p-4 flex-grow bg-white border-2 border-stone-300  ">
+                            <div class="p-4 rounded ">
+                                <div class=" rounded ">
+                                    <div v-if="false">
+                                            <div class="p-4">
+                                                Faltan procesos Pendientes
+                                            </div>
                                     </div>
-                                    <div class="flex justify-end">
-                                        <button v-if=" selectedStatus === 'Aprobado' || selectedStatus === 'Enviado' "
-                                        class="btn_error p-2 me-2 rounded "   @click="change_status(studentDetailsStore.selectedStudent.id,req.student_requirements_id,'Rechazado')" 
-                                        >
-                                            <i class="bi bi-x-circle-fill"></i>
-                                        </button>
-                                        <button v-if="selectedStatus === 'Rechazado' || selectedStatus === 'Enviado'"
-                                        class="btn_suceess p-2 me-2 rounded"  @click="change_status(studentDetailsStore.selectedStudent.id,req.student_requirements_id,'Aprobado')"    
-                                        >
-                                            <i class="bi bi-check-circle-fill"></i>
-                                        </button>
-                                        <button>
-                                            <Observation :requirementId="req.student_requirements_id" ></Observation>
-                                        </button>
+                                    <div v-else >
+                                            <div >
+                                                <div class="flex justify-between">
+                                                    <div class="p-1">
+                                                        <a >
+                                                            Sustentacion:
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div v-for="data in 3">
+                                                    <ul class="list-disc ps-4 mt-2 ">
+                                                        <li>
+                                                            <div class="flex justify-between">
+                                                                <div>
+                                                                    <a>Tribunal 1:</a>
+                                                                    <p>
+                                                                        Ing. Robert Moreira Mg.
+                                                                    </p>
+                                                                </div>
+                                                                <div class="content-end">
+                                                                    <i class="bi bi-check-circle-fill icon_size_2"></i>
+                                                                    <i class="bi bi-x-circle-fill icon_size_2"></i>
+
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-             </div>
+                <!-- aqui debo hacer el v-if -->
+                <div class="grid grid-cols-1 ps-4 pe-4 ">
+                    <h1 class="text-2xl pt-0 ps-1 pb-2">Requerimientos:</h1>
+                    <div class="bg-white p-4 border-2 border-stone-300">
+                        <div  v-for="req in Requerimientos" class="inline p-2 ms-2  rounded-full" :class="req.bg">
+                            <div class="inline" @click="filterRequerimentsByStatus(req.state)">
+                                {{req.name}} <i :class="req.icon" class="ms-1 me-2"></i>
+                            </div>
+                        </div>
+                        <!-- aqui debe ir el filtered de los datos -->
+                        <div>
+                            <div v-if="isLoading" class="bg-neutral p-4">
+                                <div class="flex justify-center">
+                                    <div>
+                                        <span class="loading loading-bars loading-lg"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul v-else class="list-disc p-4" >
+                                <li v-for="files in filteredRequeriments" >
+                                    <div  class="flex">
+                                        <div class="rounded-full bg-neutral ps-3 pt-3 pb-3 mt-2 grow">
+                                            <div class="flex grow">
+                                                <i class="bi bi-file-earmark me-3"></i>
+                                                <a class="italic">{{ files.name }}</a>
+                                            </div>
+                                        </div>
+                                        <div >
+                                            <div v-for="actions in Requerimientos_use" class=" pt-2 pb-2 inline rounded-full bg-error ms-2">
+                                                <button @click="change_status(studentDetailsStore.selectedStudent.id,files.student_requirements_id, actions.state)"  class="pt-4 pb-3 ps-2 pe-2  ms-4 me-4 ">
+                                                    <i :class="actions.icon_use" ></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 </template>
-<style scoped>
+<style >
 .btn_error{
     background-color: red;
 }

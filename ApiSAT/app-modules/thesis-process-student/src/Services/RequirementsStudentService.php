@@ -65,7 +65,7 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
             $requirement->approved_by_user = null;
         }
 
-        event(new RequirementStatusChanged($requirement->student_id, $requirement->id, $status, $requirement->name));
+        event(new RequirementStatusChanged($requirement->student_id, $requirement->student_requirements_id, $status, $requirement->requirement->name));
 
         $requirement->save();
     }

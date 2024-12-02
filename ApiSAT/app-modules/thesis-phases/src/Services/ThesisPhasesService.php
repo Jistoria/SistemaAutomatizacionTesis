@@ -3,6 +3,7 @@
 namespace Modules\ThesisPhases\Services;
 
 use App\Models\Academic\Thesis\ThesisPhase;
+use Illuminate\Support\Collection;
 
 class ThesisPhasesService
 {
@@ -11,7 +12,7 @@ class ThesisPhasesService
     )
     {}
 
-    public function pluck() : array
+    public function pluck() : Collection
     {
         return $this->thesisPhase->pluck('name', 'thesis_phases_id');
     }

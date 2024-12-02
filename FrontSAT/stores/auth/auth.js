@@ -50,6 +50,7 @@ export const auth = defineStore('auth',{
                 //close Is Loaded
                 const studentStore = student();
                 const panelStore = panel();
+                
                 studentStore.resetDefault();
                 panelStore.resetDefault();
 
