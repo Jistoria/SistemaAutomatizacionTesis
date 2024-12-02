@@ -116,7 +116,10 @@ class Tutor extends Teacher
             ->join('students', 'thesis_process.student_id', '=', 'students.student_id')
             ->join('thesis_phases', 'thesis_process_phases.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
             ->join('requirements', 'thesis_phases.thesis_phases_id', '=', 'requirements.thesis_phases_id')
-            ->leftJoin('student_requirements', 'requirements.requirements_id', '=', 'student_requirements.requirements_id')
+            ->join('student_requirements', function ($join) {
+                $join->on('requirements.requirements_id', '=', 'student_requirements.requirements_id')
+                    ->on('students.student_id', '=', 'student_requirements.student_id');
+            })
             ->join('users', 'students.student_id', '=', 'users.id')
             ->select(
                     'users.id as id',
@@ -129,6 +132,7 @@ class Tutor extends Teacher
                 DB::raw('JSON_AGG(
                     JSON_BUILD_OBJECT(
                         \'id\', requirements.requirements_id,
+                        \'student_requirements_id\', student_requirements.student_requirements_id,
                         \'name\', requirements.name,
                         \'status\', student_requirements.status,
                         \'approved\', student_requirements.approved,
