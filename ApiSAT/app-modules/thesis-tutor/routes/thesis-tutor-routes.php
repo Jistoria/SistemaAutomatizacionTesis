@@ -9,7 +9,9 @@ Route::prefix('thesis-tutor')->middleware(['auth:api', 'role:Docente-tesis'])->g
 
     Route::get('my-students', [ThesisTutorController::class, 'myStudents']);
 
-    Route::get('requirements-student/{student_id}', [ThesisTutorController::class, 'requirementsStudent'])->middleware('ensureIsStudentTutor');
+    Route::get('details-student/{student_id}/{thesis_phase_id}', [ThesisTutorController::class, 'detailsStudent'])->middleware('ensureIsStudentTutor');
+
+    Route::get('requirements-student/{student_id}/{phase_id}', [ThesisTutorController::class, 'requirementsStudent'])->middleware('ensureIsStudentTutor');
 
     Route::put('requirements-student/change-status/{student_id}/{student_requirements_id}', [ThesisTutorController::class, 'changeStatusRequirementStudent'])->middleware('ensureIsStudentTutor');
 

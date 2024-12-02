@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisTutor\Models\Tutor;
-
+use Modules\User\Contracts\StudentServiceInterface;
 
 /**
  * Servicio para gestionar la relación entre tutores y estudiantes en el contexto de tesis.
@@ -43,6 +43,14 @@ class ThesisTutorService
         return $students;
     }
 
+    public function getDetailsStudent(string $student_id, string $thesis_phase_id, string $idUser)
+    {
+        $detailsStudent = $this->teacher->where('teacher_id', $idUser)->first();
+
+        return $detailsStudent->detailsStudent($student_id, $thesis_phase_id);
+
+    }
+
     /**
      * Cambia el estado de un requisito de un estudiante.
      *
@@ -64,6 +72,13 @@ class ThesisTutorService
             'student_requirements_id' => $data['student_requirements_id'],
             'comment' => $data['comment']
         ]);
+    }
+
+    public function getRequirementsStudentPhase(string $student_id, string $phaseId, string $idUser): Collection
+    {
+        $student = app(StudentServiceInterface::class)->getStudentWithRelations(['thesisProcess.phasesStudent.requirements'], $student_id);
+        dd($student);
+        return $student->thesis_process->where('thesis_phases_id', $phaseId)->first()->requirements;
     }
 
     public function getObservationsRequirement (string $student_requirements_id): Collection

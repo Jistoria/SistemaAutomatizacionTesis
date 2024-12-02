@@ -40,7 +40,9 @@ class Tutor extends Teacher
         'thesis_titles.title',
 
         // Información de la fase actual
+        'thesis_phases.thesis_phases_id',
         'thesis_phases.name as phase_name',
+        'thesis_process_phases.thesis_process_phases_id',
         'thesis_process_phases.state_now as phase_state_now',
 
         // Información del periodo académico
@@ -84,7 +86,9 @@ class Tutor extends Teacher
                 'thesis_titles.thesis_id',
                 'thesis_titles.title',
 
+                'thesis_phases.thesis_phases_id',
                 'thesis_phases.name',
+                'thesis_process_phases.thesis_process_phases_id',
                 'thesis_process_phases.state_now',
 
                 'period_academic.period_academic_id',
@@ -104,5 +108,53 @@ class Tutor extends Teacher
             return $paginate ? $data->paginate($paginate) : $data->get();
     }
 
+    public function detailsStudent(string $student_id, string $thesis_phase_id)
+    {
+
+        $student = $this->students_process()
+            ->join('thesis_process_phases', 'thesis_process.thesis_process_id', '=', 'thesis_process_phases.thesis_process_id')
+            ->join('students', 'thesis_process.student_id', '=', 'students.student_id')
+            ->join('thesis_phases', 'thesis_process_phases.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
+            ->join('requirements', 'thesis_phases.thesis_phases_id', '=', 'requirements.thesis_phases_id')
+            ->leftJoin('student_requirements', 'requirements.requirements_id', '=', 'student_requirements.requirements_id')
+            ->join('users', 'students.student_id', '=', 'users.id')
+            ->select(
+                    'users.id as id',
+                    'users.name',
+                    'users.email',
+                    'thesis_process_phases.thesis_process_phases_id',
+                    'thesis_phases.name as phase_name',
+                    'thesis_phases.thesis_phases_id',
+                    'thesis_process_phases.state_now as phase_state_now',
+                DB::raw('JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        \'id\', requirements.requirements_id,
+                        \'name\', requirements.name,
+                        \'status\', student_requirements.status,
+                        \'approved\', student_requirements.approved,
+                        \'url_file\', student_requirements.url_file,
+                        \'send_date\', student_requirements.send_date
+                    )) as requirements')
+            )
+            ->where('students.student_id', $student_id)
+            ->where('thesis_process_phases.thesis_phases_id', $thesis_phase_id)
+            ->groupBy(
+                'users.id',
+                'users.name',
+                'users.email',
+                'thesis_process_phases.thesis_process_phases_id',
+                'thesis_phases.name',
+                'thesis_phases.thesis_phases_id',
+                'thesis_process_phases.state_now'
+            )
+            ->get();
+
+        $student->transform(function ($item) {
+            $item->requirements = json_decode($item->requirements, true);
+            return $item;
+        });
+
+        return $student->first();
+    }
 
 }

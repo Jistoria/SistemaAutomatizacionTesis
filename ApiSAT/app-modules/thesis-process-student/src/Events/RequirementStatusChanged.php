@@ -33,6 +33,7 @@ class RequirementStatusChanged implements ShouldBroadcast
         $this->studentId = $studentId;
         $this->requirementId = $requirementId;
         $this->newStatus = $newStatus;
+        $this->nameRequirement = $nameRequirement;
     }
 
     /**

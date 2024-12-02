@@ -30,10 +30,30 @@ class ThesisTutorController
         }
     }
 
+    public function detailsStudent(Request $request)
+    {
+        try{
+
+            $student = $this->thesisTutorService->getDetailsStudent(
+                $request->route('student_id'),
+                $request->route('thesis_phase_id'),
+                $request->user()->id
+            );
+            return ApiResponse::success($student);
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
     public function requirementsStudent(Request $request)
     {
         try{
-            return ApiResponse::success('requirements_student');
+            $requirements = $this->thesisTutorService->getRequirementsStudentPhase(
+                $request->route('student_id'),
+                $request->route('phase_id'),
+                $request->user()->id
+            );
+            return ApiResponse::success($requirements);
         }catch(\Exception $e){
             return ApiResponse::error($e->getMessage());
         }
