@@ -3,15 +3,16 @@ import { auth } from '~/stores/auth/auth';
 import { useRoute, useRouter } from 'vue-router';
 import { firstLoad } from '~/composables/firs_load';
 import { sweetAlert } from '~/composables/sweetAlert';
-
+import { useMicrosoftAuth } from '~/composables/authMicrosoft';
 const swal = sweetAlert();
-
-
 const { $echoReady } = useNuxtApp();
-
 const authStore = auth()
 const router = useRouter();
 const route = useRoute();
+const microsoftToken = ref(null);
+
+// Composable para autenticación con Microsoft
+const { getAccessToken } = useMicrosoftAuth();
 
 import { ref } from 'vue';
 import { inject } from 'vue';
@@ -19,11 +20,6 @@ import { inject } from 'vue';
 // Obtener el composable desde el contexto
 const { openAnimation, closeAnimation } = inject('requestAnimation');
 
-const loadData = async (type) => {
-  openAnimation(type); 
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  closeAnimation(); 
-};
 const email = ref('');
 const password = ref('');
 onMounted(async () => {
@@ -44,20 +40,40 @@ const Login = async () => {
         swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
         closeAnimation();
     }
-
 }
+// Lógica de inicio de sesión con Microsoft
+const loginWithMicrosoft = async () => {
+  swal.showAlert('info', 'normal', { title: 'Autenticando con Microsoft...' });
 
+  // Obtenemos el token desde el composable
+  const token = await getAccessToken();
+  if (token) {
+    microsoftToken.value = token;
+
+    // Aquí puedes usar el token para llamar a tu API o acceder a los recursos de Microsoft
+    swal.showAlert('success', 'right', {
+      title: 'Autenticación exitosa',
+      text: 'Token obtenido correctamente',
+      confirmType: 'timer',
+    });
+
+    // Simulación de redirección o integración con tu backend
+    router.push('/'); // Redirige a la página principal
+  } else {
+    swal.showAlert('error', 'normal', {
+      title: 'Error',
+      text: 'No se pudo autenticar con Microsoft',
+      confirmType: 'normal',
+    });
+  }
+};
+
+const passwordForget = () => {
+    swal.showAlert('info', 'normal', { title: 'Funcion en construccion', text: 'Se esta trabajando en esta funcion, esperala en una version futura', confirmType: 'normal' });
+};
 </script>
 
 <template >
-   <!-- <button @click="setLocale('es')">espanol </button>
-    <button @click="setLocale('en')">ingles </button>
-    <p>{{ $t('examples') }}</p>
-    <NuxtLink :to="localePath('/')"> hola tuneado</NuxtLink> -->
-    
-    <!-- <button @click="loadData('progress-bar')">Cargar con Barra de Progreso</button>
-    <button @click="loadData('spinner')">Cargar con Spinner</button>
-    <button @click="loadData('dots')">Cargar con Puntos</button> -->
         <div class="layoutLogin justify-center general_text">
             <div class="container bg-white mx-auto w-96 border_z rounded-md shadow-2xl ">
             <div class="grid grid-rows-1 gap-0 justify-items-center">
@@ -107,10 +123,10 @@ const Login = async () => {
                         <div>
                             <div class="grid grid-cols-2 mt-2 mb-2 p-2 m-2">
                                 <div>
-                                    <a class="text-sm cursor-pointer">Inciar Sesión con cuenta Microsoft</a>
+                                    <a @click="loginWithMicrosoft" class="text-sm cursor-pointer">Inciar Sesión con cuenta Microsoft</a>
                                 </div>
                                 <div class="text-end">
-                                    <a class="text-sm cursor-pointer">¿Olvido su Contraseña?</a>
+                                    <a @click="passwordForget" class="text-sm cursor-pointer">¿Olvido su Contraseña?</a>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +136,6 @@ const Login = async () => {
             </div>
             </div>
         </div>
-
 
 </template>
 <style>
