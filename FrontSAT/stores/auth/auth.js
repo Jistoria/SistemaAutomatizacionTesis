@@ -54,10 +54,6 @@ export const auth = defineStore('auth',{
                 studentStore.resetDefault();
                 panelStore.resetDefault();
 
-
-
-
-
             } catch (error) {
                 console.error('Error en logout en el store:', error);
                 throw error;
@@ -79,6 +75,12 @@ export const auth = defineStore('auth',{
                 console.log(error)
                 return success = false
             }
+        },
+        async authMicrosoft(perfile, jwt){
+            const name = perfile.name
+            const email = perfile.email
+            await authService.authMicrosoft(name, email, jwt)
+            
         },
         async logout(){
             try {

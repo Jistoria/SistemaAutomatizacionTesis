@@ -39,9 +39,8 @@ export const useMicrosoftAuth = () => {
 
       // Iniciar sesión con una ventana emergente
       const loginResponse = await msalInstance.loginPopup(loginRequest);
-      console.log("Login Response:", loginResponse);
 
-      return loginResponse.account;
+      return loginResponse;
     } catch (error) {
       console.error("Error during login:", error);
       return null;

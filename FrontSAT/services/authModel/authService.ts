@@ -45,6 +45,27 @@ class AuthService {
             return error;
         }
     }
+    async authMicrosoft(name: string, email: string, jwt: string) {
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient('api/microsoft/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    name: name,
+                    email: email,
+                    jwt: jwt
+                 }),
+            });
+            console.log('Respuesta:', response);
+
+        } catch (error) {
+            swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
+            return error;
+        }
+    }
 
     async logout() {
         const fetchClient = this.getFetchClient();
