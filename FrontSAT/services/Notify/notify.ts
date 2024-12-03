@@ -31,12 +31,21 @@ class NotifyService {
                     swal.showLoadingToast('Actualizando Datos...');
                         await notifyStore.actionNotify(data.role);
                     swal.closeLoadingToast();
+                    
                 }
-            });0
+                
+            });
         } catch (error) {
             console.error('Error al escuchar el evento NotificationUser', error);
         }
     }
+    async unlistenChannel() {
+        const { $echo } = useNuxtApp();
+        const channel = $echo.channel('notification');
+        channel.stopListening('.NotificationUser');
+        console.log('Dejando de escuchar el canal de notificaciones');
+    }
+
     
 }
 
