@@ -30,6 +30,7 @@ export const Requerimientos = [
         bg:'bg-success'
     },
     {
+        name:'Rechazados',
         icon_use:'bi bi-x-circle-fill',
         bg_use:'bg-error',
         btn_color:'btn_error',
@@ -38,11 +39,13 @@ export const Requerimientos = [
 ];
 export const Requerimientos_use = [
     {
+        title:'Rechazar',
         icon_use:'bi bi-x-circle-fill',
         btn_color:'btn_error',
         state:'Rechazado',
     },
     {
+        title:'Aprobar',
         icon_use:'bi bi-check-circle-fill',
         btn_color:'btn_suceess',
         state:'Aprobado', 

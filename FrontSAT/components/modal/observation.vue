@@ -107,7 +107,7 @@ const delete_observation = async (data,requirementId)=>{
         </div>
         <!-- contenido -->
             <div class="overflow-y-auto grow p-4" style="max-height: calc(80vh - 120px);">
-                <div v-if="isLoading" class="mt-5" >
+                <div v-if="isLoading" class="mt-5 flex justify-center" >
                     <span class="loading loading-bars loading-lg mt-4"></span>
                 </div>
                 <div v-else-if="observationStore.observationdata.length === 0">

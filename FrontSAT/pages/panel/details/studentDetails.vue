@@ -8,6 +8,7 @@ import { sweetAlert } from '~/composables/sweetAlert';
 const select_phase = ref('');
 const phase_default = ref(Fase[0].Phases_select);
 const show_phase = ref(false);
+
 const setActivePhase = async(phase) => {
     isLoading.value = true;
     const data = await studentDetailsStore.get_pluck_phases();
@@ -80,20 +81,21 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
         }
     }
     console.log(status);
-    isLoading.value = true;
+    loadingStates.value[id_requeriment_student] = true;
     const response = await studentDetailsStore.changeStudentreq(id_student, id_requeriment_student,status);  
-    if(response == true){
-        const requerimentIndex = requerimets_details.value.findIndex((req) => req.student_requirements_id === id_requeriment_student);
-        if(requerimentIndex !== -1){
-            requerimets_details.value[requerimentIndex].status = status;
-            panelStore.isLoaded = false;
-            panelStore.getlistStudents(); 
+     if(response == true){
+         const requerimentIndex = requerimets_details.value.findIndex((req) => req.student_requirements_id === id_requeriment_student);
+         if(requerimentIndex !== -1){
+             requerimets_details.value[requerimentIndex].status = status;
+             panelStore.isLoaded = false;
+             panelStore.getlistStudents();
+                swal.showAlert('success','right',{title: `Requerimiento ${status}`, text: '',confirmType: 'timer'})
+ 
         }
     }else{
-        console.error('Error al cambiar el estado en el backend.');
+                swal.showAlert('Error','right',{title: 'No se pudo cambiar el Requerimiento', text: '',confirmType: 'timer'})
     }
-    selectedStatus.value = status;
-    isLoading.value = false;
+    loadingStates.value[id_requeriment_student] = false;
 
 }
 const download_file = (url)=>{
@@ -107,10 +109,30 @@ const download_file = (url)=>{
     document.body.removeChild(link); 
 }
 
+//
+const loadingStates = ref({});
+const statuses = ['Enviado', 'Aprobado', 'Rechazado', 'Pendiente'];
+const requerimientosPorEstado = computed(() => {
+  const grupos = {};
+  statuses.forEach((status) => {
+    grupos[status] = requerimets_details.value.filter((req) => req.status === status);
+  });
+  return grupos;
+});
+const filteredActions = (status) => {
+  if (status === 'Enviado') {
+    return Requerimientos_use; // Mostrar ambos botones
+  } else if (status === 'Aprobado') {
+    return Requerimientos_use.filter((action) => action.state === 'Rechazado'); // Solo botón de Rechazado
+  } else if (status === 'Pendiente') {
+    return []; // No mostrar botones
+  }
+  return []; // Por defecto, no mostrar nada
+};
 </script>
 <template>
 <div>
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto p-4 ">
         <div class="p-4 ">
             <h1 class="text-2xl p-3">Detalles del estudiante:</h1>
             <div class="bg-neutral p-4 rounded">
@@ -214,45 +236,134 @@ const download_file = (url)=>{
                                 </div>
                         </div>
                     </div>
-                    <div v-else class="bg-white p-4 border-2 border-stone-300">
-                        <div v-if="!isLoading"  v-for="req in Requerimientos" class="inline p-2 ms-2  rounded-full" :class="req.bg">
-                            <div class="inline" @click="filterRequerimentsByStatus(req.state)">
-                                {{req.name}} <i :class="req.icon" class="ms-1 me-2"></i>
-                            </div>
-                        </div>
-                        <!-- aqui debe ir el filtered de los datos -->
-                        <div>
-                            <div v-if="isLoading" class="p-4">
+                    <div v-else  class="bg-white p-4 border-2 border-stone-300">
+                        <div v-if="isLoading" class="p-4">
                                 <div class="flex justify-center">
                                     <div>
                                         <span class="loading loading-bars loading-lg"></span>
                                     </div>
                                 </div>
-                            </div>
-                            <ul v-else class="list-disc p-4" >
-                                <li v-for="files in filteredRequeriments" >
-                                    <div  class="flex">
-                                        <div class="rounded-full bg-neutral ps-3 pt-3 pb-3 mt-2 grow">
-                                            <div class="flex grow">
-                                                <i class="bi bi-file-earmark me-3"></i>
+                        </div>
+                        <div v-else v-for="status in statuses">
+                            <h3
+                                :class="{
+                                'text-black-500': status === 'Enviado',
+                                'text-green-500': status === 'Aprobado',
+                                'text-red-500': status === 'Rechazado',
+                                'text-slate-500': status === 'Pendiente',
+                                }"
+                                class="text-md font-semibold mb-2"
+                            >
+                                {{ status }}
+                            </h3>
+                            <div v-if="requerimientosPorEstado[status].length">
+                                <div
+                                    v-for="files in requerimientosPorEstado[status]"
+                                    class=" p-3 mb-2 bg-white rounded-lg shadow border"
+                                >
+                                    <div class="flex">
+                                        <div class="grow p-4">
+                                                <i class="bi bi-file-earmark"></i>
                                                 <a @click="files.url_file ? download_file(files.url_file) : null"  :class="{
                                                         'text-blue-500 underline cursor-pointer ms-2': files.url_file,
                                                         'text-gray-500': !files.url_file,
                                                     }">
                                                     {{ files.name }}
                                                 </a>
+                                        </div>
+                                        <div  v-if="loadingStates[files.student_requirements_id]" class="bg-neutral p-4">
+                                            <div class="flex justify-center">
+                                                <div>
+                                                    <span class="loading loading-bars loading-lg"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div >
-                                            <div v-for="actions in Requerimientos_use" class=" pt-2 pb-2 inline rounded-full bg-error ms-2">
-                                                <button @click="change_status(studentDetailsStore.selectedStudent.id,files.student_requirements_id, actions.state)"  class="pt-4 pb-3 ps-2 pe-2  ms-4 me-4 ">
+                                        <div v-else>
+                                            <Observation :requirementId="files.student_requirements_id" ></Observation>
+                                            <div v-for="actions in filteredActions(files.status)" 
+                                            :class="[actions.btn_color, 'pt-2 pb-2 inline rounded-full ms-2']"
+                                            >
+                                                <button @click="change_status(studentDetailsStore.selectedStudent.id,files.student_requirements_id, actions.state)"  class="pt-4 pb-3 ps-2 pe-2  ms-2 me-2 ">
+                                                    {{ actions.title }}
                                                     <i :class="actions.icon_use" ></i>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mx-auto p-4 hidden">
+        <div class="p-4">
+            <h1 class="text-2xl p-3">Detalles del estudiante:</h1>
+            <div class="grid grid-cols-2  p-4 rounded">
+                <div class="bg-neutral p-4 rounded">
+
+                    <div class="p-4">
+                        <div >
+                            <div  role="tablist" class="tabs tabs-lifted">
+                                <a  class="tab" v-for="phase in Fase" :class="{ 'tab-active text-primary bg-yellow-500': phase.Phases_select === phase_default, 'text-gray-500': phase !== phase_default}" @click="setActivePhase(phase.Phases_select)" >
+                                        {{phase.phase_name}}
+                                </a>
+                            </div>
+                            <div class="bg-white p-4 border-b-2 border-l-2 border-r-2  border-b-stone-300 border-l-stone-300 border-r-stone-300  ">
+                                <div class="mt-2 mb-4">
+                                    <div class="flex justify-between">
+                                        <div>
+                                            <a class="bg-neutral pt-2 pb-2 ps-3 pe-3 rounded-full me-4 ">
+                                            Estudiante:
+                                            </a>
+                                            <a>
+                                                {{ studentDetailsStore.selectedStudent.name }}
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a class="p-2  bg-neutral italic rounded">
+                                                {{ studentDetailsStore.selectedStudent.phase_state_now}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="mt-5">
+                                        <a class="bg-neutral pt-2 pb-2 ps-3 pe-3 rounded-full me-2" >
+                                            Correo:
+                                        </a>
+                                        <a>
+                                            {{ studentDetailsStore.selectedStudent.email }}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <a class="bg-neutral pt-2 pb-2 ps-3 pe-3 rounded-full" >Tema:</a>
+                                    <p class="p-4 ps-2 mb-2">
+                                        <a>{{ studentDetailsStore.selectedStudent.title }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-span-2 h-full flex flex-col">
+                        <div class="grid grid-cols-1 b p-4 flex-grow bg-white border-2 border-stone-300 ">
+                            <div class="p-4 bg-gray-100 border-b border-stone-300">
+                                <h3 class="text-lg font-bold">Header</h3>
+                            </div>
+                            <div  class="flex-grow overflow-y-auto p-4">
+                                <p class="text-sm text-gray-700">
+                                    Aquí puedes colocar el contenido que necesita scroll. Agrega suficiente texto o contenido
+                                    para ver el efecto del scrollbar.
+                                </p>
+                                <p class="text-sm text-gray-700">...</p>
+                            </div>
+                            <div class="p-4 bg-gray-100 border-t border-stone-300">
+                                <p class="text-sm text-gray-600">Footer</p>
+                            </div>
                         </div>
                     </div>
                 </div>
