@@ -12,7 +12,7 @@ const route = useRoute();
 const microsoftToken = ref(null);
 
 // Composable para autenticación con Microsoft
-const { getAccessToken } = useMicrosoftAuth();
+const { getAccessToken,login, getUserProfile } = useMicrosoftAuth();
 
 import { ref } from 'vue';
 import { inject } from 'vue';
@@ -41,32 +41,44 @@ const Login = async () => {
         closeAnimation();
     }
 }
-// Lógica de inicio de sesión con Microsoft
 const loginWithMicrosoft = async () => {
-  swal.showAlert('info', 'normal', { title: 'Autenticando con Microsoft...' });
-
-  // Obtenemos el token desde el composable
-  const token = await getAccessToken();
-  if (token) {
-    microsoftToken.value = token;
-
-    // Aquí puedes usar el token para llamar a tu API o acceder a los recursos de Microsoft
-    swal.showAlert('success', 'right', {
-      title: 'Autenticación exitosa',
-      text: 'Token obtenido correctamente',
-      confirmType: 'timer',
-    });
-
-    // Simulación de redirección o integración con tu backend
-    router.push('/'); // Redirige a la página principal
+  const account = await login();
+  if (account) {
+    // Obtener información del usuario
+    const profile = await getUserProfile();
+    
+    console.log("Usuario autenticado:", profile);
   } else {
-    swal.showAlert('error', 'normal', {
-      title: 'Error',
-      text: 'No se pudo autenticar con Microsoft',
-      confirmType: 'normal',
-    });
+    console.error("No se pudo autenticar el usuario.");
   }
 };
+
+// // Lógica de inicio de sesión con Microsoft
+// const loginWithMicrosoft = async () => {
+//   swal.showAlert('info', 'normal', { title: 'Autenticando con Microsoft...' });
+
+//   // Obtenemos el token desde el composable
+//   const token = await getAccessToken();
+//   if (token) {
+//     microsoftToken.value = token;
+
+//     // Aquí puedes usar el token para llamar a tu API o acceder a los recursos de Microsoft
+//     swal.showAlert('success', 'right', {
+//       title: 'Autenticación exitosa',
+//       text: 'Token obtenido correctamente',
+//       confirmType: 'timer',
+//     });
+
+//     // Simulación de redirección o integración con tu backend
+//     router.push('/'); // Redirige a la página principal
+//   } else {
+//     swal.showAlert('error', 'normal', {
+//       title: 'Error',
+//       text: 'No se pudo autenticar con Microsoft',
+//       confirmType: 'normal',
+//     });
+//   }
+// };
 
 const passwordForget = () => {
     swal.showAlert('info', 'normal', { title: 'Funcion en construccion', text: 'Se esta trabajando en esta funcion, esperala en una version futura', confirmType: 'normal' });
