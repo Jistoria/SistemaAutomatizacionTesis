@@ -24,11 +24,13 @@ class NotifyService {
         const channel = $echo.channel(channelName);
         // Asegurarse de escuchar el evento específico NotificationDataProcess
         try {
-            channel.listen('.NotificationUser', (data: any) => {
+            channel.listen('.NotificationUser', async (data: any) => {
                 console.log('Evento NotificationUser:', data);
-                swal.showAlert(data.sweet_alert.icon,'right',{title: data.sweet_alert.title, text: '',confirmType: 'timer'})
+                await swal.showAlert(data.sweet_alert.icon,'right',{title: data.sweet_alert.title, text: '',confirmType: 'timer'})
                 if(data.update == true){
-                    notifyStore.actionNotify(data.role);
+                    swal.showLoadingToast('Actualizando Datos...');
+                        await notifyStore.actionNotify(data.role);
+                    swal.closeLoadingToast();
                 }
                 channel.stopListening('.NotificationUser');
             });0
