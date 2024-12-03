@@ -167,7 +167,7 @@ function getFullFileName(name, extension) {
                 <span v-else class="text-sm text-gray-500 italic">Ningún archivo seleccionado</span>
 
                 <button 
-                  v-if="selectedFiles[index] && requirement.status !== 'Enviado'" 
+                    v-if="selectedFiles[index] && requirement.status !== 'Enviado' && requirement.status !== 'Aprobado'" 
                   @click="clearFile(index)" 
                   class="bg-gray-400 hover:bg-red-500 text-white font-bold py-1 px-2 rounded-full flex items-center justify-center"
                   title="Eliminar archivo"

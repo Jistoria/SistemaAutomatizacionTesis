@@ -8,32 +8,51 @@ const studentStore = student();
 const loading = ref(true);
 const animatedPercentages = ref({});
 
-onMounted(async () => {
-  
+onMounted(() => {
+  initializePercentages(); // Inicializa todos los valores en 0
 
-  studentStore.dashboard_status.forEach((module, moduleIndex) => {
-    module.phases.forEach((phase, phaseIndex) => {
-      animatedPercentages.value[moduleIndex + '-' + phaseIndex] = 0;
-    });
-  });
-
-  setTimeout(() => animatePercentages(), 300);
+  setTimeout(() => animatePercentages(), 300); // Inicia la animación
   loading.value = false;
 });
 
+// Función para inicializar los porcentajes en 0
+function initializePercentages() {
+  studentStore.dashboard_status.forEach((module, moduleIndex) => {
+    module.phases.forEach((phase, phaseIndex) => {
+      const key = `${moduleIndex}-${phaseIndex}`;
+      animatedPercentages.value[key] = 0; // Siempre inicia en 0 para la animación
+    });
+  });
+}
+
+// Observa los cambios en los datos y reinicia la animación
+watch(
+  () => studentStore.dashboard_status,
+  (newValue) => {
+    initializePercentages(); // Reinicia en 0
+    animatePercentages(); // Inicia la animación hacia los nuevos valores
+  },
+  { deep: true }
+);
+
+// Función para animar los porcentajes
 function animatePercentages() {
   Object.keys(animatedPercentages.value).forEach((key) => {
     const [moduleIndex, phaseIndex] = key.split('-');
-    const targetPercentage = studentStore.dashboard_status[moduleIndex].phases[phaseIndex].progress || 0;
-    let currentPercentage = 0;
+    const targetPercentage =
+      Math.round(
+        studentStore.dashboard_status[moduleIndex]?.phases[phaseIndex]?.progress || 0
+      );
+    let currentPercentage = animatedPercentages.value[key]; // Valor actual
+
     const interval = setInterval(() => {
       if (currentPercentage >= targetPercentage) {
-        clearInterval(interval);
+        clearInterval(interval); // Detiene la animación al alcanzar el objetivo
       } else {
-        currentPercentage += 1;
-        animatedPercentages.value[moduleIndex + '-' + phaseIndex] = currentPercentage;
+        currentPercentage += 1; // Incrementa el porcentaje animado
+        animatedPercentages.value[key] = currentPercentage; // Actualiza el valor reactivo
       }
-    }, 20);
+    }, 20); // Controla la velocidad de la animación
   });
 }
 
@@ -42,6 +61,7 @@ function formatDate(date) {
   return new Date(date).toLocaleDateString('es-ES', options);
 }
 </script>
+
 
 <template>
   <div class="container mx-auto px-6 py-8 space-y-8">
