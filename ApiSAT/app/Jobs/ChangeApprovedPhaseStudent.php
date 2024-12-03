@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\ApprovedPhaseEvent;
 use App\Utils\State;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -41,6 +42,9 @@ class ChangeApprovedPhaseStudent implements ShouldQueue
                     'approval' => true,
                     'date_end' => now(),
                 ]);
+
+                event(new ApprovedPhaseEvent($model->student_id, $model->phase->name));
+
 
             }
         } catch (\Exception $e) {

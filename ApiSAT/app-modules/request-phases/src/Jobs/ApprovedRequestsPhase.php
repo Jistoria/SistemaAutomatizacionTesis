@@ -49,6 +49,8 @@ class ApprovedRequestsPhase implements ShouldQueue
                 'teacher_id' => $tutor->teacher_id,
                 'created_by_user' => $this->id,
             ]);
+
+            event(new \App\Events\ApprovedPhaseEvent($request->student_id, $request->thesisPhase->name));
         }
     }
 }

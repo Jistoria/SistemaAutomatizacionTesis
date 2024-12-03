@@ -2,6 +2,7 @@
 
 namespace App\Models\Academic\Thesis\Requests;
 
+use App\Models\Academic\Student\Student;
 use App\Models\Academic\Thesis\ThesisPhase;
 use App\Models\Academic\Thesis\ThesisProcess;
 use App\Models\Academic\Thesis\ThesisProcessPhases;
@@ -42,6 +43,16 @@ class PhaseRequest extends Model
     public function thesisProcess()
     {
         return $this->belongsTo(ThesisProcess::class, 'thesis_process_id', 'thesis_process_id');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
+    }
+
+    public function thesisPhase()
+    {
+        return $this->belongsTo(ThesisPhase::class, 'requested_phase_id', 'thesis_phases_id');
     }
 
 

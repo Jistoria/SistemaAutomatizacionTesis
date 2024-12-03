@@ -15,6 +15,8 @@ class Student extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;
 
+    protected $table = 'students';
+
     protected $primaryKey = 'student_id';
     public $incrementing = false;
     protected $keyType = 'uuid';

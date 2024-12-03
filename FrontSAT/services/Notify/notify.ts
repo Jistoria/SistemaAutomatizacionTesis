@@ -32,7 +32,6 @@ class NotifyService {
                         await notifyStore.actionNotify(data.role);
                     swal.closeLoadingToast();
                 }
-                channel.stopListening('.NotificationUser');
             });0
         } catch (error) {
             console.error('Error al escuchar el evento NotificationUser', error);

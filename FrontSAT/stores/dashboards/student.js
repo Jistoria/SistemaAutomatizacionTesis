@@ -82,6 +82,7 @@ export const student = defineStore('student',{
             const response = await docService.sendPreRequeriment(token, requeriments)
             if(response.success === true){
                 console.log('Requisitos enviados')
+                this.isLoaded = false
                 await this.getDataStatus(token)
             }
             return 

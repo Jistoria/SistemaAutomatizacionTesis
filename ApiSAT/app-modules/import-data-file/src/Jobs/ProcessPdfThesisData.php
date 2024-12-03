@@ -114,7 +114,7 @@ class ProcessPdfThesisData implements ShouldQueue
                 app(StudentServiceInterface::class)->firstOrCreateStudent([
                     'dni' => $studentData['student_dni'],
                     'student_id' => $user->id,
-                    'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
+                    'email' => 'e' . strtolower(str_replace(' ', '.', 'e'.$studentData['student_dni'])) . '@live.uleam.edu.ec',
                     'name' => $studentData['student_name'],
                     'thesis_id' => $thesis->thesis_id,
                     'degree_id' => $degree->degree_id,

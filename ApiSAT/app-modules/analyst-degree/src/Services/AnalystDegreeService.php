@@ -3,28 +3,24 @@
 namespace Modules\AnalystDegree\Services;
 
 use App\Models\Academic\Student\Student;
+use App\Utils\State;
+use Composer\XdebugHandler\Status;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\AnalystDegree\Models\StudentForAnalyst;
 
 class AnalystDegreeService
 {
-    public function __construct()
+    public function __construct(
+        protected StudentForAnalyst $studentForAnalyst
+    )
     {}
 
     public function getMyStudents() : LengthAwarePaginator
     {
-        return app(\Modules\User\Contracts\StudentServiceInterface::class)
-            ->getPaginatedStudentsWithRelations([
-                'degree',
-                'thesis',
-                'user',
-                'thesisProcess.tutor.user'], 5);
+        return $this->studentForAnalyst->with(['preRequirements', 'thesisProcess.phasesStudent.phase'])->whereHas('preRequirements', function ($query) {
+            $query->where('status', '!=', State::APPROVED);
+        })->paginate(10);
     }
 
-    public function getStudentDetails(string $student_id) : Student
-    {
-
-        return app(\Modules\User\Contracts\StudentServiceInterface::class)
-            ->getStudentWithRelations([''], $student_id);
-    }
 }
