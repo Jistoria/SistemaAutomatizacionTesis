@@ -2,6 +2,7 @@
 
 namespace App\Models\Academic\Thesis\Requirement;
 
+use App\Models\Academic\Student\Student;
 use App\Models\Academic\Thesis\Observations\ObservationRequirement;
 use App\Models\Academic\Thesis\ThesisProcessPhases;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -36,6 +37,11 @@ class RequirementsStudent extends Model
         'send_date' => 'datetime',
         'approved_date' => 'datetime',
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
+    }
 
     public function thesisProcessPhase()
     {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b248616bf3253964548445f3189e4665",
+    "content-hash": "778087eebf641e619bca9b0b79d40c93",
     "packages": [
         {
             "name": "brick/math",
@@ -3515,6 +3515,38 @@
                 }
             ],
             "time": "2024-03-23T07:42:40+00:00"
+        },
+        {
+            "name": "modules/admin-tesis",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/admin-tesis",
+                "reference": "767b627c7280d1123c25fc81afcb20d993889bb2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\AdminTesis\\Providers\\AdminTesisServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\AdminTesis\\": "src/",
+                    "Modules\\AdminTesis\\Tests\\": "tests/",
+                    "Modules\\AdminTesis\\Database\\Factories\\": "database/factories/",
+                    "Modules\\AdminTesis\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "modules/analyst-degree",

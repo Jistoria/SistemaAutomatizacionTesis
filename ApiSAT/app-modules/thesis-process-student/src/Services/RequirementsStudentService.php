@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Modules\ImportDataFile\Contracts\ImportDataFileServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Events\RequirementStatusChanged;
+use Modules\ThesisProcessStudent\Events\SendRequirementsStudent;
 use Modules\ThesisProcessStudent\Models\Requirements;
 
 class RequirementsStudentService implements RequirementsStudentServiceInterface
@@ -29,7 +30,12 @@ class RequirementsStudentService implements RequirementsStudentServiceInterface
 
     public function updateDocumentRequirementStudent(string $id, string $document): void
     {
-        $this->requirements->find($id)->update(['url_file' => $document, 'send_date' => now(), 'status' => State::SENT]);
+        $requirement = $this->requirements->find($id);
+
+        $requirement->update(['url_file' => $document, 'send_date' => now(), 'status' => State::SENT]);
+
+        event(new SendRequirementsStudent($requirement->thesisProcessPhase->teacher->teacher_id, $requirement->thesisProcessPhase->student->user->name, StateEnum::SENT, $requirement->requirement->name));
+
     }
 
     public function updateStatus(string $studentRequirementsId, StateEnum $status, string $updatedBy): void

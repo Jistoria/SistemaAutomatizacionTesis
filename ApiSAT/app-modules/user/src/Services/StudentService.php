@@ -45,6 +45,11 @@ class StudentService implements StudentServiceInterface
             ->paginate($pagination);
     }
 
+    public function eloquentStudentsWithRelations(array|string $relations, int $pagination): \Illuminate\Database\Eloquent\Builder
+    {
+        return $this->student->with((array) $relations);
+    }
+
 
 
     public function getStudentByDni(string $dni): Student
