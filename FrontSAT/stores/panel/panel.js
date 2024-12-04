@@ -67,10 +67,7 @@ export const panel = defineStore('panel',{
           return response;
   
         },
-        async detailStudent(id){
-          const response = await menusService.detailStudent(id);
-          console.log('id', id);
-        },
+        
         resetDefault(){
           this.isLoaded = false;
         }

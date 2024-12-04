@@ -4,6 +4,7 @@ namespace App\Models\Academic\Student;
 
 use App\Models\Academic\Degree;
 use App\Models\Academic\Thesis\ThesisProcess;
+use App\Models\Academic\Thesis\Requirement\PreRequirementsStudent;
 use App\Models\Academic\Thesis\ThesisTitle as ThesisThesisTitle;
 use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -46,6 +47,11 @@ class Student extends Model
     public function thesis()
     {
         return $this->belongsTo(ThesisThesisTitle::class, 'thesis_id');
+    }
+
+    public function preRequirements()
+    {
+        return $this->hasMany(PreRequirementsStudent::class, 'student_id');
     }
 
     // Relación con el modelo Degree

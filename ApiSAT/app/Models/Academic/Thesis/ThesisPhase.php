@@ -3,6 +3,7 @@
 namespace App\Models\Academic\Thesis;
 
 use App\Models\Academic\Thesis\Requirement\PreRequirements;
+use App\Models\Academic\Thesis\Requirement\PreRequirementsStudent;
 use App\Models\Academic\Thesis\Requirement\Requirement;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,6 +46,11 @@ class ThesisPhase extends Model
     public function preRequirements()
     {
         return $this->hasMany(PreRequirements::class, 'thesis_phases_id');
+    }
+
+    public function preRequirementsStudent()
+    {
+        return $this->hasMany(preRequirementsStudent::class, 'thesis_phases_id');
     }
 
 }

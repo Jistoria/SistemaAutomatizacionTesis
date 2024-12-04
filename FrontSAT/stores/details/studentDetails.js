@@ -37,7 +37,7 @@ export const StudentDetails = defineStore('studentDetails',{
             const response = await detailsService.getrequerimentsStudent(id_student,id_process_phases);
             console.log(response.success)
             const data = response.data
-            this.RequerimentsSelected = data
+            this.RequerimentsSelected = data.requirements
             return data
         },
         async changeStudentreq(id_student,id_req_student, status){
@@ -52,12 +52,20 @@ export const StudentDetails = defineStore('studentDetails',{
             const data = response.data;
             return data;
         },
+        async update_req(){
+            await this.get_requeriments(this.selectedStudent.id, this.selectedStudent.thesis_phases_id);
+
+        },
         hydrate(){
             const storage_data = localStorage.getItem('studentDetails');
             if(storage_data){
                 const { selectedStudent, requirementSelected } = JSON.parse(storage_data);
                 this.selectedStudent = selectedStudent;
             }
+        },
+        async aprobeStudent(){
+            const response = await detailsService.aproveStudent();
+            return response.success
         }
     },
 

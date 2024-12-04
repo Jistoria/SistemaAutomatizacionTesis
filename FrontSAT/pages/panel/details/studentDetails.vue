@@ -4,9 +4,9 @@ import Observation from '~/components/modal/observation.vue';
 import { StudentDetails } from '~/stores/details/studentDetails';
 import { panel } from '~/stores/panel/panel';
 import { sweetAlert } from '~/composables/sweetAlert';
-
+const studentDetailsStore = StudentDetails();
 const select_phase = ref('');
-const phase_default = ref(Fase[0].Phases_select);
+const phase_default = ref(studentDetailsStore.selectedStudent.phase_name);
 const show_phase = ref(false);
 
 const setActivePhase = async(phase) => {
@@ -40,7 +40,6 @@ definePageMeta({
 
 const swal = sweetAlert();
 const base_url = import.meta.env.VITE_API_STORAGE;
-const studentDetailsStore = StudentDetails();
 const requerimets_details = ref([]);
 const requeriment_selected = ref(null);
 const panelStore = panel();
@@ -55,8 +54,9 @@ onMounted(async () => {
     const data = await studentDetailsStore.get_requeriments(studentDetailsStore.selectedStudent.id, studentDetailsStore.selectedStudent.thesis_phases_id);
     requerimets_details.value = data.requirements;
 });
+//tengo que hacer un emmit que cuando pase el updtate requeriments pueda yo actualizar el requerimets_details
 
-
+//
 const selectedStatus = ref('Pendiente');
 const filterRequerimentsByStatus = (status) => {
     console.log(status)
@@ -68,6 +68,7 @@ const filteredRequeriments = computed(() =>
         ? requerimets_details.value.filter((req) => req.status === selectedStatus.value)
         : []
 );
+//
 
 const change_status = async (id_student, id_requeriment_student,status)=>{
     if(status === 'Rechazado'){
@@ -115,7 +116,7 @@ const statuses = ['Enviado', 'Aprobado', 'Rechazado', 'Pendiente'];
 const requerimientosPorEstado = computed(() => {
   const grupos = {};
   statuses.forEach((status) => {
-    grupos[status] = requerimets_details.value.filter((req) => req.status === status);
+    grupos[status] = studentDetailsStore.RequerimentsSelected.filter((req) => req.status === status);
   });
   return grupos;
 });
@@ -178,7 +179,7 @@ const filteredActions = (status) => {
                         </div>
                     </div>
                     <div class="col-span-1  h-full flex flex-col">
-                        <div class="grid grid-cols-1 b p-4 flex-grow bg-white border-2 border-stone-300  ">
+                        <div class="grid grid-cols-1 b p-4 flex-grow bg-white border-2 border-stone-300">
                             <div class="p-4 rounded ">
                                 <div class=" rounded ">
                                     <div v-if="false">

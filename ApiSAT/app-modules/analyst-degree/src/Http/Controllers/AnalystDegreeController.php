@@ -20,7 +20,6 @@ class AnalystDegreeController
             $students = $this->analystDegreeService->getMyStudents();
             return ApiResponse::success($students);
         } catch (\Exception $e) {
-            dd($e);
             return ApiResponse::error($e->getMessage(), $e->getCode());
         }
     }

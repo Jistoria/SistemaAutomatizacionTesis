@@ -32,6 +32,7 @@ return new class extends Migration
 
         Schema::create('student_prerequirements', function(Blueprint $table){
             $table->uuid('student_prerequirements_id')->primary();
+            $table->uuid('thesis_process_phases_id')->nullable();
             $table->uuid('pre_requirements_id');
             $table->uuid('student_id');
             $table->string('status')->default('Pendiente');
@@ -48,6 +49,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('pre_requirements_id')->references('pre_requirements_id')->on('pre_requirements')->onDelete('set null');
+            $table->foreign('thesis_process_phases_id')->references('thesis_process_phases_id')->on('thesis_process_phases')->onDelete('set null');
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('set null');
         });
     }

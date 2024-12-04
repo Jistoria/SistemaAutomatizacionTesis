@@ -23,6 +23,7 @@ class PreRequirementsStudent extends Model
     protected $fillable = [
         'pre_requirements_id',
         'student_id',
+        'thesis_process_phases_id',
         'status',
         'observation',
         'approved',

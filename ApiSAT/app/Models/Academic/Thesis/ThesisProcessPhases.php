@@ -6,6 +6,7 @@ use App\Models\Academic\PeriodAcademic;
 use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
 use App\Models\Academic\Thesis\Requirement\RequirementsStudent;
+use App\Models\Academic\Thesis\Requirement\PreRequirementsStudent;
 use App\Utils\State;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -73,6 +74,11 @@ class ThesisProcessPhases extends Model
     public function requirements()
     {
         return $this->hasMany(RequirementsStudent::class, 'thesis_process_phases_id');
+    }
+
+    public function preRequirements()
+    {
+        return $this->hasMany(PreRequirementsStudent::class, 'thesis_process_phases_id');
     }
 
 

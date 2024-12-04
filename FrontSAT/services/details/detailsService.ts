@@ -53,6 +53,16 @@ class DetailsService {
             
         }
     }
+    async aproveStudent(){
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient(`/request-phases/approve-all`);
+            return response;
+        } catch (error) {
+            
+        }
+
+    }
 
 }
 export const detailsService = new DetailsService();

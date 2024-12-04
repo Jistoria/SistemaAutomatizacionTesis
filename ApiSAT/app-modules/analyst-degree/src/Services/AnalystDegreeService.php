@@ -18,7 +18,7 @@ class AnalystDegreeService
 
     public function getMyStudents() : LengthAwarePaginator
     {
-        return $this->studentForAnalyst->with(['thesisProcess.phasesStudent.preRequirements', 'thesisProcess.phasesStudent.phase','thesisProcess.phasesStudent.pre','user','thesisProcess.thesis','thesisProcess.tutor.user'])->whereHas('preRequirements', function ($query) {
+        return $this->studentForAnalyst->with(['preRequirements.preRequirement','user','thesisProcess.thesis','thesisProcess.tutor.user'])->whereHas('preRequirements', function ($query) {
             $query->where('status', '!=', State::APPROVED);
         })->paginate(10);
     }

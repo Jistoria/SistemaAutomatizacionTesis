@@ -1,5 +1,24 @@
 <script setup>
-
+const data_place = ref(
+    [
+        {
+            student:'FLORES CEDEÑO WILLIAM ANDRES',
+            status:'pendiente',
+            email:'e1316612603@live.uleam.edu.ec',
+            Carrera:'TI',
+            tutor:'ING ARMANDO FRANCO',
+            modal:'Proyecto Integrador',
+        }
+    ],
+)
+const openModal= async(data)=>{
+    const modal = document.getElementById(`modal_Prerequeriments_${data}`);
+    if (modal) modal.showModal()
+}
+const closeModal= (data)=>{
+    const modal = document.getElementById(`modal_Prerequeriments_${data}`);
+    if (modal) modal.close();
+}
 </script>
 <template>
 
@@ -71,10 +90,8 @@
         </div>
     </div>
     <!-- Para Tribunales -->
-    <div class="container border_blue mx-auto p-4 hidden">
-        
+    <div class="container border_blue mx-auto p-4 ">
         <div class="p-4 bg-neutral rounded">
-
             <div>
                  <div class="flex p-4" >
                     <div class="bg-white p-4">
@@ -204,6 +221,7 @@
             </div>
         </div>
      </div>
+     <!-- Para Analista de Carrera -->
 </template>
 <style>
 
