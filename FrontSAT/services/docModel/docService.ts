@@ -1,6 +1,6 @@
 import { sweetAlert } from "#imports";
 import { useNuxtApp } from '#app';
-
+import { admin } from "~/stores/dashboards/admin";
 
 const swal = sweetAlert() as ReturnType<typeof sweetAlert>;
 class DocService {
@@ -110,14 +110,18 @@ class DocService {
         const channel = $echo.channel(channelName);
         // Asegurarse de escuchar el evento específico NotificationDataProcess
         try {
-            channel.listen('.NotificationDataProcess', (data: any) => {
+            channel.listen('.NotificationDataProcess', async(data: any) => {
                 if (data.status == 'success') {
                     swal.closeLoadingToast();
-                    swal.showAlert('success', 'right', {
+                    await swal.showAlert('success', 'right', {
                         title: 'El pdf se proceso correctamente',
                         text: '',
                         confirmType: 'timer'
                     });
+                    const adminStore = admin();
+                    swal.showLoadingToast('Actualizando Datos...');
+                        await adminStore.getProcesosTesis(1,'','');
+                    swal.closeLoadingToast();
                     
                 }else{
                     swal.closeLoadingToast();

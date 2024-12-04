@@ -18,7 +18,7 @@ class UserController
     public function students(Request $request)
     {
         try{
-            $studentsPaginate = $this->studentService->getPaginatedStudentsWithRelations(['user','thesisProcess.thesis'], 20);
+            $studentsPaginate = $this->studentService->getPaginatedStudentsWithRelations(['user','thesisProcess.thesis.categoryAreas','thesisProcess.tutor.user','thesisProcess.periodAcademic'], 20);
             return ApiResponse::success($studentsPaginate);
         }catch(\Exception $e){
             ApiResponse::error($e->getMessage(), 500 );
@@ -29,7 +29,7 @@ class UserController
     {
         try{
 
-            $teachers = $this->teacherService->getPaginatedTeachersWithRelations(['user', 'categoryAreas'], 20);
+            $teachers = $this->teacherService->getPaginatedTeachersWithRelations(['user', 'categoryAreas', 'students_process'], 20);
 
             return ApiResponse::success($teachers);
         }catch(\Exception $e)

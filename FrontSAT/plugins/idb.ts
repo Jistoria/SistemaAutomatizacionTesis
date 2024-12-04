@@ -22,6 +22,10 @@ interface MyDB extends DBSchema {
     key: string;
     value: any; // Cada segmento de estado será guardado con su clave única
   };
+  admin_data: {
+    key: string;
+    value: any; // Cada segmento de estado será guardado con su clave única
+  };
 }
 
 /**
@@ -39,7 +43,7 @@ let db: IDBPDatabase<MyDB> | null = null;
 
 export const getDatabase = async (): Promise<IDBPDatabase<MyDB>> => {
   if (!db) {
-    db = await openDB('SAT', 2, {
+    db = await openDB('SAT', 3, {  // Incrementar la versión a 3
       upgrade(db, oldVersion) {
         // Crear la tienda 'auth' con clave en línea 'key'
         if (!db.objectStoreNames.contains('auth')) {
@@ -50,11 +54,17 @@ export const getDatabase = async (): Promise<IDBPDatabase<MyDB>> => {
         if (!db.objectStoreNames.contains('student_data')) {
           db.createObjectStore('student_data', { autoIncrement: true });
         }
+
+        // Crear la tienda 'admin' con clave en línea 'adminId'
+        if (!db.objectStoreNames.contains('admin_data')) {
+          db.createObjectStore('admin_data', { autoIncrement: true });
+        }
       },
     });
   }
   return db;
 };
+
 
 /**
  * Define un plugin de Nuxt para proporcionar la instancia de IndexedDB a la aplicación.

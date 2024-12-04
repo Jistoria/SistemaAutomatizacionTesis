@@ -1,4 +1,8 @@
 <script setup>
+import studentAdmin from '~/components/admin/studentAdmin.vue';
+import docenteAdmin from '~/components/admin/docenteAdmin.vue';
+import procesosAdmin from '~/components/admin/procesosAdmin.vue';
+
 </script>
 <template>
     <div class="container mx-auto mt-4">
@@ -10,6 +14,9 @@
                 contenido del dashboard
             </div>
         </div>
+        <!-- <studentAdmin></studentAdmin> -->
+        <!-- <docenteAdmin></docenteAdmin> -->
+         <procesosAdmin></procesosAdmin>
     </div>
 </template>
 <style>

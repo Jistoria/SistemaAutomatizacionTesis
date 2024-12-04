@@ -2,6 +2,7 @@ import { authService } from '~/services/authModel/authService';
 import { panel } from '../panel/panel';
 import { student } from '../dashboards/student';
 import { notifyService } from '~/services/Notify/notify';
+import { admin } from '../dashboards/admin';
 /**
  * Define una tienda de autenticación utilizando Pinia.
  * 
@@ -93,10 +94,12 @@ export const auth = defineStore('auth',{
         async logout(){
             try {
                 const studentStore = student();
+                const adminStore = admin();
                 console.log(this.role)
                 if(this.role == 'Estudiante-tesis'){
-                    
                     studentStore.clearStore();
+                }else if(this.role == 'Administrador-tesis'){
+                    adminStore.clearData();
                 }
                 const response = await authService.logout()
                 console.log(response)

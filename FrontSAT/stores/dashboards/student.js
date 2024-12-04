@@ -90,22 +90,14 @@ export const student = defineStore('student',{
         async syncFromDB() {
             
             const { consults } = useIdb();
-          
+
             // Consultar y asignar cada dato individualmente
             const dashboardStatus = await consults('student_data', 'dashboard_status');
-
             const faseActual = await consults('student_data', 'faseActual');
-    
-          
             const requeriments = await consults('student_data', 'requeriments');
-
             const generalData = await consults('student_data', 'generalData');
-
             const nextFase = await consults('student_data', 'nextFase');
-
             const prerequisitos = await consults('student_data', 'prerequisitos');
-    
-          
             // Asignar al estado del store
             this.dashboard_status = dashboardStatus || [];
             this.faseActual = faseActual || {};

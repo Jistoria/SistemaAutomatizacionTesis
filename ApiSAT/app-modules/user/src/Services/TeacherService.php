@@ -17,6 +17,7 @@ class TeacherService
     public function getPaginatedTeachersWithRelations(string|array $relations, int $perPage): LengthAwarePaginator
     {
         return $this->teacher->with((array) $relations)
+            ->withCount('students_process')
             ->paginate($perPage);
     }
    
