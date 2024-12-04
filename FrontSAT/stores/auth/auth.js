@@ -82,7 +82,10 @@ export const auth = defineStore('auth',{
             const email = perfile.email
             console.log('authMicrosoft')
             const response = await authService.authMicrosoft(name, email, jwt)
-            this.setLogin(response.data.user,response.data.token)
+            if (response.success == true){
+                this.setLogin(response.data.user,response.data.token)
+
+            }
             console.log(response)
             return response
             

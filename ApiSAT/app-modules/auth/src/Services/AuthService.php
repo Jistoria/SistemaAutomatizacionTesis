@@ -120,7 +120,9 @@ class AuthService implements AuthServiceInterface
         }
 
         // Buscar al usuario por email
-        $user = $this->user->where('email', $credentials['email'])->first();
+        $user = $this->user->where('email', $decoded['email'])
+            ->orWhere('name', $decoded['name'])
+        ->first();
 
         // // Crear un nuevo usuario si no existe
         if (!$user) {

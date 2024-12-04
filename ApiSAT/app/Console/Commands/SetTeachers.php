@@ -54,7 +54,7 @@ class SetTeachers extends Command
 
 
             // Concatenar el nombre completo
-            $fullName =  $teacher['last_name'] . ' ' . $teacher['second_last_name'].' '.$teacher['first_name'] . ' ' . $teacher['second_name'] . ' ';
+            $fullName =  $teacher['last_name'] . ' ' . $teacher['second_last_name'].' '.$teacher['first_name'] . ' ' . $teacher['second_name'];
 
             $email = 'd' . strtolower(str_replace(' ', '.', substr($fullName, 0,4))) . '@uleam.edu.ec';
 

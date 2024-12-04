@@ -57,10 +57,11 @@ const loginWithMicrosoft = async () => {
             swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})
         }
 
-    closeAnimation();
+    
   } else {
     console.error("No se pudo autenticar el usuario.");
   }
+  closeAnimation();
 };
 
 // // Lógica de inicio de sesión con Microsoft

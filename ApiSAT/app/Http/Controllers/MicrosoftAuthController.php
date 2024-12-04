@@ -51,8 +51,6 @@ class MicrosoftAuthController extends Controller
     public function authenticatedMS(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'name' => 'required|string',
             'jwt' => 'required|string',
         ]);
         try {
