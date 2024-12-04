@@ -8,7 +8,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log as FacadesLog;
-use Modules\AnalystDegree\Services\AuthServiceInterface;
+use Modules\Auth\Contracts\AuthServiceInterface;
 use Modules\Auth\Events\authEvent;
 
 /**
@@ -113,6 +113,7 @@ class AuthService implements AuthServiceInterface
         // Validar el token de Microsoft
         $decoded = $this->validateMicrosoftToken($credentials['jwt']);
 
+
         // Verificar si el token es válido
         if (!$decoded) {
             return false;
@@ -122,13 +123,9 @@ class AuthService implements AuthServiceInterface
         $user = $this->user->where('email', $credentials['email'])->first();
 
         // // Crear un nuevo usuario si no existe
-        // if (!$user) {
-        //     $user = $this->user->create([
-        //         'name' => $credentials['name'],
-        //         'email' => $credentials['email'],
-        //         'password' => Hash::make('password'), // Contraseña temporal
-        //     ]);
-        // }
+        if (!$user) {
+            throw new \Exception('Usuario no encontrado');
+        }
 
         // Crear un token de acceso para el usuario autenticado
         $token = $user->createToken('auth_token')->accessToken;
@@ -150,9 +147,15 @@ class AuthService implements AuthServiceInterface
             // Descargar las claves públicas
             $json = file_get_contents($jwkUrl);
             $keys = json_decode($json, true)['keys'];
+            foreach ($keys as &$key) {
+                if (!isset($key['alg'])) {
+                    $key['alg'] = 'RS256'; // Asegúrate de usar el algoritmo correcto
+                }
+            }
 
             // Convertir las claves públicas al formato que usa firebase/php-jwt
             $jwks = JWK::parseKeySet(['keys' => $keys]);
+
 
             // Decodificar y validar el token
             $decoded = JWT::decode($jwt, $jwks);
@@ -170,6 +173,7 @@ class AuthService implements AuthServiceInterface
 
         } catch (\Exception $e) {
             // Error durante la validación
+            dd($e->getMessage());
             return null;
         }
     }

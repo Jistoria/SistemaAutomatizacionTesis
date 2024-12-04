@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\AnalystDegree\Services;
+namespace Modules\Auth\Contracts;
 
 use App\Models\Auth\User;
 

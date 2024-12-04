@@ -6,7 +6,7 @@ use App\Helpers\ApiResponse;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Modules\AnalystDegree\Services\AuthServiceInterface;
+use Modules\Auth\Contracts\AuthServiceInterface;
 
 class MicrosoftAuthController extends Controller
 {
@@ -57,6 +57,9 @@ class MicrosoftAuthController extends Controller
         ]);
         try {
                 $user = app(AuthServiceInterface::class)->loginMS($request->all());
+                if (!$user) {
+                    return ApiResponse::error('Usuario no autorizado', 401);
+                }
                 return ApiResponse::success($user, 'Usuario autenticado correctamente', 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 500);

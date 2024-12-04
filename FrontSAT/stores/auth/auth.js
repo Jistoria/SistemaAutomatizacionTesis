@@ -80,6 +80,7 @@ export const auth = defineStore('auth',{
         async authMicrosoft(perfile, jwt){
             const name = perfile.name
             const email = perfile.email
+            console.log('authMicrosoft')
             await authService.authMicrosoft(name, email, jwt)
             
         },

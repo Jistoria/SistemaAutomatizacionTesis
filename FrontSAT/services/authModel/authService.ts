@@ -48,7 +48,7 @@ class AuthService {
     async authMicrosoft(name: string, email: string, jwt: string) {
         const fetchClient = this.getFetchClient();
         try {
-            const response = await fetchClient('api/microsoft/login', {
+            const response = await fetchClient('/api/microsoft/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,6 +62,7 @@ class AuthService {
             console.log('Respuesta:', response);
 
         } catch (error) {
+            console.log('Error:', error);
             swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
             return error;
         }

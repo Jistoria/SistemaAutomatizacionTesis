@@ -15,6 +15,8 @@ use Modules\Thesis\Http\Controllers\ThesisPhasesController;
 
 Route::prefix('thesis')->group(function () {
     Route::get('phases-module', [ThesisPhasesController::class, 'phasesModule'])->middleware(['auth:api']);
+
+    Route::get('process-thesis', [ThesisPhasesController::class, 'processThesis'])->middleware(['auth:api', 'role:Administrador-tesis']);
 });
 
 
