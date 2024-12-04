@@ -3,7 +3,9 @@
 namespace Modules\AnalystDegree\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Utils\State;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Modules\AnalystDegree\Services\AnalystDegreeService;
 
 class AnalystDegreeController
@@ -35,11 +37,20 @@ class AnalystDegreeController
     //     }
     // }
 
-    public function changeStatusPrerequeriments(Request $request, string $prerequeriments_id)
+    public function changeStatusPrerequeriments(Request $request)
     {
+        $allowedStatesforTeacher = State::getStateforTeacher();
+
+        $request->validate([
+            'status' => ['required', Rule::in($allowedStatesforTeacher)],
+        ]);
         try {
-            $prerequeriments = $this->analystDegreeService->changeStatusPrerequeriments($prerequeriments_id);
-            return ApiResponse::success($prerequeriments);
+            $statusEnum = State::toEnum($request->input('status'));
+            $prerequeriments = $this->analystDegreeService->changeStatusPrerequeriments(
+                $request->user()->id,
+                $request->route('student_prerequirements_id'),
+                $statusEnum );
+            return ApiResponse::success('Estado de los prerequisitos actualizado correctamente');
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e->getCode());
         }

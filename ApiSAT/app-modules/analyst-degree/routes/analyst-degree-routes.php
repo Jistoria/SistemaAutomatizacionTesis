@@ -9,5 +9,5 @@ Route::prefix('analyst-degree')->middleware(['auth:api', 'role:Analista-Carrera'
 
     Route::get('students-details/{student_id}', [AnalystDegreeController::class, 'studentsDetails']);
 
-    Route::put('change-status-prerequirements/{prerequeriments_id}', [AnalystDegreeController::class, 'changeStatusPrerequeriments']);
+    Route::put('change-status-prerequirements/{student_prerequirements_id}', [AnalystDegreeController::class, 'changeStatusPrerequeriments']);
 });
