@@ -3,15 +3,18 @@
 namespace Modules\Auth\Services;
 
 use App\Models\Auth\User;
+use Firebase\JWT\JWK;
+use Firebase\JWT\JWT;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Modules\AnalystDegree\Services\AuthServiceInterface;
 use Modules\Auth\Events\authEvent;
 
 /**
  * Servicio de autenticación para manejar login, logout y obtener detalles del usuario.
  */
-class AuthService
+class AuthService implements AuthServiceInterface
 {
     /**
      * Instancia del modelo User.
@@ -103,5 +106,71 @@ class AuthService
         FacadesLog::info('AuthService: allUsers');
         FacadesLog::info($this->user);
         return $this->user->all();
+    }
+
+    public function loginMS($credentials) : bool|array
+    {
+        // Validar el token de Microsoft
+        $decoded = $this->validateMicrosoftToken($credentials['jwt']);
+
+        // Verificar si el token es válido
+        if (!$decoded) {
+            return false;
+        }
+
+        // Buscar al usuario por email
+        $user = $this->user->where('email', $credentials['email'])->first();
+
+        // // Crear un nuevo usuario si no existe
+        // if (!$user) {
+        //     $user = $this->user->create([
+        //         'name' => $credentials['name'],
+        //         'email' => $credentials['email'],
+        //         'password' => Hash::make('password'), // Contraseña temporal
+        //     ]);
+        // }
+
+        // Crear un token de acceso para el usuario autenticado
+        $token = $user->createToken('auth_token')->accessToken;
+
+        // Disparar un evento indicando que el usuario ha iniciado sesión
+        $this->authEvent($user->name, 'Usuario logueado');
+
+        // Retornar un array con el token y los datos del usuario
+        return ['token' => $token, 'user' => $this->setUser($user)];
+
+    }
+
+    protected function validateMicrosoftToken($jwt)
+    {
+        try {
+            // URL del endpoint para obtener las claves públicas de Microsoft
+            $jwkUrl = 'https://login.microsoftonline.com/common/discovery/v2.0/keys';
+
+            // Descargar las claves públicas
+            $json = file_get_contents($jwkUrl);
+            $keys = json_decode($json, true)['keys'];
+
+            // Convertir las claves públicas al formato que usa firebase/php-jwt
+            $jwks = JWK::parseKeySet(['keys' => $keys]);
+
+            // Decodificar y validar el token
+            $decoded = JWT::decode($jwt, $jwks);
+
+            // Verificar claims adicionales (opcional)
+            // if ($decoded->aud !== 'tu-client-id') { // Cambia 'tu-client-id' por tu Client ID de Microsoft
+            //     throw new \Exception('Invalid audience');
+            // }
+
+            // if ($decoded->iss !== 'https://login.microsoftonline.com/{tenant_id}/v2.0') { // Reemplaza {tenant_id}
+            //     throw new \Exception('Invalid issuer');
+            // }
+
+            return (array) $decoded; // Devolver el token decodificado como array
+
+        } catch (\Exception $e) {
+            // Error durante la validación
+            return null;
+        }
     }
 }
