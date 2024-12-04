@@ -124,7 +124,7 @@ class AuthService implements AuthServiceInterface
 
         // // Crear un nuevo usuario si no existe
         if (!$user) {
-            throw new \Exception('Usuario no encontrado');
+            throw new \Exception('Usuario no encontrado', 404);
         }
 
         // Crear un token de acceso para el usuario autenticado

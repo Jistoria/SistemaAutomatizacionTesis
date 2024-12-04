@@ -101,6 +101,7 @@ export const auth = defineStore('auth',{
                     
                 }
                 await notifyService.unlistenChannel();
+                localStorage.clear();
                 return true
             } catch (error) {
                 console.error('Error en logout en el store:', error);
