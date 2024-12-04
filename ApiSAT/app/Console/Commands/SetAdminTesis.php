@@ -38,7 +38,7 @@ class SetAdminTesis extends Command
         $user = \App\Models\Auth\User::create([
             'id' => \Ramsey\Uuid\Uuid::uuid4(),
             'name' => 'Analista Tesis',
-            'email' => 'analys_tesis@uleam.edu.ec',
+            'email' => 'e1316819885@live.uleam.edu.ec',
             'password' => 'analys_tesis',
         ]);
         $user->assignRole('Analista-Carrera');

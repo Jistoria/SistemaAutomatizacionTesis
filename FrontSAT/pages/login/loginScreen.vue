@@ -47,8 +47,10 @@ const loginWithMicrosoft = async () => {
     // Obtener información del usuario
     const profile = await getUserProfile();
     console.log("Usuario autenticado:", profile);
-    console.log("Token de acceso:", account.idToken);
-    await authStore.authMicrosoft(profile,account.idToken)
+    console.log("Token de acceso:", account.idToken);  
+    openAnimation('spinner');
+        await authStore.authMicrosoft(profile,account.idToken)
+    closeAnimation();
   } else {
     console.error("No se pudo autenticar el usuario.");
   }

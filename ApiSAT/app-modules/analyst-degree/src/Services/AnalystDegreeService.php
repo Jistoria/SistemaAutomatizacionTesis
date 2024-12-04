@@ -2,6 +2,7 @@
 
 namespace Modules\AnalystDegree\Services;
 
+use App\Enums\StateEnum;
 use App\Models\Academic\Student\Student;
 use App\Utils\State;
 use Composer\XdebugHandler\Status;
@@ -22,5 +23,12 @@ class AnalystDegreeService
             $query->where('status', '!=', State::APPROVED);
         })->paginate(10);
     }
+
+    public function changeStatusPrerequeriments(string $user, string $student_requirements_id, StateEnum $status): void
+    {
+        $student = $this->studentForAnalyst->where('student_prerequirements_id', $student_requirements_id)->first();
+        $student->preRequirements()->updateExistingPivot($student_requirements_id, ['status' => $status]);
+    }
+
 
 }

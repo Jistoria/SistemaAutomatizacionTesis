@@ -2,6 +2,7 @@
 
 namespace Modules\ThesisProcessStudent\Services;
 
+use App\Enums\StateEnum;
 use App\Utils\State;
 use Modules\ThesisProcessStudent\Contracts\PreRequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\PreRequirements;
@@ -43,5 +44,26 @@ class PreRequirementsStudentService implements PreRequirementsStudentServiceInte
     public function asyncPreRequirementsStudent($data)
     {
         $this->preRequirements->create($data);
+    }
+
+    public function updateStatus(string $studentPreRequirementsId, StateEnum $status, string $updatedBy): void
+    {
+        $pre_requirement = $this->preRequirements->find($studentPreRequirementsId);
+
+        if ($pre_requirement === null) {
+            throw new \Exception('Requisito no encontrado', 404);
+        }
+
+        if ($pre_requirement->status === State::REJECTED && $status->value === State::APPROVED) {
+            throw new \Exception('No se puede aprobar un requisito que ha sido rechazado', 400);
+        }
+
+        if ($pre_requirement->url_file === null) {
+            throw new \Exception('No se cambiar de estado a un requisito que no ha proporcionado documento', 400);
+        }
+
+        $pre_requirement->update(['status' => $status, 'updated_by_user' => $updatedBy]);
+
+        //event(new RequirementStatusChanged($pre_requirement->thesisProcessPhase->teacher->teacher_id, $pre_requirement->thesisProcessPhase->student->user->name, $status, $pre_requirement->requirement->name));
     }
 }

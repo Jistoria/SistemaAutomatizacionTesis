@@ -60,10 +60,15 @@ class AuthService {
                  }),
             });
             console.log('Respuesta:', response);
+            if(response.success == true){
+                await this.saveAuthData(true, response.data.user, response.data.token);
+                return response;
+            }
 
         } catch (error) {
             console.log('Error:', error);
-            swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
+            swal.showAlert('error','normal',{title: 'Error', text: (error as any).message ,confirmType: 'normal'})
+            localStorage.clear();
             return error;
         }
     }
