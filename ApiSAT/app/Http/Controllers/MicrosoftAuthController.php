@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Modules\AnalystDegree\Services\AuthServiceInterface;
 
 class MicrosoftAuthController extends Controller
 {
@@ -41,6 +44,22 @@ class MicrosoftAuthController extends Controller
                 'error' => 'Excepción al realizar la solicitud',
                 'details' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+
+    public function authenticatedMS(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'name' => 'required|string',
+            'jwt' => 'required|string',
+        ]);
+        try {
+                $user = app(AuthServiceInterface::class)->loginMS($request->all());
+                return ApiResponse::success($user, 'Usuario autenticado correctamente', 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 500);
         }
     }
 }
