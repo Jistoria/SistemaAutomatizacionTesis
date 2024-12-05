@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^3.27.0",
+    "@fullcalendar/vue3": "^6.1.15",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
-    "@fullcalendar/vue3": "^6.1.15",
     "@heroicons/vue": "^2.1.5",
     "@nuxtjs/color-mode": "^3.5.1",
     "@nuxtjs/google-fonts": "^3.2.0",
