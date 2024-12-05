@@ -8,11 +8,13 @@ const studentDetailsStore = StudentDetails();
 const select_phase = ref('');
 const phase_default = ref(studentDetailsStore.selectedStudent.phase_name);
 const show_phase = ref(false);
+const id_phase_selected = ref(null);
 
 const setActivePhase = async(phase) => {
     isLoading.value = true;
     const data = await studentDetailsStore.get_pluck_phases();
     select_phase.value = findUIDByPhaseName(phase,data);
+    id_phase_selected.value = select_phase.value[0];
     const data_1 = await studentDetailsStore.get_requeriments(studentDetailsStore.selectedStudent.id, select_phase.value[0]);
     console.log(data_1)
     if(data_1 === null){
@@ -88,11 +90,15 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
     isProcessing.value = true;
     const response = await studentDetailsStore.changeStudentreq(id_student, id_requeriment_student,status);  
      if(response == true){
-         const requerimentIndex = requerimets_details.value.findIndex((req) => req.student_requirements_id === id_requeriment_student);
+         const requerimentIndex =  studentDetailsStore.RequerimentsSelected.findIndex((req) => req.student_requirements_id === id_requeriment_student);
+         console.log(requerimentIndex);
          if(requerimentIndex !== -1){
              requerimets_details.value[requerimentIndex].status = status;
+             console.log(requerimets_details.value[requerimentIndex].status);
              panelStore.isLoaded = false;
              panelStore.getlistStudents();
+             const data = await studentDetailsStore.get_requeriments(studentDetailsStore.selectedStudent.id, id_phase_selected.value);
+             //requerimets_details.value = data.requirements;
                 swal.showAlert('success','right',{title: `Requerimiento ${status}`, text: '',confirmType: 'timer'})
  
         }
@@ -288,7 +294,7 @@ const filteredActions = (status) => {
                                             <Observation :requirementId="files.student_requirements_id" ></Observation>
                                             <div v-for="actions in filteredActions(files.status)" 
                                             :class="[
-                                                actions.btn_color, 'pt-2 pb-2 inline rounded-full ms-2 opacity-70',
+                                                actions.btn_color, 'pt-2 pb-2 inline rounded-full ms-2 opacity-100',
                                                 { 'opacity-45 cursor-not-allowed': isProcessing, 'opacity-100': !isProcessing }
                                                 ]" 
                                             >

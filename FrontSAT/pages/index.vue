@@ -26,9 +26,9 @@ const componentMap ={
 
 onMounted(async () => {
     await $echoReady
-    console.log(authStore.role);
+    
     rolSelect.value = authStore.role[0]
-    console.log(rolSelect.value);
+    
 })
 const Logout = async () => {
     await authStore.logout()

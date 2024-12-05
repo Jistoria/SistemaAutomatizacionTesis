@@ -86,7 +86,7 @@ async function handleFileUpload(event) {
                     .focus()
                     .insertContent(`<a href="${fakeUrl}" target="_blank">${file.name}</a> `) // Añade un espacio después del enlace para separar los archivos
                     .run();
-                console.log(`Archivo simulado subido: ${fakeUrl}`);
+                
         //salida
     } catch (error) {
       console.error('Error al simular la subida del archivo:', error);

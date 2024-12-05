@@ -33,15 +33,15 @@ export default defineNuxtPlugin(() => {
 
     // Evento de cambio de estado de conexión
     pusher.connection.bind('state_change', (states: any) => {
-      console.log('Cambio de estado:', states.current);
+      //console.log('Cambio de estado:', states.current);
 
       if (states.current === 'connected') {
-        console.log('Conectado a Pusher');
+        //console.log('Conectado a Pusher');
         clearTimeout(timeout); // Cancelar timeout en caso de éxito
         conexionStore.setConnected();
         if (!isInitialConnection && (previousState === 'disconnected' || previousState === 'unavailable')) {
           isReconnecting = true;
-          console.log('Reconexión detectada');
+          //console.log('Reconexión detectada');
           
           // Lógica específica para reconexión
         } else {
@@ -52,12 +52,12 @@ export default defineNuxtPlugin(() => {
         resolve(true); // Resolver la promesa cuando esté conectado
         isInitialConnection = false;
       } else if (states.current === 'disconnected' || states.current === 'unavailable') {
-        console.log('Desconectado de Pusher');
+        //console.log('Desconectado de Pusher');
         conexionStore.setDisconnected();
         authStore.online = false;
         isReconnecting = false;
       } else if (states.current === 'connecting') {
-        console.log('Intentando conectar...');
+        //console.log('Intentando conectar...');
         conexionStore.setReconnecting();
         // Temporizador para detectar reconexión
         setTimeout(() => {

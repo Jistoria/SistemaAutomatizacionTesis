@@ -152,7 +152,7 @@ const handlePdfFileUpload = (event) => {
 const file = event.target.files[0];
 if (file && file.type === 'application/pdf') {
   selectedPdfFile.value = file;
-  console.log('Archivo PDF seleccionado:', file.name);
+  
 } else {
   swal.showAlert('error', 'right', {
     title: 'Solo se aceptan archivos de tipo PDF',

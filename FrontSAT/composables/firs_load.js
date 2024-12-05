@@ -11,7 +11,6 @@ export const firstLoad = async () => {
 
     await notifyService.listenChannel(authStore.user.id);
 
-    console.log("Rol actual:", authStore.role[0]);
 
     const roleActions  = {
         [roles.rol5]: async () => {
@@ -21,19 +20,15 @@ export const firstLoad = async () => {
             await panelStore.getlistStudents();
             await panelStore.dataDashboard();  
 
-            console.log("Acción para rol4");
             // Implementar acción para rol4
         },
         [roles.rol3]: async () => {
-            console.log("Acción para rol3");
             // Implementar acción para rol3
         },
         [roles.rol2]: async () => {
-            console.log("Acción para rol2");
             // Implementar acción para rol2
         },
         [roles.rol1]: async () => {
-            console.log("Acción para rol1");
         },
     }
     const role = authStore.role[0];

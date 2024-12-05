@@ -17,7 +17,7 @@ defineProps({
 
 })
 const openModal_getdata = (data) => {
-    console.log('Opening modal for court:',data);
+    
     const modal = document.getElementById(`modal_court_${data}`);
     get_data(data);
     if (modal) modal.showModal();

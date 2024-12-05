@@ -29,9 +29,9 @@ function closeProfile() {
   profileOpen.value = false;
 }
 onMounted(async()=>{
-    console.log('entro')
+    
     const response = await panelStore.menus() 
-    console.log(panelStore.menus_data)
+    
 })
 const routeNames ={
   '/panel/list/listDefense': 'routes.listDefense',

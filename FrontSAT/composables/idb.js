@@ -61,7 +61,7 @@ export function useIdb() {
 
       await tx.done;
 
-      console.log(`Campo con clave '${key}' eliminado de la tabla '${tableName}'.`);
+      //console.log(`Campo con clave '${key}' eliminado de la tabla '${tableName}'.`);
       return { success: true };
     } catch (error) {
       console.error('Error al eliminar campo en IndexedDB:', error);
@@ -138,14 +138,14 @@ export function useIdb() {
         throw new Error('No se pudo acceder a la base de datos.');
       }
 
-      console.log(`Limpiando todos los datos de la tabla '${tableName}'...`);
+      //console.log(`Limpiando todos los datos de la tabla '${tableName}'...`);
 
       const tx = db.transaction(tableName, 'readwrite');
       const store = tx.objectStore(tableName);
       await store.clear();
       await tx.done;
 
-      console.log(`Tabla '${tableName}' limpiada correctamente.`);
+      //console.log(`Tabla '${tableName}' limpiada correctamente.`);
     } catch (error) {
       console.error('Error al limpiar datos en IndexedDB:', error);
     }

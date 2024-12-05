@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   
     // Se ejecuta justo después de que el idioma ha sido cambiado
     nuxtApp.hook('i18n:localeSwitched', ({ oldLocale, newLocale }) => {
-      console.log('onLanguageSwitched', oldLocale, newLocale);
+      //console.log('onLanguageSwitched', oldLocale, newLocale);
       // Guardar el nuevo idioma en localStorage
       localStorage.setItem('locale', newLocale);
     });

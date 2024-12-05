@@ -12,7 +12,6 @@ export const useMicrosoftAuth = () => {
       });
 
       if (response && response.access_token) {
-        console.log('Access Token:', response.access_token);
         return response.access_token; // Devuelve el token al cliente
       } else {
         console.error('No se pudo obtener el token:', response);

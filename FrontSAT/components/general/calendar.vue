@@ -28,18 +28,14 @@ const calendarOptions = ref({
   events: approvedEvents.value,
   //
   select: (data) => {
-    console.log(data.startStr);
-    console.log(data.endStr);
     // Guardamos el rango seleccionado en la lista
     selectedRanges.value.push({
       start: data.startStr,
       end: data.endStr,
     });
-    console.log(selectedRanges.value);
   },
   //eventos
   eventClick:(info)=>{
-    console.log(info.event.extendedProps);
     selectedEvent.value = {
       title: info.event.title,
       start: info.event.start,
@@ -78,7 +74,7 @@ const validateAndSaveRange = async(range)=>{
 }
 const saveDate = async (index) => {
     const range = selectedRanges.value[index];
-    console.log(range);
+
     const result = await validateAndSaveRange(range);
     if (result.success) {
         approvedEvents.value.push({

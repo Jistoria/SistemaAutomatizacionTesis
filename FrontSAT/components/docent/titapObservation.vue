@@ -31,9 +31,9 @@ const form = ref({
 })
 const sendRequest = async(data)=>{
     isLoading_mo.value = true;
-    console.log(data);
-    console.log(id_studend.value);
-    console.log(form.value.content);
+    // console.log(data);
+    // console.log(id_studend.value);
+    // console.log(form.value.content);
     const response = await observationStore.sendObservation(id_studend.value,data,form.value.content);
     if(response == true){
         emit('observation-sent', data);
@@ -49,7 +49,6 @@ const sendRequest = async(data)=>{
     form.value.content = '<h3>....</h3>';
 }
 const openModal = (data) => {
-    console.log('Opening modal for observation:',data);
     const modal = document.getElementById(`modal_observationREQ_${data}`);
     if (modal) modal.showModal();
 };

@@ -29,7 +29,6 @@ onMounted(async () => {
     listName: listName, // Nombre único para la paginación
     caso: 'procesosTesis', // Caso para diferenciar listas
   });
-  console.log(visibleData.value[0]);
   closeAnimation();
 });
 onUnmounted(async() => {

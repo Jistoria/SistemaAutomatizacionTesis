@@ -51,7 +51,6 @@ const getTruncatedText = (content, id, maxChars = 100) => {
 };
 //sistema del modal
 const openModal = async(data) => {
-    console.log('Opening modal for requirementId:',data);
     const modal = document.getElementById(`modal_observation_${data}`);
     if (modal) modal.showModal();
     await fecth_details(data);
@@ -65,7 +64,6 @@ const fecth_details = async (data) => {
         observationlist.value = Array.isArray(observationStore.observationdata)
         ? observationStore.observationdata
         : [...observationStore.observationdata];
-        console.log(observationStore.observationdata);
 
         observationlist.value.forEach((observation) => {
             if (observation && observation.observation_requirement_id) {

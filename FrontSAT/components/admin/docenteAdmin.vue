@@ -29,7 +29,7 @@ onMounted(async () => {
     listName: listName, // Nombre único para la paginación
     caso: 'docentes', // Caso para diferenciar listas
   });
-  console.log(visibleData.value[0]);
+  
   closeAnimation();
 });
 onUnmounted(async() => {

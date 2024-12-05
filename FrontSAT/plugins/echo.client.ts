@@ -4,7 +4,7 @@ import Pusher from 'pusher-js';
 
 // Asigna Pusher al objeto global `window`
 window.Pusher = Pusher;
-console.log('Laravel Echo plugin initialized');
+//console.log('Laravel Echo plugin initialized');
 
 
 const broadcaster = import.meta.env.VITE_BROADCASTER;
@@ -13,11 +13,11 @@ const wsHost = import.meta.env.VITE_WS_HOST;
 const wsPort = import.meta.env.VITE_WS_PORT;
 const wssPort = import.meta.env.VITE_WSS_PORT;
 
-console.log('Broadcaster:', broadcaster);
-console.log('Key:', key);
-console.log('WS Host:', wsHost);
-console.log('WS Port:', wsPort);
-console.log('WSS Port:', wssPort);
+// console.log('Broadcaster:', broadcaster);
+// console.log('Key:', key);
+// console.log('WS Host:', wsHost);
+// console.log('WS Port:', wsPort);
+// console.log('WSS Port:', wssPort);
 
 
 export default defineNuxtPlugin((nuxtApp) => {

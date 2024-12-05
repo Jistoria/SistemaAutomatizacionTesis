@@ -47,11 +47,10 @@ const loginWithMicrosoft = async () => {
   if (account) {
     // Obtener información del usuario
     const profile = await getUserProfile();
-    console.log("Usuario autenticado:", profile);
-    console.log("Token de acceso:", account.idToken);  
+    // console.log("Usuario autenticado:", profile);
+    // console.log("Token de acceso:", account.idToken);  
     
         const response = await authStore.authMicrosoft(profile,account.idToken)
-        console.log(response)
         if(response.success == true){
             router.push('/');
             swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})

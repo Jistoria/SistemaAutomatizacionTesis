@@ -65,7 +65,6 @@ export const auth = defineStore('auth',{
         async login(email, password){
             try {
                 const response = await authService.login(email, password)
-                console.log(response)
                 if(response.success == true){
                     this.setLogin(response.data.user,response.data.token)
                     return response
@@ -81,13 +80,11 @@ export const auth = defineStore('auth',{
         async authMicrosoft(perfile, jwt){
             const name = perfile.name
             const email = perfile.email
-            console.log('authMicrosoft')
             const response = await authService.authMicrosoft(name, email, jwt)
             if (response.success == true){
                 this.setLogin(response.data.user,response.data.token)
 
             }
-            console.log(response)
             return response
             
         },
@@ -95,14 +92,12 @@ export const auth = defineStore('auth',{
             try {
                 const studentStore = student();
                 const adminStore = admin();
-                console.log(this.role)
                 if(this.role == 'Estudiante-tesis'){
                     studentStore.clearStore();
                 }else if(this.role == 'Administrador-tesis'){
                     adminStore.clearData();
                 }
                 const response = await authService.logout()
-                console.log(response)
                 if(response == true){
 
                     console.log('cerrando sesion')

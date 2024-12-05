@@ -12,17 +12,17 @@ const form = ref({
 })
 function sendRequest(){
     requestStore.sendRequest(form.value.content);
-    console.log(form.value.content);
+    
 }
 function openModal() {
-    console.log('openModal');
+    
   isModalOpen.value = true;
 }
 
 function closeModal() {
-    console.log('closeModal');
+    
     form.content = '<h3>....</h3>';
-    console.log(form.content)
+    
     isModalOpen.value = false;
 }
 
