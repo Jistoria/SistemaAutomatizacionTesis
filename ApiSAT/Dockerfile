@@ -85,6 +85,9 @@ RUN chmod 777 /var/www/storage -R
 # RUN chown www-data:www-data /var/www/storage/oauth-private.key
 # RUN chown www-data:www-data /var/www/storage/oauth-public.key
 
+RUN composer update
+
+RUN composer dump-autoload
 
 # Exponer los puertos necesarios
 EXPOSE 80
