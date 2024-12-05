@@ -22,4 +22,15 @@ class ThesisPhasesController
         }
     }
 
+
+    public function dataDashboard()
+    {
+        try {
+            $data = $this->thesisPhasesService->dataDashboard();
+            return ApiResponse::success($data);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
 }

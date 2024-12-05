@@ -15,5 +15,6 @@ use Modules\User\Http\Controllers\UserController;
 
 Route::prefix('users')->group(function (){
     Route::get('students', [UserController::class, 'students']);
+    Route::get('students-dashboard-admin', [UserController::class, 'dataDashboardStudent']);
     Route::get('teachers', [UserController::class, 'teachers']);
 });

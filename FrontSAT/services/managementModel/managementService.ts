@@ -23,21 +23,23 @@ class ManagementService {
             console.log(error);
         }
     }
-    async changePreRequeriment(id_student:any, id_requirement:any, status:any){
+    async changePreRequeriment(id_prerequirement:any,status:any){
         const fetchClient = this.getFetchClient();
         const body ={
             status: status
         }
+        console.log(id_prerequirement);
+        console.log(status)
         try {
-            const response = await fetchClient(`analyst-degree/change-status-prerequirements/${id_student}/${id_requirement}`,{
+            const response = await fetchClient(`/analyst-degree/change-status-prerequirements/${id_prerequirement}`,{
                 method:'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(body)
             })
-            return response;
             console.log(response);
+            return response;
         } catch (error) {
             console.log(error);
         }

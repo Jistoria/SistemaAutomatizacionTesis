@@ -3,11 +3,13 @@ import FilterSearch from '~/components/general/filterSearch.vue';
 import { management } from '~/stores/management/management';
 import { usePaginationStore } from '~/stores/pagination/pagination';
 import { Fase,Requerimientos,Requerimientos_use } from '~/composables/studentDetails';
-
+import { sweetAlert } from '~/composables/sweetAlert';
+const swal = sweetAlert();
 const managementStore = management();
 const paginationStore = usePaginationStore();
 const visibleData = computed(() => managementStore.management.data);
 const base_url = import.meta.env.VITE_API_STORAGE;
+const loadingStates = ref({});
 
 const listName = 'estudiante';
 const pageSize = 2;
@@ -69,40 +71,41 @@ const getGroupedRequirements = (preRequirements) => {
   });
   return grupos;
 };
-const change_status = async (id_student, id_requeriment_student,status)=>{
-    if(status === 'Rechazado'){
-        const response = await swal.showAlert('info', 'normal',{
-            title: 'Aviso',
-            text: 'Esta accion no se puede Desahacer, seguro de continuar?',
-            confirmType: 'confirm',
-        })
-        if(response == false){
-            return
-        }
-    }
-    console.log(status);
-    loadingStates.value[id_requeriment_student] = true;
-    const response = await managementStore.changePreRequesite(id_student, id_requeriment_student,status);  
+const change_status = async (pre_req,data,id_student,student_prerequirements_id,status)=>{
+
+    // if(status === 'Rechazado'){
+    //      const response = await swal.showAlert('info', 'normal',{
+    //          title: 'Aviso',
+    //          text: 'Esta accion no se puede Desahacer, seguro de continuar?',
+    //          confirmType: 'confirm',
+    //      })
+    //      if(response == false){
+    //          return
+    //      }
+    // }
+    loadingStates.value[student_prerequirements_id] = true;
+    const response = await managementStore.changePreRequesite(student_prerequirements_id,status);  
     if(response == true){
-         const requerimentIndex = requerimets_details.value.findIndex((req) => req.student_requirements_id === id_requeriment_student);
-         if(requerimentIndex !== -1){
-             requerimets_details.value[requerimentIndex].status = status;
-             panelStore.isLoaded = false;
+        const requerimentIndex = pre_req.findIndex((req) => req.student_prerequirements_id === student_prerequirements_id);
+        if(requerimentIndex !== -1){
+
+            pre_req[requerimentIndex].status = status;             
              await managementStore.getManagement();
                           swal.showAlert('success','right',{title: `Prerrequerimiento ${status}`, text: '',confirmType: 'timer'}) 
         }
     }else{
                 swal.showAlert('Error','right',{title: 'No se pudo cambiar el Requerimiento', text: '',confirmType: 'timer'})
     }
-    loadingStates.value[id_requeriment_student] = false;
+    loadingStates.value[student_prerequirements_id] = false;
 
 }
 </script>
 <template>
+     <!-- {{ managementStore.management.data[0].pre_requirements[1].status }}  -->
     <FilterSearch>
     </FilterSearch>
     <div class="container mx-auto p-4  ">
-        <div v-for="data in visibleData" class="bg-neutral ps-2 border-2 border-stone-300">
+        <div v-for="data in visibleData" class="bg-neutral ps-2 mt-2 border-2 border-stone-300">
             <div class="pt-4 ps-4">
                 <div class="flex  justify-between">
                     <div>
@@ -118,7 +121,7 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
                             <i class="bi bi-three-dots-vertical icon_size_2"></i>
                         </i>
                         <dialog :id="`modal_Prerequeriments_${data.student_id}`" class="modal">
-                            <div class="modal-box w-11/12 max-w-5xl">
+                            <div class="modal-box w-11/12 max-w-5xl ">
                                 <h3 class="text-lg font-bold">Prerrequerimientos</h3>
                                 <div  v-for="status in statuses">
                                     <h3
@@ -145,13 +148,14 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
                                                         }"
                                                     >
                                                         {{ pre_req.pre_requirement.name }}
+                                                        
                                                     </a>
                                                 </div>
                                                 <div>
                                                     <div v-for="actions in filteredActions(pre_req.status)" 
                                                         :class="[actions.btn_color, 'pt-2 pb-2 inline rounded-full ms-2']"
                                                         >
-                                                            <button @click="change_status(data.student_id,pre_req.student_prerequirements_id, actions.state)"  class="pt-4 pb-3 ps-2 pe-2  ms-2 me-2 ">
+                                                            <button @click="change_status(data.pre_requirements,visibleData,data.student_id, pre_req.student_prerequirements_id,actions.state)"  class="pt-4 pb-3 ps-2 pe-2  ms-2 me-2 ">
                                                                 {{ actions.title }}
                                                                 <i :class="actions.icon_use" ></i>
                                                             </button>
@@ -205,7 +209,6 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
         </div>
     </div>
     <!-- modal -->
-
     <Pagination :listName="listName" :pageSize="pageSize" ></Pagination>
 
 </template>

@@ -86,15 +86,8 @@ const accept_phase = async()=>{
                     <div>
                         <FilterSearch />
                     </div>
-                    <div class="p-1">
-                        <button @click="accept_phase" class="btn btn-primary">
-                            Cambiar de fase a : 152
-                        </button>
-
-                    </div>
                 </div>
             </div>
-
             <div  v-for="dataList in visibleData" class="bg-gray-300  rounded-lg grid grid-cols-3 gap-4 items-center p-4 mt-2 mb-2">
             <div class=" col-span-2 bg-white ms-2 rounded-lg border-2 border-stone-300">
                 <div class="flex items-center mt-5 space-x-4 text-gray-600 text-xs ps-6 pt-3 ">

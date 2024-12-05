@@ -22,9 +22,9 @@ export const  management = defineStore('management',{
         resetDefault(){
             this.isLoaded = false;
         },
-        async changePreRequesite(id_student, id_requeriment_student,status){
+        async changePreRequesite(student_prerequirements_id,status){
             
-            const response = await detailsService.updatedRequeriemnts(id_student,id_req_student, status);
+            const response = await managementService.changePreRequeriment(student_prerequirements_id,status);
             console.log(response.success)
             const data = response.success
             return data

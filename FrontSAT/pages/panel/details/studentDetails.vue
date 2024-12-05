@@ -43,10 +43,12 @@ const base_url = import.meta.env.VITE_API_STORAGE;
 const requerimets_details = ref([]);
 const requeriment_selected = ref(null);
 const panelStore = panel();
+//
+
 
 //para la carga
 const isLoading = ref(false);
-
+const isProcessing = ref(false); 
 
 onMounted(async () => {
     studentDetailsStore.hydrate();
@@ -83,6 +85,7 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
     }
     console.log(status);
     loadingStates.value[id_requeriment_student] = true;
+    isProcessing.value = true;
     const response = await studentDetailsStore.changeStudentreq(id_student, id_requeriment_student,status);  
      if(response == true){
          const requerimentIndex = requerimets_details.value.findIndex((req) => req.student_requirements_id === id_requeriment_student);
@@ -94,10 +97,12 @@ const change_status = async (id_student, id_requeriment_student,status)=>{
  
         }
     }else{
-                swal.showAlert('Error','right',{title: 'No se pudo cambiar el Requerimiento', text: '',confirmType: 'timer'})
+        swal.showAlert('Error','right',{title: 'No se pudo cambiar el Requerimiento', text: '',confirmType: 'timer'})
     }
     loadingStates.value[id_requeriment_student] = false;
-
+    const timer = setTimeout(() => {
+        isProcessing.value = false;
+    }, 5000); 
 }
 const download_file = (url)=>{
     const fileUrl = `${base_url}/${url}`;
@@ -282,9 +287,13 @@ const filteredActions = (status) => {
                                         <div v-else>
                                             <Observation :requirementId="files.student_requirements_id" ></Observation>
                                             <div v-for="actions in filteredActions(files.status)" 
-                                            :class="[actions.btn_color, 'pt-2 pb-2 inline rounded-full ms-2']"
+                                            :class="[
+                                                actions.btn_color, 'pt-2 pb-2 inline rounded-full ms-2 opacity-70',
+                                                { 'opacity-45 cursor-not-allowed': isProcessing, 'opacity-100': !isProcessing }
+                                                ]" 
                                             >
-                                                <button @click="change_status(studentDetailsStore.selectedStudent.id,files.student_requirements_id, actions.state)"  class="pt-4 pb-3 ps-2 pe-2  ms-2 me-2 ">
+                                                <button :disabled="isProcessing" 
+                                                 @click="change_status(studentDetailsStore.selectedStudent.id,files.student_requirements_id, actions.state)"  class=" pt-4 pb-3 ps-2 pe-2  ms-2 me-2 ">
                                                     {{ actions.title }}
                                                     <i :class="actions.icon_use" ></i>
                                                 </button>

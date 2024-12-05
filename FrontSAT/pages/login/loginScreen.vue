@@ -144,11 +144,14 @@ const passwordForget = () => {
                             </button>                        
                         </div>
                         <div>
-                            <div class="grid grid-cols-2 mt-2 mb-2 p-2 m-2">
+                            <div class="grid grid-cols-2 mt-2 mb-2 p-2 m-2 ">
                                 <div>
-                                    <a @click="loginWithMicrosoft" class="text-sm cursor-pointer">Inciar Sesión con cuenta Microsoft</a>
+                                    <a @click="loginWithMicrosoft" class="text-sm cursor-pointer">
+                                        Inciar Sesión con cuenta Microsoft
+                                        <i class="bi bi-microsoft ms-2"></i>
+                                    </a>
                                 </div>
-                                <div class="text-end">
+                                <div class="text-end  content-center	 ">
                                     <a @click="passwordForget" class="text-sm cursor-pointer">¿Olvido su Contraseña?</a>
                                 </div>
                             </div>

@@ -3,8 +3,9 @@ import { admin } from '~/stores/dashboards/admin';
 import { usePaginationStore } from '~/stores/pagination/pagination';
 import { computed, onMounted } from 'vue';
 import { sweetAlert } from '~/composables/sweetAlert';
+import { StudentDetails } from '~/stores/details/studentDetails';
 const { openAnimation, closeAnimation } = inject('requestAnimation');
-
+const studentDetailsStore = StudentDetails();
 
 const swal = sweetAlert();
 
@@ -35,6 +36,23 @@ onMounted(async () => {
 onUnmounted(async() => {
   paginationStore.resetPagination();
 });
+const accept_phase = async()=>{
+    const response = await swal.showAlert('info', 'normal',{
+            title: 'Aviso',
+            text: 'Se realizara el cambio de fase a todos los estudiantes que mandaron solicitud, esta seguro?',
+            confirmType: 'confirm',
+    })
+    if(response == false){
+            return
+    }
+    const data = await studentDetailsStore.aprobeStudent();
+    if(data == true){
+        swal.showAlert('success','right',{title: `Fases aprobadas correctamente`, text: '',confirmType: 'timer'})
+    }else{
+        swal.showAlert('error','right',{title: `A ocurrido un error`, text: '',confirmType: 'timer'})
+
+    }
+}
 </script>
 <template>
   <div class="p-4">
@@ -43,12 +61,21 @@ onUnmounted(async() => {
       <h1 class="text-2xl font-bold text-center md:text-left">
         Gestión de Estudiantes
       </h1>
-      <button
-        @click="showAlert('Crear Estudiante')"
-        class="btn btn-primary w-full md:w-auto"
-      >
-        Crear Estudiante
+      <div>
+        <button
+          @click="showAlert('Crear Estudiante')"
+          class="btn btn-primary w-full md:w-auto"
+        >
+          Crear Estudiante
+        </button>
+        <button>
+        <div class="p-1 ">
+          <button @click="accept_phase" class="btn btn-primary w-full md:w-auto">
+            Empezar Siguiente Fase
+          </button>
+        </div>
       </button>
+      </div>
     </div>
     <!-- Filtro y busqueda -->
     <div class="flex justify-between">

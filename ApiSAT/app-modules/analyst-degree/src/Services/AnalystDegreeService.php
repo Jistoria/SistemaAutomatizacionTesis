@@ -9,7 +9,7 @@ use Composer\XdebugHandler\Status;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\AnalystDegree\Models\StudentForAnalyst;
-
+use Modules\ThesisProcessStudent\Contracts\PreRequirementsStudentServiceInterface;
 class AnalystDegreeService
 {
     public function __construct(
@@ -26,8 +26,7 @@ class AnalystDegreeService
 
     public function changeStatusPrerequeriments(string $user, string $student_requirements_id, StateEnum $status): void
     {
-        $student = $this->studentForAnalyst->where('student_prerequirements_id', $student_requirements_id)->first();
-        $student->preRequirements()->updateExistingPivot($student_requirements_id, ['status' => $status]);
+        app(PreRequirementsStudentServiceInterface::class)->updateStatus($student_requirements_id, $status, $user);
     }
 
 

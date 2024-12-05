@@ -62,8 +62,25 @@ class PreRequirementsStudentService implements PreRequirementsStudentServiceInte
             throw new \Exception('No se cambiar de estado a un requisito que no ha proporcionado documento', 400);
         }
 
-        $pre_requirement->update(['status' => $status, 'updated_by_user' => $updatedBy]);
 
+        $requirement->status = $status;
+
+        if ($status->value === State::APPROVED) {
+            $pre_requirement->approved = true;
+            $pre_requirement->approved_date = now();
+            $pre_requirement->approved_by_user = $updatedBy;
+        }
+
+        if ($status->value === State::REJECTED) {
+            app(ImportDataFileServiceInterface::class)->deleteFile($requirement->url_file);
+            $pre_requirement->url_file = null;
+            $pre_requirement->approved = false;
+            $pre_requirement->approved_date = null;
+            $pre_requirement->approved_by_user = null;
+        }
+
+
+        $requirement->save();
         //event(new RequirementStatusChanged($pre_requirement->thesisProcessPhase->teacher->teacher_id, $pre_requirement->thesisProcessPhase->student->user->name, $status, $pre_requirement->requirement->name));
     }
 }

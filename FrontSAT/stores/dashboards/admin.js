@@ -67,6 +67,14 @@ export const admin = defineStore('admin',{
             this.estudiantes = []
             this.docentes = []
             this.procesosTesis = []
+        },
+        async dashboardAdmin(){
+            try {
+                const response = await adminService.getDashboardAdmin();
+                return response;
+            } catch (error) {
+                
+            }
         }
         
         

@@ -6,6 +6,8 @@ use App\Models\Academic\Student\Student;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\User\Contracts\StudentServiceInterface;
+use Illuminate\Support\Facades\DB;
+
 
 class StudentService implements StudentServiceInterface
 {
@@ -49,6 +51,26 @@ class StudentService implements StudentServiceInterface
     {
         return $this->student->with((array) $relations);
     }
+
+
+    public function dataDashboard()
+{
+    $data = $this->student
+        ->join('thesis_process', 'students.student_id', '=', 'thesis_process.student_id')
+        ->join('thesis_process_phases', 'thesis_process.thesis_process_id', '=', 'thesis_process_phases.thesis_process_id')
+        ->join('thesis_phases', 'thesis_process_phases.thesis_phases_id', '=', 'thesis_phases.thesis_phases_id')
+        ->join('thesis_titles', 'thesis_process.thesis_id', '=', 'thesis_titles.thesis_id')
+        ->selectRaw('
+            COUNT(DISTINCT students.student_id) as total_students,
+            COUNT(DISTINCT thesis_process.thesis_id) as total_thesis,
+            COUNT(DISTINCT thesis_titles.title) as total_thesis
+        ')
+        ->get();
+
+    return $data;
+}
+
+
 
 
 

@@ -56,7 +56,13 @@ class DetailsService {
     async aproveStudent(){
         const fetchClient = this.getFetchClient();
         try {
-            const response = await fetchClient(`/request-phases/approve-all`);
+            const response = await fetchClient(`/request-phases/approve-all`,{
+                method:'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
             return response;
         } catch (error) {
             

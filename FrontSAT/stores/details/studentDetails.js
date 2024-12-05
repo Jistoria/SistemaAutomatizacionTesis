@@ -37,6 +37,9 @@ export const StudentDetails = defineStore('studentDetails',{
             const response = await detailsService.getrequerimentsStudent(id_student,id_process_phases);
             console.log(response.success)
             const data = response.data
+            if(data == null){
+                return data
+            }
             this.RequerimentsSelected = data.requirements
             return data
         },

@@ -11,7 +11,7 @@ class UserController
 {
     public function __construct(
         protected StudentService $studentService,
-        protected TeacherService $teacherService    
+        protected TeacherService $teacherService
     )
     {}
 
@@ -35,6 +35,16 @@ class UserController
         }catch(\Exception $e)
         {
             ApiResponse::error($e->getMessage(), 500);
+        }
+    }
+    public function dataDashboardStudent()
+    {
+        try{
+            $student = $this->studentService->dataDashboard();
+            return ApiResponse::success($student);
+
+        }catch(\Exception $e){
+            return ApiResponse::error($e->getMessage(), 500);
         }
     }
 }
