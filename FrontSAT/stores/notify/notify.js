@@ -13,12 +13,12 @@ export const notify = defineStore('notify',{
             const studentDetailsStore = StudentDetails();
             switch (role) {
                 case 'Estudiante-tesis':
-                    console.log('Update del estudiante, cambiar')
+                    //console.log('Update del estudiante, cambiar')
                     await studentStore.updateStudent(authStore.token);
                 break
                 case 'Docente-tesis':
                     await studentDetailsStore.update_req();
-                    console.log('Update del docente, cambiar')
+                    //console.log('Update del docente, cambiar')
                 break
                 
             }

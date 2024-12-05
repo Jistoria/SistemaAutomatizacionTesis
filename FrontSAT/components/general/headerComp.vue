@@ -79,7 +79,7 @@ const translatedMenus = computed(() =>
 </script>
 <template>
 
-<div class="navbar bg-primary">
+<div class="navbar  fixed top-0 left-0 right-0 z-50 bg-primary">
   <div class="drawer grow-0">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content flex ">
@@ -91,7 +91,7 @@ const translatedMenus = computed(() =>
     <div class="drawer-side z-10">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
       <ul class="menu bg-info text-base-content min-h-full w-80 p-4 ">
-        <div class="grow ">
+        <div :class="{ 'grow': authStore.role[0] !== roles.rol5 }" >
           <a class="flex w-full items-center space-x-1  cursor-pointer rounded-md px-2 py-3 hover:bg-gray-100 hover:text-lime-800"
             :class="{'bg-gray-200 text-lime-800': route.path === menus.url,}" 
             v-for="menus in panelStore.menus_data">

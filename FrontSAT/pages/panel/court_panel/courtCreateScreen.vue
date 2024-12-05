@@ -3,12 +3,12 @@ import Calendar from '~/components/general/calendar.vue';
 import { courtSet } from '~/composables/courtSet';
 
 const onDataSaved = async (data) => {
-    console.log('rango desde el CourtCreateScreen',data);
+    //console.log('rango desde el CourtCreateScreen',data);
 };
 </script>
 <template>
-    <div class="mx-auto px-4 py-4">
-        <div class="grid grid-cols-2 grid-flow-col ">
+    <div class="mx-auto px-4 py-12">
+        <div class="grid grid-cols-2 grid-flow-col py-2">
             <div class=" p-4 ">
                 <div class="p-4 bg-teal-600 rounded ">
                     <div class="p-4" >
@@ -77,7 +77,6 @@ const onDataSaved = async (data) => {
                             </div>
                         </div>
                     </div>
-
                     <div class="inline-flex ps-8">
                         <div class="p-2 bg-neutral mt-4 rounded">
                             Categoria

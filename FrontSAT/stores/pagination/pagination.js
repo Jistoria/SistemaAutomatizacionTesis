@@ -69,7 +69,10 @@ export const usePaginationStore = defineStore('pagination', {
       }else if(this.listName === 'admin'){
           const adminStore = admin();
           try {
-            response = await adminStore.fetchPage(1,filter, search, caso); // Pasar los parámetros al backend
+            if(this.caso == ''){
+              this.caso == 'procesosTesis'
+            }
+            response = await adminStore.fetchPage(1,filter, search, this.caso); // Pasar los parámetros al backend
             this.original_data = [...response.data.data];
             this.data_store = response.data;
             this.total_pages = response.data.last_page;
@@ -95,7 +98,7 @@ export const usePaginationStore = defineStore('pagination', {
       const start = relativePageIndex * this.page_size;
       const end = Math.min(start + this.page_size, this.original_data.length); // Asegurarse de no exceder límites    
       this.visible_data = this.original_data.slice(start, end);
-      console.log('Datos visibles actualizados:', this.visible_data);
+      //console.log('Datos visibles actualizados:', this.visible_data);
     
       if (this.visible_data.length === 0) {
         console.warn('La página solicitada no tiene datos visibles. Verifique el estado de original_data o los parámetros.');
@@ -111,7 +114,7 @@ export const usePaginationStore = defineStore('pagination', {
         this.isLoading = true;
         let response;
         try {
-          console.log(`Solicitando datos del backend para la página ${page}`);
+          //console.log(`Solicitando datos del backend para la página ${page}`);
           if (this.listName === 'estudiante') {
             const dataStore = panel();
              response = await dataStore.fetchPage(page);

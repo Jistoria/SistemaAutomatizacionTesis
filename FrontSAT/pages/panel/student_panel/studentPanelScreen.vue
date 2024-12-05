@@ -117,7 +117,7 @@ const mandarSolicitud = async () => {
 </script>
 
 <template>
-  <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+  <div class="container mx-auto p-4 mt-11 sm:p-6 lg:p-8">
     <!-- Header Section -->
     <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
       <h2 class="text-2xl font-bold text-center sm:text-left">Bienvenido, {{formatUserName(authStore.user.name)}}</h2>

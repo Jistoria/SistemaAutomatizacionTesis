@@ -40,7 +40,7 @@ const inProcessPercentage = computed(() => {
 
     </div>
     <div class="container mx-auto mt-4">
-        <div class="gap-4 p-3">
+        <div class="gap-4 py-12">
             <div>
                 <h2 class="text-2xl font-bold text-center sm:text-left">Bienvenido, {{formatUserName(authStore.user.name)}}</h2>
             </div>
@@ -76,11 +76,11 @@ const inProcessPercentage = computed(() => {
                     </div>
 
                 </div>
-        </div>
-        <div class="flex justify-center mt-4" v-show="!admin_load">
-                <span class="loading loading-bars loading-lg"></span>
+            </div>
+            <div class="flex justify-center mt-4" v-show="!admin_load">
+                    <span class="loading loading-bars loading-lg"></span>
 
-        </div>
+            </div>
         </div>
     </div>
 </template>

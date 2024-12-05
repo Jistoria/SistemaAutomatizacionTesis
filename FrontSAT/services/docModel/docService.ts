@@ -1,6 +1,7 @@
 import { sweetAlert } from "#imports";
 import { useNuxtApp } from '#app';
 import { admin } from "~/stores/dashboards/admin";
+import { usePaginationStore } from "~/stores/pagination/pagination";
 
 const swal = sweetAlert() as ReturnType<typeof sweetAlert>;
 class DocService {
@@ -108,6 +109,7 @@ class DocService {
         // Configuración del canal público
         const channelName = `adminTesis.${id}`;
         const channel = $echo.channel(channelName);
+        const usePagination = usePaginationStore();
         // Asegurarse de escuchar el evento específico NotificationDataProcess
         try {
             channel.listen('.NotificationDataProcess', async(data: any) => {
@@ -121,6 +123,7 @@ class DocService {
                     const adminStore = admin();
                     swal.showLoadingToast('Actualizando Datos...');
                         await adminStore.getProcesosTesis(1,'','');
+                        await usePagination.applyFiltersAndSearch({search:'', filter:''});
                     swal.closeLoadingToast();
                     
                 }else{

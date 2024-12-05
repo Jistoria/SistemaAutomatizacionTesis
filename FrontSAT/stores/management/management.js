@@ -13,7 +13,7 @@ export const  management = defineStore('management',{
 
             }else{
                 const response = await managementService.getmanagement(page,filter,search)
-                console.log(response);
+                //console.log(response);
                 this.management = response.data;
                 this.current_page = response.data.current_page;
                 this.last_page = response.data.last_page;
@@ -25,7 +25,7 @@ export const  management = defineStore('management',{
         async changePreRequesite(student_prerequirements_id,status){
             
             const response = await managementService.changePreRequeriment(student_prerequirements_id,status);
-            console.log(response.success)
+            //console.log(response.success)
             const data = response.success
             return data
 

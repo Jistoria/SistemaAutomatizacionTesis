@@ -7,7 +7,7 @@ export const request = defineStore('request',{
     actions:{
         async  sendRequest(data){
             try {
-                console.log(data)
+                //console.log(data)
                 await requestService.sendrequest(data);    
             } catch (error) {
                 console.log(error);

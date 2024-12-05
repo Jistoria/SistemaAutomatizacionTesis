@@ -15,7 +15,7 @@ export const panel = defineStore('panel',{
     actions:{
         async menus(){
             const response = await menusService.menus()
-            console.log(response.data)
+            //console.log(response.data)
             this.menus_data = response.data;
 
         },
@@ -62,7 +62,7 @@ export const panel = defineStore('panel',{
         },
 
         async fetchPage(page = 1, filter='', search =''){
-          console.log(page)
+          //console.log(page)
           const response = await menusService.getListStudents(page,filter,search);
           return response;
   

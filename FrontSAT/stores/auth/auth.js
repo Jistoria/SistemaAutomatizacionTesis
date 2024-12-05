@@ -102,7 +102,6 @@ export const auth = defineStore('auth',{
                 const response = await authService.logout()
                 if(response == true){
 
-                    console.log('cerrando sesion')
                     this.setLogout()
                     
                 }

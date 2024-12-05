@@ -27,7 +27,7 @@ export const admin = defineStore('admin',{
         async getDocentes(page=1, search= '', filter= ''){
             const { setData } = useIdb()
             const response = await adminService.getDocentes(page, filter, search)
-            console.log('response', response)
+            //console.log('response', response)
             if(response.success == true){
                 await setData('admin_data', 'docentes', response.data)
             }
@@ -47,7 +47,7 @@ export const admin = defineStore('admin',{
             
             if(caso == 'estudiantes'){
                 const response = await this.getEstudiantes(page, search, filter)
-                console.log('response', response)
+                //console.log('response', response)
                 return response
             }else if(caso == 'docentes'){
                 const response = await this.getDocentes(page, search, filter)

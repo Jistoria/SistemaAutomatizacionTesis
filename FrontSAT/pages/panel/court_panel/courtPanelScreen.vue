@@ -23,7 +23,7 @@ const closeModal= (data)=>{
 <template>
 
     <!-- Para Tribunales -->
-    <div class="container border_blue mx-auto p-4 hidden">
+    <div class="container  mx-auto p-4 hidden">
         <div class="p-4 bg-neutral rounded">
             <div>
                  <div class="flex p-4" >
@@ -84,15 +84,20 @@ const closeModal= (data)=>{
         </div>
     </div>
     <!-- Para Asignar un Tribunal-->
-     <div class="container border_y mx-auto p-4 hidden">
-        <div class="bg-neutral p-4">
+     <div class="container mx-auto p-4 my-8">
+        <div class="container mx-auto ">
+            <h2 class="text-2xl font-bold text-center sm:text-left pb-1 ps-4 pt-5">
+                Sustentación
+            </h2>
+        </div>
+        <div v-for="data in 4" class="bg-neutral p-4 border-2 border-stone-300 mt-2">
             <div class="grid grid-cols-4 gap-4" >
                     <div class="col-span-3">
                         <div class="flex">
-                            <div class="p-4 bg-white ms-2 rounded-xl">
+                            <div class="p-4 bg-white ms-2 rounded-xl border-2 border-stone-300">
                                   Carrera: Ti
                             </div>
-                            <div class="p-4 bg-white ms-2 rounded-xl" >
+                            <div class="p-4 bg-white ms-2 rounded-xl border-2 border-stone-300" >
                                   Modal: PROYECTO INTEGRADOR
                             </div>
 
@@ -101,19 +106,19 @@ const closeModal= (data)=>{
                             <div class="flex" >
                                 <div v-for="data in 2" class="ms-2 " >
                                     <div>
-                                        <div class="pt-3 pb-3 ps-2 " >
-                                            <a class="bg-error p-2 rounded-l-lg ">
+                                        <div class="pt-3 pb-3 ps-2  " >
+                                            <a class="bg-primary p-2 rounded-l-lg   ">
                                                 Cedula 1:
                                             </a>
-                                            <a class="bg-white pt-2 pb-2 ps-1 pe-2 rounded-r-lg" >
+                                            <a class="bg-white pt-2 pb-2 ps-1 pe-2 rounded-r-lg border-r-2 border-b-2 border-t-2 border-stone-300 " >
                                                 1313597773
                                             </a>
                                         </div>
                                         <div class="pt-3 pb-3 ps-2 ">
-                                            <a class="bg-error p-2 rounded-l-lg ">
+                                            <a class="bg-primary p-2 rounded-l-lg ">
                                                 Estudiante:
                                             </a>
-                                            <a  class="bg-white pt-2 pb-2 ps-1 pe-2 rounded-r-lg">
+                                            <a  class="bg-white pt-2 pb-2 ps-1 pe-2 rounded-r-lg border-r-2 border-b-2 border-t-2 border-stone-300">
                                                 AVILA ZAMBRANO RUBEN ARIEL
                                             </a>
                                         </div>
@@ -122,10 +127,10 @@ const closeModal= (data)=>{
                             </div>
                         </div>
                         <div class="p-4 ">
-                            <a class="bg-error pe-4 ps-4 pt-2   rounded-t-lg ">
+                            <a class="bg-primary pe-4 ps-4 pt-2   rounded-t-lg ">
                                 Tema:
                             </a>
-                            <div class="bg-white p-4 rounded-b-lg ">
+                            <div class="bg-white p-4 rounded-b-lg  border-r-2 border-t-2 border-b-2 border-l-2 border-stone-300">
                                 <p>
                                     DESARROLLO DE UN SISTEMA WEBPARA LA GESTION DEL FLUJO DE INFORMACIÒN EN EL TALLER AUTOMOTRIZ SISTEMA DE INYECCIONES FRANCO
                                 </p>
@@ -137,16 +142,16 @@ const closeModal= (data)=>{
                         <div class="rounded  ">
                             <div v-for="data in 3" class="flex justify-between pb-4 mt-3">
                                 <div>
-                                    <a class="bg-error ps-4 pe-4 rounded-badge">
+                                    <a class="bg-primary ps-4 pe-4 rounded-badge">
                                         Tribunal 1:
                                     </a>
-                                    <p class="pe-5 ps-3 pt-2 rounded-badge pb-2 mt-1 bg-white" >
+                                    <p class="pe-5 ps-3 pt-2 rounded-badge pb-2 mt-1 bg-white border-2 border-stone-300 " >
                                         Ing. Patricia Quiroz
                                     </p>
                                 </div>
                                 <div class="content-end ">
                                     <i class="bi bi-check-circle-fill icon_size"></i>    
-                                    <i class="bi bi-x-circle-fill icon_size"></i>
+                                    <i class="bi bi-x-circle-fill icon_size hidden"></i>
                                 </div>
                             </div>
                         </div>

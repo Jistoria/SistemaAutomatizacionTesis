@@ -7,7 +7,7 @@ export const observation = defineStore('observation',{
         async sendObservation(id,id_requeriment,content){
             try {
                 const response = await observationService.sendObservation(id,id_requeriment,content)
-                console.log(response);
+                //console.log(response);
                 return response.success;
             } catch (error) {
                 
@@ -18,7 +18,7 @@ export const observation = defineStore('observation',{
                 try {
                     const response = await observationService.getObservation(id, id_requeriment);
                     this.observationdata = response.data;
-                    console.log(this.observationdata);
+                    //console.log(this.observationdata);
                 } catch (error) {
                     
                 }
@@ -29,7 +29,7 @@ export const observation = defineStore('observation',{
         async deleteObservation(id,id_requeriment){
             try {
                 const response = await observationService.deleteObservation(id,id_requeriment);
-                console.log(response);
+                //console.log(response);
             } catch (error) {
                 
             }

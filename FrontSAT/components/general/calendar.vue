@@ -143,6 +143,12 @@ onMounted(async () => {
 </script>
 <template>
   <!-- Se tiene que abrir un modal en daisy Ui en el que cuando haga click en la fecha se abra ese modal de fecha en la que esten las fechas de ese momento y preguntar si quiere guardarlo ahi -->
+  <div class="flex justify-end">
+    <button class="btn btn-primary my-4" @click="showAddEventModal = true">
+      Agregar Nuevo Evento
+    </button>
+  </div>
+
   <FullCalendar 
   :options="calendarOptions" />
   <div v-for="(range, index) in selectedRanges" :key="range.start">
@@ -184,9 +190,6 @@ onMounted(async () => {
     </div>
   </dialog>
 
-  <button class="btn btn-primary my-4" @click="showAddEventModal = true">
-    Agregar Nuevo Evento
-  </button>
 
   <dialog v-if="showAddEventModal"  class="modal modal-open">
     <div class="modal-box">

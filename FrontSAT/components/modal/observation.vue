@@ -14,16 +14,7 @@ const rolSelect = ref('');
 const id_studend_ob = ref(null);
 const isLoading = ref(true);
 
-const showdatafunction = (data)=>{
-    console.log(data)
-    showdata.value = !showdata.value
-}
-const deleteObservation = (data)=>{
-    console.log(data)
-}   
-const editObservation = (data)=>{
-    console.log(data)
-}
+
 defineProps({
   requirementId: {
     type: String, 

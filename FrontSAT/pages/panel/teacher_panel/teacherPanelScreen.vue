@@ -24,7 +24,7 @@ onMounted(()=>{
     setTimeout(() => {
         admin_load.value = true;
         // Aquí va tu lógica
-    }, 3000); 
+    }, 2000); 
 })
 
 const totalStudents = computed(() => totalData.value.approved + totalData.value.inProcess);
@@ -38,47 +38,47 @@ const inProcessPercentage = computed(() => {
 <template>
         <div >
             <div class="container mx-auto mt-4">
-        <div >
-                <h2 class="text-2xl font-bold text-center sm:text-left">Bienvenido, {{formatUserName(authStore.user.name)}}</h2>
-        </div >
-            <div v-show="admin_load" class="container mx-auto">
-                <div class="grid grid-cols-8 gap-4 ">
-                        <div  class="col-span-2 pt-3">
-                            <div class=" bg-neutral border  text-neutral-content p-4 border-stone-300 ">
-                                <h1 class="text-xl font-bold mb-4">Resumen de Progreso:</h1>
-                                <div class="text-center">
+                <div class="gap-4 py-12 " >
+                        <h2 class="text-2xl font-bold text-center sm:text-left">Bienvenido, {{formatUserName(authStore.user.name)}}</h2>
+                </div >
+                <div v-show="admin_load" class="container mx-auto">
+                    <div class="grid grid-cols-8 gap-4 ">
+                            <div  class="col-span-2 pt-3">
+                                <div class=" bg-neutral border  text-neutral-content p-4 border-stone-300 ">
+                                    <h1 class="text-xl font-bold mb-4">Resumen de Progreso:</h1>
+                                    <div class="text-center">
+                                        <div
+                                        class="radial-progress bg-green-100 text-green-500 border-green-500 border-1"
+                                        :style="{ '--value': approvedPercentage.toFixed(0) }"
+                                        role="progressbar"
+                                        >
+                                        {{ approvedPercentage.toFixed(0) }}%
+                                        </div>
+                                        <p class="mt-2 font-semibold text-green-500">Aprobados</p>
+                                    </div>
+                                    <div class="text-center">
                                     <div
-                                    class="radial-progress bg-green-100 text-green-500 border-green-500 border-1"
-                                    :style="{ '--value': approvedPercentage.toFixed(0) }"
-                                    role="progressbar"
-                                    >
-                                    {{ approvedPercentage.toFixed(0) }}%
+                                        class="radial-progress bg-yellow-100 text-yellow-500 "
+                                        :style="{ '--value': inProcessPercentage.toFixed(0) }"
+                                        role="progressbar"
+                                        >
+                                        {{ inProcessPercentage.toFixed(0) }}%
+                                        </div>
+                                        <p class="mt-2 font-semibold text-yellow-500">En Proceso</p>
                                     </div>
-                                    <p class="mt-2 font-semibold text-green-500">Aprobados</p>
-                                </div>
-                                <div class="text-center">
-                                <div
-                                    class="radial-progress bg-yellow-100 text-yellow-500 "
-                                    :style="{ '--value': inProcessPercentage.toFixed(0) }"
-                                    role="progressbar"
-                                    >
-                                    {{ inProcessPercentage.toFixed(0) }}%
-                                    </div>
-                                    <p class="mt-2 font-semibold text-yellow-500">En Proceso</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-span-6 ">
-                            <DataDashboard data="Estudiantes" @update-total="handleUpdateTotal" ></DataDashboard>
-                        </div>
+                            <div class="col-span-6 ">
+                                <DataDashboard data="Estudiantes" @update-total="handleUpdateTotal" ></DataDashboard>
+                            </div>
+                    </div>
                 </div>
-            </div>
-            <div class="flex justify-center mt-4" v-show="!admin_load">
-                <span class="loading loading-bars loading-lg"></span>
+                <div class="flex justify-center mt-4" v-show="!admin_load">
+                    <span class="loading loading-bars loading-lg"></span>
+
+                </div>
 
             </div>
-
-        </div>
         </div>
 </template>
 <style>

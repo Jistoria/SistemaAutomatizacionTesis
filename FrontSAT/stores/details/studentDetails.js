@@ -35,7 +35,7 @@ export const StudentDetails = defineStore('studentDetails',{
         },
         async get_requeriments(id_student,id_process_phases){
             const response = await detailsService.getrequerimentsStudent(id_student,id_process_phases);
-            console.log(response.success)
+            //console.log(response.success)
             const data = response.data
             if(data == null){
                 return data
@@ -45,13 +45,13 @@ export const StudentDetails = defineStore('studentDetails',{
         },
         async changeStudentreq(id_student,id_req_student, status){
             const response = await detailsService.updatedRequeriemnts(id_student,id_req_student, status);
-            console.log(response.success)
+            //console.log(response.success)
             const data = response.success
             return data
         },
         async get_pluck_phases(){
             const response = await detailsService.get_pluck();
-            console.log(response.success);
+            //console.log(response.success);
             const data = response.data;
             return data;
         },
