@@ -125,7 +125,7 @@ const mandarSolicitud = async () => {
           </header>
               <!-- Status Section -->
         <section class="mb-8 w-full overflow-x-auto">
-          <div v-if="studentStore.generalData && Object.keys(studentStore.generalData).length>8">
+          <div v-if="studentStore.generalData && Object.keys(studentStore.generalData).length>0">
             <h2 class="text-xl sm:text-2xl font-bold text-center text-primary mb-4">
               Estado del Proyecto:
             </h2>
@@ -141,7 +141,7 @@ const mandarSolicitud = async () => {
           </div>
         </section>
 
-        <div v-if="studentStore.faseActual && Object.keys(studentStore.faseActual).length > 0">
+        <div v-if="studentStore.faseActual && Object.keys(studentStore.faseActual).length > 0 && studentStore.faseActual.phase_name != 'Fase Evaluación'">
         <!-- Resource Section -->
         <section class="mb-8">
           <h2 class="text-lg sm:text-xl font-semibold mb-4">Recurso</h2>
@@ -236,51 +236,66 @@ const mandarSolicitud = async () => {
           </div>
         </section>
         </div>
-    <div v-else-if="studentStore.prerequsito === false"
-    class="flex flex-col items-center justify-center gap-6 p-6 bg-white rounded-lg shadow-md">
-    <!-- Mensaje -->
-    <p class="text-lg font-semibold text-gray-700 text-center">
-      <span v-if="studentStore.nextFase?.data?.requeriment">
-        ¡Ya ha enviado la solicitud para matricularse en 
-        <span class="text-primary">
-          {{ studentStore.nextFase?.data?.phase_name || 'la siguiente fase' }}
-        </span>!
-      </span>
-      <span v-else>
-        ¡Haz completado la fase anterior! Si desea continuar el proceso, haga una solicitud para matricularse en 
-        <span class="text-primary">
-          {{ studentStore.nextFase?.data?.phase_name || 'la siguiente fase' }}
-        </span>.
-      </span>
-    </p>
-    <!-- Botón -->
-    <button
-      @click="mandarSolicitud()"
-      :disabled="studentStore.nextFase?.data?.phase_requests === true"
-      class="btn w-full sm:w-auto px-6 py-3"
-      :class="studentStore.nextFase?.data?.phase_requests ? 'btn-disabled' : 'btn-primary'"
-    >
-      {{ studentStore.nextFase?.data?.phase_requests ? 'Solicitud Enviada' : 'Enviar Solicitud' }}
-    </button>
-  </div>
-  <div v-else-if="studentStore.prerequsito === true">
-            <!-- Requirements Section -->
-            <section class="mb-8">
-              <h2 class="text-lg sm:text-xl font-semibold mb-4">Pre-Requisitos</h2>
-              <div class="bg-gray-100 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-                <p class="text-gray-700 text-sm sm:text-base flex items-center">
-                  ⚠️ Para solicitar matricularse en la siguiente fase, debe completar los pre-requisitos.
-                </p>
-                <ClientOnly>
-                  <div class="w-full sm:w-auto">
-                    <StudentPreRquisits />
-                  </div>
-                </ClientOnly>
-              </div>
-            </section>
-  </div>
-
-
+        <div v-else-if="studentStore.faseActual.phase_name == 'Fase Evaluación'">
+          <div class="alert alert-info shadow-lg rounded-lg p-4 flex items-start">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 18h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+              </svg>
+            </div>
+            <div class="ml-4">
+              <span class="text-lg font-bold text-primary">¡Atención!</span>
+              <p class="mt-2">
+                En este momento estás en la fase de <span class="font-semibold text-primary">Evaluación</span>. 
+                Espera a que se te asigne una <span class="font-semibold text-primary">fecha de sustentación</span>.
+              </p>
+            </div>
+          </div>
+          
+        </div>
+      <div v-else-if="studentStore.prerequsito === false"
+      class="flex flex-col items-center justify-center gap-6 p-6 bg-white rounded-lg shadow-md">
+      <!-- Mensaje -->
+      <p class="text-lg font-semibold text-gray-700 text-center">
+        <span v-if="studentStore.nextFase?.data?.requeriment">
+          ¡Ya ha enviado la solicitud para matricularse en 
+          <span class="text-primary">
+            {{ studentStore.nextFase?.data?.phase_name || 'la siguiente fase' }}
+          </span>!
+        </span>
+        <span v-else>
+          ¡Haz completado la fase anterior! Si desea continuar el proceso, haga una solicitud para matricularse en 
+          <span class="text-primary">
+            {{ studentStore.nextFase?.data?.phase_name || 'la siguiente fase' }}
+          </span>.
+        </span>
+      </p>
+      <!-- Botón -->
+      <button
+        @click="mandarSolicitud()"
+        :disabled="studentStore.nextFase?.data?.phase_requests === true"
+        class="btn w-full sm:w-auto px-6 py-3"
+        :class="studentStore.nextFase?.data?.phase_requests ? 'btn-disabled' : 'btn-primary'"
+      >
+        {{ studentStore.nextFase?.data?.phase_requests ? 'Solicitud Enviada' : 'Enviar Solicitud' }}
+      </button>
+    </div>
+    <div v-else-if="studentStore.prerequsito === true ">
+              <!-- Requirements Section -->
+              <section class="mb-8">
+                <h2 class="text-lg sm:text-xl font-semibold mb-4">Pre-Requisitos</h2>
+                <div class="bg-gray-100 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                  <p class="text-gray-700 text-sm sm:text-base flex items-center">
+                    ⚠️ Para solicitar matricularse en la siguiente fase, debe completar los pre-requisitos.
+                  </p>
+                  <ClientOnly>
+                    <div class="w-full sm:w-auto">
+                      <StudentPreRquisits />
+                    </div>
+                  </ClientOnly>
+                </div>
+              </section>
+    </div>
   </div>
 </template>
 

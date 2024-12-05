@@ -51,7 +51,7 @@ class StudentService {
             }else{
                 const nextFase = await this.getNextPhase(token);
                 console.log('Respuesta:', nextFase);
-                if (nextFase.data.pre_requirements) {
+                if (nextFase.data.pre_requirements && nextFase.data.all_requirements_met == false) {
                     console.log('Requerimientos:', nextFase.data.pre_requirements);
                     return {response, nextFase, requeriments: nextFase.data.pre_requirements, requeriment: true};
                 }else{

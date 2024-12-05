@@ -26,13 +26,15 @@ class NotifyService {
         try {
             channel.listen('.NotificationUser', async (data: any) => {
                 console.log('Evento NotificationUser:', data);
-                await swal.showAlert(data.sweet_alert.icon,'right',{title: data.sweet_alert.title, text: '',confirmType: 'timer'})
-                if(data.update == true){
-                    swal.showLoadingToast('Actualizando Datos...');
-                        await notifyStore.actionNotify(data.role);
-                    swal.closeLoadingToast();
-                    
-                }
+                await swal.showAlert(data.sweet_alert.icon,'right',{title: data.sweet_alert.title, text: '',confirmType: 'timer'}).then(async() => {
+                    if(data.update == true){
+                        swal.showLoadingToast('Actualizando Datos...');
+                            await notifyStore.actionNotify(data.role);
+                        swal.closeLoadingToast();
+                        
+                    }
+                });
+                
                 
             });
         } catch (error) {

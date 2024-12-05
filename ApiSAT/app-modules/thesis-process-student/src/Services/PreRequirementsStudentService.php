@@ -4,6 +4,7 @@ namespace Modules\ThesisProcessStudent\Services;
 
 use App\Enums\StateEnum;
 use App\Utils\State;
+use Modules\ImportDataFile\Contracts\ImportDataFileServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\PreRequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\PreRequirements;
 /**
@@ -63,7 +64,7 @@ class PreRequirementsStudentService implements PreRequirementsStudentServiceInte
         }
 
 
-        $requirement->status = $status;
+        $pre_requirement->status = $status;
 
         if ($status->value === State::APPROVED) {
             $pre_requirement->approved = true;
@@ -72,7 +73,7 @@ class PreRequirementsStudentService implements PreRequirementsStudentServiceInte
         }
 
         if ($status->value === State::REJECTED) {
-            app(ImportDataFileServiceInterface::class)->deleteFile($requirement->url_file);
+            app(ImportDataFileServiceInterface::class)->deleteFile($pre_requirement->url_file);
             $pre_requirement->url_file = null;
             $pre_requirement->approved = false;
             $pre_requirement->approved_date = null;
@@ -80,7 +81,7 @@ class PreRequirementsStudentService implements PreRequirementsStudentServiceInte
         }
 
 
-        $requirement->save();
+        $pre_requirement->save();
         //event(new RequirementStatusChanged($pre_requirement->thesisProcessPhase->teacher->teacher_id, $pre_requirement->thesisProcessPhase->student->user->name, $status, $pre_requirement->requirement->name));
     }
 }
