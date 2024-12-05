@@ -2,6 +2,7 @@
 import { auth } from '~/stores/auth/auth';
 const authStore = auth();
 const totalData = ref({ approved: 0, inProcess: 0 });
+const admin_load = ref(false);
 
 const formatUserName = (name) => {
   if (!name || typeof name !== 'string') {
@@ -16,6 +17,12 @@ const formatUserName = (name) => {
 const handleUpdateTotal = (totals) => {
   totalData.value = totals || { approved: 0, inProcess: 0 };
 };
+onMounted(()=>{
+    setTimeout(() => {
+        admin_load.value = true;
+        // Aquí va tu lógica
+    }, 3000); 
+})
 
 const totalStudents = computed(() => totalData.value.approved + totalData.value.inProcess);
 const approvedPercentage = computed(() => {
@@ -30,7 +37,7 @@ const inProcessPercentage = computed(() => {
         <div>
                 <h2 class="text-2xl font-bold text-center sm:text-left">Bienvenido, {{formatUserName(authStore.user.name)}}</h2>
         </div>
-        <div class="container mx-auto">
+        <div v-show="admin_load" class="container mx-auto">
             <div class="grid grid-cols-8 gap-4">
                     <div class="col-span-2 pt-3">
                         <div class=" bg-neutral border  text-neutral-content p-4 border-stone-300 ">
@@ -62,6 +69,10 @@ const inProcessPercentage = computed(() => {
                     </div>
 
                 </div>
+        </div>
+        <div class="flex justify-center mt-4" v-show="!admin_load">
+                <span class="loading loading-bars loading-lg"></span>
+
         </div>
     </div>
 </template>

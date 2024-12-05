@@ -23,7 +23,7 @@ const closeModal= (data)=>{
 <template>
 
     <!-- Para Tribunales -->
-    <div class="container border_blue mx-auto p-4 ">
+    <div class="container border_blue mx-auto p-4 hidden">
         <div class="p-4 bg-neutral rounded">
             <div>
                  <div class="flex p-4" >

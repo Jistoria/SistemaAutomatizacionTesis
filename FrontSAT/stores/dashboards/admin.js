@@ -5,6 +5,7 @@ export const admin = defineStore('admin',{
         estudiantes: [],
         docentes: [],
         procesosTesis : [],
+        isLoaded:false,
     }),
     actions:{
         async syncFromIdb(){
@@ -69,14 +70,18 @@ export const admin = defineStore('admin',{
             this.procesosTesis = []
         },
         async dashboardAdmin(){
-            try {
-                const response = await adminService.getDashboardAdmin();
-                return response;
-            } catch (error) {
-                
-            }
+                try {
+                    const response = await adminService.getDashboardAdmin();
+                    this.isLoaded = true;
+                    return response;
+                } catch (error) {
+                    
+                }
+            
+        },
+        resetDefault(){
+            this.isLoaded = false;
         }
-        
         
     }
 })

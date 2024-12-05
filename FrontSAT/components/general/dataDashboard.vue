@@ -34,7 +34,7 @@ onMounted(async()=>{
         0
         );
         emit('update-total', { approved: totalApproved, inProcess: totalInProcess });
-        }
+    }
 })
 
 const emit = defineEmits(['update-total']);
@@ -51,7 +51,8 @@ const filteredPhases = computed(() =>
 
 </script>
 <template>
-    <div class=" bg-neutral border border-slate-200 text-neutral-content p-4 mt-3">
+
+    <div v-if="adminStore.isLoaded" class=" bg-neutral border border-slate-200 text-neutral-content p-4 mt-3">
             <div>
                 <button @click="toggleDataShow" class="btn btn-ghost ">
                     <i  class="bi bi-caret-down-fill icon_size"></i>
@@ -113,7 +114,7 @@ const filteredPhases = computed(() =>
                     </div>
                 </div>
             </div>
-        </div>    
+    </div>    
 </template>
 <style>
 </style>

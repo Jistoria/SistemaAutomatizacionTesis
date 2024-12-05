@@ -1,4 +1,5 @@
 import { authService } from '~/services/authModel/authService';
+
 import { panel } from '../panel/panel';
 import { student } from '../dashboards/student';
 import { notifyService } from '~/services/Notify/notify';
@@ -52,7 +53,8 @@ export const auth = defineStore('auth',{
                 //close Is Loaded
                 const studentStore = student();
                 const panelStore = panel();
-                
+                const adminStore = admin();
+                adminStore.resetDefault();
                 studentStore.resetDefault();
                 panelStore.resetDefault();
 
