@@ -2,20 +2,14 @@
 
 namespace Modules\ImportDataFile\Jobs;
 
-use App\Models\Academic\Student\Student;
 use App\Models\Academic\Teacher\Teacher;
-use App\Models\Academic\Thesis\ThesisPhase;
-use App\Models\Academic\Thesis\ThesisProcess;
+use App\Utils\State;
 use Illuminate\Bus\Queueable;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Log as FacadesLog;
-use Modules\Auth\Services\AuthService;
 use Modules\Degree\Contracts\DegreeServiceInterface;
 use Modules\ImportDataFile\Events\NotificationDataProcess;
 use Modules\PeriodAcademic\Contracts\PeriodAcademicServiceInterface;
@@ -23,7 +17,6 @@ use Modules\Thesis\Contracts\ThesisTitleServiceInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Modules\ImportDataFile\DataTransferObjects\PdfThesisData;
-use Modules\PeriodAcademic\Services\PeriodAcademicService;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
 use Modules\Thesis\Contracts\ThesisProcessServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
@@ -54,7 +47,10 @@ class ProcessPdfThesisData implements ShouldQueue
     {
         try{
             // Ejecutar el script de Python para procesar el archivo PDF
-            $process = new Process(['py', base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
+            $exePy  = env('APP_ENV') === 'production' ? 'python3' : 'py';
+
+
+            $process = new Process([$exePy, base_path('ScriptsPython/formaterTableTesisPDF.py'), $this->filePath]);
             $process->run();
 
             // Si el proceso falla
@@ -66,6 +62,7 @@ class ProcessPdfThesisData implements ShouldQueue
             $output = $process->getOutput();
             $output = iconv('ISO-8859-1', 'UTF-8//TRANSLIT', $output); // Convertir a UTF-8 si el JSON está en ISO-8859-1
             $studentsData = json_decode($output, true);
+
 
             // Extraer las fechas de inicio y fin del periodo académico
             $data = new PdfThesisData($studentsData);
@@ -81,25 +78,35 @@ class ProcessPdfThesisData implements ShouldQueue
 
                 $teacher = app(UserServiceInterface::class)->createUserWithRole([
                     'name' => $studentData['tutor_name'],
-                    'email' => 'd' . strtolower(str_replace(' ', '.', substr($studentData['tutor_name'], 0,4))) . '@uleam.edu.ec',
+                    'email' => 'd' . strtolower(
+                                    preg_replace(
+                                        '/[^a-zA-Z0-9]/', // Expresión regular para eliminar caracteres especiales
+                                        '.',              // Reemplaza caracteres no válidos con un punto
+                                        str_replace(
+                                            ' ', '.',      // Reemplaza espacios por puntos
+                                            substr($studentData['tutor_name'], 0, 4) // Toma los primeros 4 caracteres del nombre del tutor
+                                        )
+                                    )
+                                ) . '@uleam.edu.ec',
                     'password' => 'DocUleamFCVT',
                 ], 'Docente-tesis', $this->id);
 
-                Teacher::firstOrCreate([
+                $te = Teacher::firstOrCreate([
                     'teacher_id' => $teacher->id,
                 ]);
 
+                $categoryIds = $te->categoryAreas->pluck('category_area_id')->take(2)->toArray();
 
                 // Crear o encontrar la tesis (ThesisTitle)
                 $thesis = app(ThesisTitleServiceInterface::class)->createThesisTitle([
                     'title' => $studentData['thesis_title'],
-                ]);
+                ], $categoryIds);
 
 
                 $user = app(UserServiceInterface::class)->createUserWithRole([
                     'name' => $studentData['student_name'],
                     'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
-                    'password' => 'EstUleamFCVT',
+                    'password' => $studentData['student_dni'],
                 ], 'Estudiante-tesis', $this->id);
 
 
@@ -107,7 +114,7 @@ class ProcessPdfThesisData implements ShouldQueue
                 app(StudentServiceInterface::class)->firstOrCreateStudent([
                     'dni' => $studentData['student_dni'],
                     'student_id' => $user->id,
-                    'email' => 'e' . strtolower(str_replace(' ', '.', $studentData['student_dni'])) . '@uleam.edu.ec',
+                    'email' => 'e' . strtolower(str_replace(' ', '.', 'e'.$studentData['student_dni'])) . '@live.uleam.edu.ec',
                     'name' => $studentData['student_name'],
                     'thesis_id' => $thesis->thesis_id,
                     'degree_id' => $degree->degree_id,
@@ -120,8 +127,8 @@ class ProcessPdfThesisData implements ShouldQueue
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
                     'period_academic_id' => $periodAcademic->period_academic_id,
-                    'date_start' => $periodAcademic->date_start,
-                    'date_end' => $periodAcademic->date_end
+                    'date_start' => $periodAcademic->start_date,
+                    'date_end' => $periodAcademic->end_date
                 ], $this->id);
 
                 $phase = app(ThesisPhasesServiceInterface::class);
@@ -132,10 +139,11 @@ class ProcessPdfThesisData implements ShouldQueue
                     'thesis_process_id' => $thesis_process->thesis_process_id,
                     'thesis_phases_id' => $phase_1->thesis_phases_id,
                     'approval' => false,
-                    'state_now' => 'En proceso',
+                    'state_now' => State::IN_PROCESS,
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
+                    'date_start' => $periodAcademic->date_start,
                     'period_academic_id' => $periodAcademic->period_academic_id,
                 ], $this->id);
 
@@ -148,7 +156,7 @@ class ProcessPdfThesisData implements ShouldQueue
                     'thesis_process_id' => $thesis_process->thesis_process_id,
                     'thesis_phases_id' => $phase_2->thesis_phases_id,
                     'approval' => false,
-                    'state_now' => 'En proceso',
+                    'state_now' => State::IN_PROCESS,
                     'teacher_id' => $teacher->id,
                     'student_id' => $user->id,
                     'thesis_id' => $thesis->thesis_id,
@@ -163,6 +171,7 @@ class ProcessPdfThesisData implements ShouldQueue
             message: 'Proceso completado correctamente',
             status: 'success',
             name_document: basename($this->filePath),
+            error: '',
             id: $this->id
         ));
     } catch (\Exception $e) {
@@ -171,6 +180,7 @@ class ProcessPdfThesisData implements ShouldQueue
             message: 'Error en el procesamiento de datos, verifique el archivo PDF',
             status: 'error',
             name_document: basename($this->filePath),
+            error: $e->getMessage(),
             id: $this->id
         ));
     }

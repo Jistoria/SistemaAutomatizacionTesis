@@ -2,6 +2,7 @@
 
 import TiptapEditor from '../general/tiptap-editor.vue';
 import { request } from '~/stores/request/request';
+
 const requestStore = request();
 const isModalOpen = ref(false);
 
@@ -11,17 +12,17 @@ const form = ref({
 })
 function sendRequest(){
     requestStore.sendRequest(form.value.content);
-    console.log(form.value.content);
+    
 }
 function openModal() {
-    console.log('openModal');
+    
   isModalOpen.value = true;
 }
 
 function closeModal() {
-    console.log('closeModal');
+    
     form.content = '<h3>....</h3>';
-    console.log(form.content)
+    
     isModalOpen.value = false;
 }
 

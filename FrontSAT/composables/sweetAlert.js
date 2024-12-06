@@ -8,6 +8,7 @@
  */
 import Swal from 'sweetalert2';
 
+
 /**
  * Crea una alerta de SweetAlert con opciones personalizables.
  * 
@@ -81,9 +82,29 @@ export function sweetAlert() {
 
     return Swal.fire(swalOptions);
   };
+  const showLoadingToast = (title, text = '') => {
+    Swal.fire({
+      title,
+      text,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      showCancelButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  };
+
+  const closeLoadingToast = () => {
+    Swal.close();
+  };
+  
 
   return {
     showAlert,
+    showLoadingToast,
+    closeLoadingToast,
   };
 }
 

@@ -31,19 +31,21 @@ class InitServiceApi extends Command
         //     $this->info('Archivo .env creado correctamente');
         // }
 
-        // Ejecutar las migraciones
-        $this->call('migrate:fresh');
+        // // Ejecutar las migraciones
+        $this->call('migrate:fresh', ['--force' => true]);
 
-        // Ejecutar el comandos para los roles y permisos
+        // // // Ejecutar el comandos para los roles y permisos
         $this->call('app:set-roles');
-        $this->call('app:set-admin-tesis');
+         $this->call('app:set-admin-tesis');
         $this->call('app:set-categories');
-        $this->call('app:set-teachers');
-        $this->call('app:set-modules');
-        $this->call('app:set-menus');
+         $this->call('app:set-teachers');
+         $this->call('app:set-modules');
+         $this->call('app:set-menus');
 
-        //Generar clave Passport
-        $this->call('passport:client', ['--personal' => true]);
+        $this->call('passport:keys');
+
+        // //Generar clave Passport
+        $this->call('passport:client', ['--personal' => true, '--name' => 'Personal Access Client']);
 
 
         // Mostrar mensaje de finalización

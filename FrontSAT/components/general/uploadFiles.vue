@@ -23,7 +23,7 @@
     </button>
 
     <!-- Modal -->
-    <div v-if="isPdfModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div v-if="isPdfModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div class="bg-white w-[500px] p-6 rounded-lg shadow-lg">
         <h2 class="text-xl font-semibold mb-2 border-b pb-2">Subir PDF</h2>
         <p class="text-xs text-gray-500 mb-4">Número máximo de archivos: 1</p>
@@ -152,7 +152,7 @@ const handlePdfFileUpload = (event) => {
 const file = event.target.files[0];
 if (file && file.type === 'application/pdf') {
   selectedPdfFile.value = file;
-  console.log('Archivo PDF seleccionado:', file.name);
+  
 } else {
   swal.showAlert('error', 'right', {
     title: 'Solo se aceptan archivos de tipo PDF',

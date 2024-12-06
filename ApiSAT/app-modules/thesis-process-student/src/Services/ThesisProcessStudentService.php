@@ -2,13 +2,17 @@
 
 namespace Modules\ThesisProcessStudent\Services;
 
+use App\Models\Academic\Teacher\Teacher;
 use App\Models\Academic\Thesis\ThesisPhase;
-use App\Models\Academic\Thesis\ThesisProcess;
-use App\Models\Academic\Thesis\ThesisProcessPhases;
+use App\Utils\State;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Modules\Thesis\Contracts\ThesisPhasesServiceInterface;
+use Modules\ThesisProcessStudent\Contracts\PreRequirementsStudentServiceInterface;
+use Modules\ThesisProcessStudent\Contracts\RequirementsStudentServiceInterface;
 use Modules\ThesisProcessStudent\Contracts\ThesisProcessStudentServiceInterface;
 use Modules\ThesisProcessStudent\Models\ThesisProcessPhaseStudent;
+use Modules\ThesisProcessStudent\Models\ThesisProcessStudent;
 
 /**
  * Servicio para gestionar el proceso de tesis de los estudiantes.
@@ -22,14 +26,22 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
      */
     public function __construct(
         protected ThesisProcessPhaseStudent $thesisProcessPhases,
-        protected ThesisProcess $thesisProcess,
-        protected ThesisPhasesServiceInterface $thesisPhasesService
+        protected ThesisProcessStudent $thesisProcess,
+        protected ThesisPhasesServiceInterface $thesisPhasesService,
+        protected RequirementsStudentService $requirementsStudentService
     )
     {}
 
+    /**
+     * Obtiene el proceso de tesis de un estudiante por su ID.
+     *
+     * @param string $id ID del estudiante.
+     * @return ThesisProcessStudent El proceso de tesis del estudiante.
+     */
+
     public function findThesisProcessById(string $id)
     {
-        return $this->thesisProcess->where('student_id', $id)->with('phasesStudent')->first();
+        return $this->thesisProcess->where('student_id', $id)->with(['tutor', 'tutor.user','tutor.categoryAreas', 'thesis', 'thesis.categoryAreas', 'periodAcademic'])->first();
     }
 
 
@@ -46,8 +58,46 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
             return false; // No se cumplen las fases anteriores en cadena
         }
 
-        return $this->thesisProcessPhases->create($data);
+            // Crear la fase del proceso de tesis para el estudiante
+        $thesisProcessPhaseStudent = $this->thesisProcessPhases->create($data);
+
+        // Verificar si la fase requiere requisitos
+        $this->asyncRequirements($data['thesis_phases_id'], $thesisProcessPhaseStudent);
+
+        return $thesisProcessPhaseStudent;
     }
+
+
+    protected function asyncRequirements(string $idPhase, ThesisProcessPhaseStudent $phaseProcess): void
+    {
+        // Obtener los requisitos de la fase
+        $phase = $this->thesisPhasesService->getThesisPhase($idPhase);
+        $requirements = $phase->requirements;
+
+        // Verificar que existan requisitos para esta fase
+        if ($requirements->isEmpty()) {
+            return;
+        }
+
+        foreach ($requirements as $requirement) {
+            $data = [
+                'student_id' => $phaseProcess->student_id,
+                'period_academic_id' => $phaseProcess->period_academic_id,
+                'thesis_process_phases_id' => $phaseProcess->thesis_process_phases_id,
+                'requirements_id' => $requirement->requirements_id,
+                'requirements_data' => $requirement->description,
+                'approved' => false,
+                'state_now' => State::PENDING,
+                'approved_by_user' => null,
+                'url_file' => null,
+                'send_date' => null,
+                'approved_date' => null,
+                'approved_role' => $requirement->approval_role,
+            ];
+            $this->requirementsStudentService->asyncRequirementsStudent($data);
+        }
+    }
+
 
     /**
      * Aprueba una fase del proceso de tesis si cumple con los requisitos.
@@ -64,7 +114,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
             $thesisProcessPhase->update([
                 'approval' => true,
                 'date_approved' => now(),
-                'state_now' => 'Aprobado',
+                'state_now' => State::APPROVED,
                 'updated_by_user' => $userId,
                 'date_end' => now()
             ]);
@@ -87,6 +137,7 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         }
         return false;
     }
+
 
     protected function checkThesisPhaseAproval(string $studentId, string $moduleId, string $phaseId):bool
     {
@@ -138,7 +189,115 @@ class ThesisProcessStudentService implements ThesisProcessStudentServiceInterfac
         return $isInSequence;
     }
 
+    public function phasesGroupByModule(string $studentId) : Collection
+    {
+        $thesisProcess = $this->findThesisProcessById($studentId);
+        $phasesGroupedByModule = $thesisProcess->getStudentPhasesGroupedByModule();
+        return $phasesGroupedByModule;
+    }
 
+    public function dataDashboard(string $studentId): array
+    {
+        // Obtener el proceso del estudiante, agrupado por módulo y fase
+        $data_student = $this->phasesGroupByModule($studentId);
+
+        // Obtener todos los módulos y sus fases
+        $phase_module = app(ThesisPhasesServiceInterface::class)->getPhasesModule();
+
+        // Formato de salida
+        $result = [];
+
+        foreach ($phase_module as $moduleName => $phases) {
+            $moduleData = [
+                'module_name' => $moduleName,
+                'module_order' => $phases->first()->module_order,
+                'phases' => []
+            ];
+
+            foreach ($phases as $phase) {
+                $phaseData = [
+                    'thesis_process_phases_id' => null,
+                    'phase_name' => $phase->phase_name,
+                    'phase_order' => $phase->phase_order,
+                    'approval' => false, // Valor predeterminado para fases no completadas por el estudiante
+                    'state_now' => State::NOT_ENABLED,
+                ];
+
+                // Verificar si el estudiante ha completado esta fase
+                if (isset($data_student[$moduleName])) {
+                    $studentPhase = $data_student[$moduleName]->firstWhere('phase_name', $phase->phase_name);
+                    if ($studentPhase) {
+                        $phaseData['thesis_process_phases_id'] = $studentPhase->thesis_process_phases_id;
+                        $phaseData['approval'] = $studentPhase->approval; // Usar el estado real del estudiante
+                        $phaseData['progress'] = $studentPhase->state_now == State::APPROVED ? 100 : $studentPhase->progress;
+                        $phaseData['date_start'] = $studentPhase->date_start;
+                        $phaseData['date_end'] = $studentPhase->date_end;
+                        $phaseData['state_now'] = $studentPhase->state_now;
+                    }
+                }
+
+                $moduleData['phases'][] = $phaseData;
+            }
+
+            $result[] = $moduleData;
+        }
+
+        return $result;
+    }
+
+
+    public function nextPhaseStudent(string $idStudent)
+    {
+
+        $thesisProcess = $this->thesisProcess->where('student_id', $idStudent)->first();
+
+        $nextPhase = $thesisProcess->nextPhaseStudent();
+
+        if (!$nextPhase) {
+            throw new \Exception('No se encontró la siguiente fase del estudiante', 404);
+        }
+
+        return $nextPhase;
+    }
+
+    public function getTutorThesisProcessPhase(string $idProcess) : Teacher
+    {
+        $thesisProcess = $this->thesisProcess->where('thesis_process_id','=',$idProcess)->first();
+        if (!$thesisProcess) {
+            Log::info('No se encontró el proceso de tesis del estudiante');
+            throw new \Exception('No se encontró el proceso de tesis del estudiante', 404);
+        }
+        return $thesisProcess->tutor;
+    }
+
+    public function asyncPreRequirements(string $phaseId, string $studentId, string $thesisProcessId): void
+    {
+           // Obtener los requisitos de la fase
+           $phase = $this->thesisPhasesService->getThesisPhase($phaseId);
+           $preRequirements = $phase->preRequirements;
+
+              // Verificar que existan requisitos para esta fase
+              if ($preRequirements->isEmpty()) {
+                  return;
+              }
+
+                foreach ($preRequirements as $preRequirement) {
+                    $data = [
+                        'student_id' => $studentId,
+                        'thesis_process_phases_id' => $thesisProcessId,
+                        'pre_requirements_id' => $preRequirement->pre_requirements_id,
+                        'approved' => false,
+                        'state_now' => State::PENDING,
+                        'approved_by_user' => null,
+                        'url_file' => null,
+                        'send_date' => null,
+                        'approved_date' => null,
+                        'approved_role' => $preRequirement->approval_role,
+                    ];
+                    app(PreRequirementsStudentServiceInterface::class)->asyncPreRequirementsStudent($data);
+                }
+
+    }
 
 }
 

@@ -1,4 +1,9 @@
 import { authService } from '~/services/authModel/authService';
+
+import { panel } from '../panel/panel';
+import { student } from '../dashboards/student';
+import { notifyService } from '~/services/Notify/notify';
+import { admin } from '../dashboards/admin';
 /**
  * Define una tienda de autenticación utilizando Pinia.
  * 
@@ -38,7 +43,6 @@ export const auth = defineStore('auth',{
                 console.error('Error en login en el store:', error);
                 throw error;
             }
-            
         },
         async setLogout(){
             try {
@@ -46,6 +50,14 @@ export const auth = defineStore('auth',{
                 this.token = null
                 this.session = false
                 this.role = null
+                //close Is Loaded
+                const studentStore = student();
+                const panelStore = panel();
+                const adminStore = admin();
+                adminStore.resetDefault();
+                studentStore.resetDefault();
+                panelStore.resetDefault();
+
             } catch (error) {
                 console.error('Error en logout en el store:', error);
                 throw error;
@@ -57,20 +69,45 @@ export const auth = defineStore('auth',{
                 const response = await authService.login(email, password)
                 if(response.success == true){
                     this.setLogin(response.data.user,response.data.token)
+                    return response
+                }
+                else{
+                    return response
                 }
             } catch (error) {
                 console.log(error)
+                return success = false
             }
+        },
+        async authMicrosoft(perfile, jwt){
+            const name = perfile.name
+            const email = perfile.email
+            const response = await authService.authMicrosoft(name, email, jwt)
+            if (response.success == true){
+                this.setLogin(response.data.user,response.data.token)
+
+            }
+            return response
+            
         },
         async logout(){
             try {
+                const studentStore = student();
+                const adminStore = admin();
+                if(this.role == 'Estudiante-tesis'){
+                    studentStore.clearStore();
+                }else if(this.role == 'Administrador-tesis'){
+                    adminStore.clearData();
+                }
                 const response = await authService.logout()
                 if(response == true){
+
                     this.setLogout()
-                    nextTick(() => {
-                        navigateTo('/login/loginScreen'); 
-                    });
+                    
                 }
+                await notifyService.unlistenChannel();
+                localStorage.clear();
+                return true
             } catch (error) {
                 console.error('Error en logout en el store:', error);
                 throw error;

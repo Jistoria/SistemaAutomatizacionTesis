@@ -47,7 +47,7 @@ class ThesisProcess extends Model
     }
 
     // Relación con el profesor (teacher)
-    public function teacher()
+    public function tutor()
     {
         return $this->belongsTo(Teacher::class, 'teacher_id');
     }

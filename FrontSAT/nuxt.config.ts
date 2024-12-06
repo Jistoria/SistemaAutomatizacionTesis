@@ -3,6 +3,7 @@ import { defineNuxtConfig } from 'nuxt/config';
 import colorModeConfig from './config/color-mode.js';
 import pwaConfig from './pwa-config/pwa-config.js';
 import i18nConfig from './config/i18n-config.js';
+import fontConfig from './config/font.config.js';
 
 
 export default defineNuxtConfig({
@@ -14,12 +15,15 @@ export default defineNuxtConfig({
     'nuxt-translation-manager',
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
+    '@nuxtjs/google-fonts'
   ],
+  googleFonts: fontConfig,
   tailwindcss: { exposeConfig: true },
   css: [
     '~/assets/css/tailwind.css',
     '~/assets/css/general.css',
-    '/node_modules/bootstrap-icons/font/bootstrap-icons.min.css'
+    '~/node_modules/bootstrap-icons/font/bootstrap-icons.min.css',
+
   ],
   plugins: [
     '~/plugins/echo.client.ts',

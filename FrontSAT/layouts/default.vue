@@ -9,6 +9,10 @@ import LoadingAnimation from '~/components/load/LoadingAnimation.vue';
 const colorMode = useColorMode()
 
 const themeStore = useThemeStore();
+onMounted(() => {
+  themeStore.initTheme();
+});
+
 const requestAnimation = useRequestAnimation();
 provide('requestAnimation', requestAnimation);
 const route = useRoute();
@@ -24,11 +28,15 @@ const showHeaderFooter = computed(() => {
 </script>
 <template>
 
- <div class="layout "  :data-theme="themeStore.currentTheme" >
-    <ClientOnly>
-      <div v-if="showHeaderFooter"  class="header">
-        <HeaderComp></HeaderComp>
+ <div class="layout general_text"   :data-theme="themeStore.currentTheme" >
+    <ClientOnly  >
+      <!-- Header con alertas -->
+      <div v-if="showHeaderFooter" class="header">
+        <HeaderComp />
+        <ConexionNotify isBelowHeader />
       </div>
+      <!-- Alertas generales en la parte superior -->
+      <ConexionNotify v-if="!showHeaderFooter" />
     </ClientOnly>
     <div class="content " >
         <div>
@@ -44,7 +52,8 @@ const showHeaderFooter = computed(() => {
         <FooterComp></FooterComp>
       </div>
     </ClientOnly>
-  </div>
+ </div>
+
 </template>
 <style>
 .layout {

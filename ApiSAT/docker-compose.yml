@@ -1,0 +1,47 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www
+      - ./storage/logs:/var/www/storage/logs
+      - ./bootstrap/cache:/var/www/bootstrap/cache
+    ports:
+      - "8000:80"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=true
+      - APP_KEY=base64:FI7IdFnIW4rMX4onyyrh61IQ8x8DBiY+QfMC23mdTCM=
+      - QUEUE_CONNECTION=redis
+      - DB_CONNECTION=pgsql
+      - DB_HOST=ep-noisy-rain-a49f3pdh.us-east-1.aws.neon.tech
+      - DB_PORT=5432
+      - DB_DATABASE=system_thesis_db
+      - DB_USERNAME=system_thesis_db_owner
+      - DB_PASSWORD=Rt5Wq9dUGaEe
+      - DB_SSLMODE=require
+      - REDIS_CLIENT=phpredis
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - BROADCAST_CONNECTION=reverb
+      - REVERB_APP_ID=322986
+      - REVERB_APP_KEY=4c9e0v0wg5rd8kmj62sb
+      - REVERB_APP_SECRET=s83vcw925vaq5td8hxx0
+      - REVERB_HOST=0.0.0.0
+      - REVERB_PORT=8080
+      - REVERB_SCHEME=http
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+
+volumes:
+  redis-data:

@@ -33,15 +33,42 @@ class AuthService {
             
             if (response.success == true) {
                 await this.saveAuthData(true, response.data.user, response.data.token);
-                swal.showAlert('success','right',{title: 'Bienvenido', text: '',confirmType: 'timer'})
+                
                 return response;
             }else {
-                swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
+                
                 return response;
             }
 
         } catch (error) {
             swal.showAlert('error','normal',{title: 'Error', text: 'Credenciales Inválidas',confirmType: 'normal'})
+            return error;
+        }
+    }
+    async authMicrosoft(name: string, email: string, jwt: string) {
+        const fetchClient = this.getFetchClient();
+        try {
+            const response = await fetchClient('/api/microsoft/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    name: name,
+                    email: email,
+                    jwt: jwt
+                 }),
+            });
+            console.log('Respuesta:', response);
+            if(response.success == true){
+                await this.saveAuthData(true, response.data.user, response.data.token);
+                return response;
+            }
+
+        } catch (error) {
+            console.log('Error:', error);
+            swal.showAlert('error','normal',{title: 'Error', text: (error as any).message ,confirmType: 'normal'})
+            localStorage.clear();
             return error;
         }
     }
@@ -59,7 +86,7 @@ class AuthService {
                 swal.showAlert('success','right',{title: 'Sesión cerrada', text: '',confirmType: 'timer'})
                 return true;
             } else if(response.status == 401) {
-                swal.showAlert('success','right',{title: 'Algo salio mal', text: '',confirmType: 'timer'})
+                swal.showAlert('error','right',{title: 'Algo salio mal', text: '',confirmType: 'timer'})
                 return false;
             }
             
@@ -77,7 +104,11 @@ class AuthService {
             } else {
                 const response = await this.checkSession(data.token);
                 if (!response) {
-                    await this.deleteSession();
+                    if(auth().online == true){
+                        await this.deleteSession();
+                    }else {
+                        console.log('Sesión cerrada');
+                    }
                     return 'Sesión cerrada';
                 } else {
                     auth().setLogin(data.user, data.token);

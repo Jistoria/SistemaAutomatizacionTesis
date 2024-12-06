@@ -4,7 +4,6 @@ const themeStore = useThemeStore();
 const themes =[
   { name: 'UleamTheme',    icon: 'bi bi-pc-display' },
   { name: 'Themegrays',   icon: 'bi bi-upc' },
-  { name: 'lemonade',  icon: 'bi-cup-hot-fill' },
 ]
 function getIcon(theme) {
   const found = themes.find((item) => item.name === theme);
@@ -17,10 +16,10 @@ function setTheme(data){
 <template>
 
 
-<div class="dropdown dropdown-bottom dropdown-end ">
+<div class="dropdown dropdown-top dropdown-end ">
   
-  <div tabindex="0" role="button" class=" m-1">
-    <button type="button" class=" btn-ghost rounded-box inline-flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white ">
+  <div tabindex="0" role="button" class="">
+    <button type="button" class=" btn-ghost rounded-box bg-primary inline-flex justify-center items-center w-full px-4 py-2 mb-2 text-sm font-medium text-white  hover:bg-zinc-500">
         <i :class="getIcon(themeStore.currentTheme)" style="font-size: 2rem;" ></i>
     </button>
   </div>

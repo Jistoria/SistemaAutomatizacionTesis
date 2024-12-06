@@ -26,6 +26,11 @@ return new class extends Migration
             $table->uuid('category_area_id')->references('category_area_id')->on('category_area');
             $table->uuid('teacher_id')->references('teacher_id')->on('teachers');
         });
+
+        Schema::create('category_thesis', function (Blueprint $table) {
+            $table->uuid('category_area_id')->references('category_area_id')->on('category_area');
+            $table->uuid('thesis_id')->references('thesis_id')->on('thesis_titles');
+        });
     }
 
     /**

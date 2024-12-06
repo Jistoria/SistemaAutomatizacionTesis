@@ -1,0 +1,83 @@
+services:
+  - type: web
+    name: SistemaAutomatizacionTesis-Backend
+    env: docker
+    plan: free
+    rootDir: ApiSAT
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    envVars:
+      - key: PORT
+        value: 80
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: true
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: SistemaAutomatizacionTesis-DB
+          property: password
+      - key: QUEUE_CONNECTION
+        value: redis
+      - key: REDIS_CLIENT
+        value: phpredis
+      - key: REDIS_HOST
+        fromService:
+          name: SistemaAutomatizacionTesis-Redis
+          type: redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          name: SistemaAutomatizacionTesis-Redis
+          type: redis
+          property: port
+
+  - type: web
+    env: static
+    name: SistemaAutomatizacionTesis-Frontend
+    rootDir: FrontSAT
+    buildCommand: yarn; yarn generate
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_KEY
+        value: 4c9e0v0wg5rd8kmj62sb
+      - key: VITE_API_URL
+        value: https://sistemaautomatizaciontesis-backend.onrender.com
+      - key: NUXT_SESSION_PASSWORD
+        value: 25f0e038566b4bff9bcb8a99ab023d5e
+      - key: VITE_BROADCASTER
+        value: reverb
+      - key: VITE_WS_HOST
+        value: sistemaautomatizaciontesis-backend.onrender.com
+      - key: VITE_WS_PORT
+        value: 8080
+      - key: VITE_WSS_PORT
+        value: 8080
+
+  - type: redis
+    name: SistemaAutomatizacionTesis-Redis
+    plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0
+
+databases:
+  - name: SistemaAutomatizacionTesis-DB
+    plan: free

@@ -4,16 +4,30 @@ import Pusher from 'pusher-js';
 
 // Asigna Pusher al objeto global `window`
 window.Pusher = Pusher;
+//console.log('Laravel Echo plugin initialized');
+
+
+const broadcaster = import.meta.env.VITE_BROADCASTER;
+const key = import.meta.env.VITE_KEY;
+const wsHost = import.meta.env.VITE_WS_HOST;
+// const wsPort = import.meta.env.VITE_WS_PORT;
+// const wssPort = import.meta.env.VITE_WSS_PORT;
+
+// console.log('Broadcaster:', broadcaster);
+// console.log('Key:', key);
+// console.log('WS Host:', wsHost);
+// console.log('WS Port:', wsPort);
+// console.log('WSS Port:', wssPort);
+
 
 export default defineNuxtPlugin((nuxtApp) => {
   const echo = new Echo({
-    broadcaster: 'reverb', // Usa el broadcaster de Reverb
-    key: '4c9e0v0wg5rd8kmj62sb',            // Usa la clave de la variable de entorno
-    wsHost: 'localhost',
-    wsPort: '8080',
-    wssPort: '8080',
-    forceTLS: false,
-    enabledTransports: ['ws'],
+    broadcaster: broadcaster, // Usa el broadcaster de Reverb
+    key: key,// Usa la clave de la variable de entorno
+    wsHost:'',
+    wssPort:'',
+    forceTLS: true,
+    enabledTransports: ['wss'],
     disableStats: true,
   });
 

@@ -4,6 +4,7 @@ namespace App\Models\Auth;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Academic\Teacher\Teacher;
 use App\Models\General\Menu;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -73,6 +74,11 @@ class User extends Authenticatable
     public function menu()
     {
         $this->roles()->with('menus');
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class, 'teacher_id', 'id');
     }
 
 }

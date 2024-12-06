@@ -23,5 +23,6 @@ class CourtService {
             console.log(error);
         }
     }
+    //aqui tiene que venir el get todos los juzgados
 }
 export const courtService = new CourtService();

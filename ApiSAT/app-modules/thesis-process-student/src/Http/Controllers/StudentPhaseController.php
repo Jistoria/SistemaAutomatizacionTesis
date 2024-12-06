@@ -13,10 +13,6 @@ class StudentPhaseController
     )
     {}
 
-    public function getProcessAllData(Request $request)
-    {
-        $processPhase = $this->studentPhaseService->findThesisProcessById($request->user()->id);
 
-        return ApiResponse::success($processPhase);
-    }
+
 }

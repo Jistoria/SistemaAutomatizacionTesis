@@ -46,7 +46,39 @@ class MenusService {
         } catch (error) {
             console.log(error)
         }
+    }
+    async getListStudents(page: Number, filter: String ,search: String){
+        const fetchClient = this.getFetchClient();
+        console.log('entre al getlist student')
+        try {
+            const pagination = 4; 
+            const response = await fetchClient(`/thesis-tutor/my-students?pagination=${pagination}&page=${page}&filter=${filter}&search=${search}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            console.log('respuesta de regreso')
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async getAllStudents(page:Number, filter: String, search:String){
+        const fetchClient = this.getFetchClient();
+        try {
+            const pagination = 4;
+            const reponse = await fetchClient(`/thesis-tutor/all-students?pagination=${pagination}&page=${page}&filter=${filter}&search=${search}`,{
+                method:'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            return reponse    
+        } catch (error) {
+            console.log(error)
 
+        }
     }
 
 }

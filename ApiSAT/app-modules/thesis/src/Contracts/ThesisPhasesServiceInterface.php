@@ -2,6 +2,7 @@
 namespace Modules\Thesis\Contracts;
 
 use App\Models\Academic\Thesis\ThesisPhase as ThesisPhaseModel;
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Thesis\Models\ThesisPhase;
 
 interface ThesisPhasesServiceInterface
@@ -11,4 +12,6 @@ interface ThesisPhasesServiceInterface
     public function getThesisPhaseByName(string $name): ThesisPhaseModel;
 
     public function getThesisPhaseByOrder(int $orderPhase, int $orderModule): ?ThesisPhaseModel;
+
+    public function getPhasesModule(): Collection;
 }

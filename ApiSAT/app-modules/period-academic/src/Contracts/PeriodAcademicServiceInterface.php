@@ -12,4 +12,11 @@ interface PeriodAcademicServiceInterface
      * @return PeriodAcademic El periodo académico creado.
      */
     public function createPeriodAcademic(array $data, string $userId): PeriodAcademic;
+
+    /**
+     * Obtiene el periodo académico actual.
+     *
+     * @return PeriodAcademic El periodo académico actual.
+     */
+    public function getNowPeriodAcademic(): PeriodAcademic;
 }
